@@ -1,0 +1,7 @@
+TODO
+========
+- Implement Resource loader for icons.
+- Implement Dependency Injection.
+- Remove static nature of all classes.
+- Remove Loading of Preferences from MineButton.java
+- Optimize Bomb clues to be near uncovered spaces.

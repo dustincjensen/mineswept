@@ -1,12 +1,14 @@
 package gui.events;
 
-import logic.game.*;
 import gui.MineSwept;
-import gui.panel.mines.MinePanel;
 import gui.panel.header.*;
+import gui.panel.mines.MinePanel;
+import logic.game.*;
 
 public class Reset {
-	public static void init() {}
+	public static void init() {
+	}
+
 	public static void doEvent() {
 		GameFeatures.reset();
 		MineField.reset();
@@ -14,10 +16,10 @@ public class Reset {
 		MinePanel.reset();
 		MineCount.reset();
 
-		//INCASE RESET IS PRESSED WHILE PAUSED
+		// Incase reset is pressed while paused.
 		Pause.init();
 		MineSwept.getMainPanel().pausePanel(false);
-		
+
 		MineSwept.refresh();
 	}
 }

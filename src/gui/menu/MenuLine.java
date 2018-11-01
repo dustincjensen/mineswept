@@ -4,27 +4,19 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-*	MenuLine.java
-*	sets up the menu bar for the JFrame
-*	@author Dustin Jensen
-*/
+ * Sets up the menu bar for the JFrame.
+ */
 public class MenuLine extends JMenuBar {
+	private static GameMenu gameMenu;
+	private static ViewMenu viewMenu;
+	private static HelpMenu helpMenu;
 
-	private static GameMenu gm;
-	private static ViewMenu vm;
-	private static HelpMenu hm;
-
-	/**
-	*	Constructor
-	*	sets up the JMenuBar
-	*/
 	public MenuLine() {
-		gm = new GameMenu();
-		vm = new ViewMenu();
-		hm = new HelpMenu();
-		add(gm);
-		add(vm);
-		add(hm);
-	}//End Constructor
-
-}//End class MenuLine
+		gameMenu = new GameMenu();
+		viewMenu = new ViewMenu();
+		helpMenu = new HelpMenu();
+		add(gameMenu);
+		add(viewMenu);
+		add(helpMenu);
+	}
+}

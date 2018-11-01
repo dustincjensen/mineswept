@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 
 public class Preferences {
-
 	private static File preferences;
 	private static String warningMessage;
 
@@ -22,13 +21,12 @@ public class Preferences {
 	}
 
 	public static boolean createFile() {
-		preferences = new File(FileManagement.getGameDir().toString()+"/prefs");
+		preferences = new File(FileManagement.getGameDir().toString() + "/prefs");
 		try {
-			if(!preferences.createNewFile()) {
+			if (!preferences.createNewFile()) {
 				System.out.println("Unable to create new preferences file.");
 				return false;
-			}
-			else
+			} else
 				writeDefaultFile();
 		} catch (Exception e) {
 			System.out.println("I/O exception: Preferences File");
@@ -54,7 +52,7 @@ public class Preferences {
 	}
 
 	public static void writeWarning(String warning) {
-		warningMessage = warningMessage+"\n"+warning;
+		warningMessage = warningMessage + "\n" + warning;
 	}
 
 	public static boolean load() {
@@ -62,10 +60,10 @@ public class Preferences {
 			FileReader fr = new FileReader(preferences);
 			BufferedReader br = new BufferedReader(fr);
 			String line;
-			while((line = br.readLine()) != null) {
-				if(line.equals("[MineButton Colours]"))
+			while ((line = br.readLine()) != null) {
+				if (line.equals("[MineButton Colours]"))
 					MineButton.parseColor(br.readLine(), br.readLine(), br.readLine());
-				if(line.equals("[Difficulty]"))
+				if (line.equals("[Difficulty]"))
 					MineField.parseDifficulty(br.readLine());
 
 			}

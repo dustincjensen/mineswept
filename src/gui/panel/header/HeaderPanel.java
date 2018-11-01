@@ -4,27 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-*	HeaderPanel.java
-*	sets up the header panel
-*	@author Dustin Jensen
-*/
+ * Renders the header for the application which includes things like the hints,
+ * reset and timer.
+ */
 public class HeaderPanel extends JPanel {
+	private static MineCount mineCount;
+	private static ResetButton reset;
+	private static TimeCount timer;
 
-	private static MineCount mc;
-	private static ResetButton rb;
-	private static TimeCount tc;
-
-	/**
-	*	Constructor
-	*/
 	public HeaderPanel() {
-		setLayout(new GridLayout(0,3));
-		
-		mc = new MineCount();
-		rb = new ResetButton();
-		tc = new TimeCount();
+		setLayout(new GridLayout(0, 3));
 
-		add(mc); add(rb); add(tc);
-	}//End Constructor
+		mineCount = new MineCount();
+		reset = new ResetButton();
+		timer = new TimeCount();
 
-}//End class HeaderPanel
+		add(mineCount);
+		add(reset);
+		add(timer);
+	}
+}

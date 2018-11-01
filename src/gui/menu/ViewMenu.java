@@ -1,55 +1,45 @@
 package gui.menu;
 
 import gui.events.*;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 /**
-*	ViewMenu.java
-*	sets up the view menu
-*	@author Dustin Jensen
-*/
+ * Sets up the view menu
+ */
 public class ViewMenu extends JMenu implements ActionListener {
-
 	private static JMenuItem records;
 	private static JMenuItem statistics;
 
-	/**
-	*	Constructor
-	*	sets up the JMenu
-	*/
 	public ViewMenu() {
 		super("View");
 
-		//initialize menu items
+		// Initialize menu items
 		records = new JMenuItem("Records");
 		statistics = new JMenuItem("Statistics");
 
-		//set mnemonics
+		// Set mnemonics
 		records.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 2));
 		statistics.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
 
-		//add actionlisteners
+		// Add actionlisteners
 		records.addActionListener(this);
 		statistics.addActionListener(this);
 
-		//add to view menu
+		// Add to view menu
 		add(records);
 		add(statistics);
-	}//End Constructor
-
-	/**
-	*
-	*/
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		if(evt.getSource() == records)
-			RecordEvent.doEvent();
-		else if(evt.getSource() == statistics)
-			StatisticsEvent.doEvent();
 	}
 
-}//End class ViewMenu
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == records) {
+			RecordEvent.doEvent();
+		} else if (evt.getSource() == statistics) {
+			StatisticsEvent.doEvent();
+		}
+	}
+}

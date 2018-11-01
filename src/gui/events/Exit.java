@@ -4,11 +4,14 @@ import gui.MineSwept;
 import logic.files.FileManagement;
 
 public class Exit {
-	public static void init() {}
+	public static void init() {
+	}
+
 	public static void doEvent() {
-		//SHOW SAVE GAME ??
+		// TODO Show Save Game?
 		FileManagement.saveFiles();
-		//MineSwept.getWindow().dispose();
+		// TODO is this needed?
+		// MineSwept.getWindow().dispose();
 		System.exit(0);
 	}
 }

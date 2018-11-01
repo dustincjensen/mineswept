@@ -9,29 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
-*	MineCount.java
-*	sets up the mine count panel
-*	@author Dustin Jensen
-*/
+ * Renders the mine count panel in the header.
+ */
 public class MineCount extends JPanel implements ActionListener {
-
 	private static ImageIcon mineImage;
 	private static JButton mineIcon;
 	private static JLabel mineCount;
 
-	/**
-	*	Constructor
-	*/
 	public MineCount() {
 		setLayout(new FlowLayout(FlowLayout.LEADING));
 		loadImages();
 		setupPanel();
-	}//End Constructor
+	}
 
 	private void loadImages() {
 		try {
 			mineImage = new ImageIcon(getClass().getResource("/icons/bomb.png"));
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -45,11 +39,12 @@ public class MineCount extends JPanel implements ActionListener {
 		mineCount = new JLabel("");
 		reset();
 		FontChange.setFont(mineCount, 24);
-		add(mineIcon); add(mineCount);
+		add(mineIcon);
+		add(mineCount);
 	}
 
 	public static void setMineCount(int minesLeft) {
-		mineCount.setText(""+minesLeft);
+		mineCount.setText("" + minesLeft);
 	}
 
 	public static void reset() {
@@ -57,9 +52,8 @@ public class MineCount extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		if(evt.getSource() == mineIcon) {
+		if (evt.getSource() == mineIcon) {
 			Hint.doEvent();
 		}
-	}	
-
-}//End class MineCount
+	}
+}

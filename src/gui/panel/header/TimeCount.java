@@ -9,29 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
-*	TimeCount.java
-*	sets up the timer panel
-*	@author Dustin Jensen
-*/
+ * Renders the time count in the header.
+ */
 public class TimeCount extends JPanel implements ActionListener {
-
 	private static ImageIcon clockImage;
 	private static JButton clockIcon;
 	private static JLabel clockCount;
 
-	/**
-	*	Constructor
-	*/
 	public TimeCount() {
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
 		loadImages();
-		setupPanel();	
-	}//End Constructor
+		setupPanel();
+	}
 
 	private void loadImages() {
 		try {
 			clockImage = new ImageIcon(getClass().getResource("/icons/clock.png"));
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -44,7 +38,8 @@ public class TimeCount extends JPanel implements ActionListener {
 		clockIcon.addActionListener(this);
 		clockCount = new JLabel("000");
 		FontChange.setFont(clockCount, 24);
-		add(clockCount); add(clockIcon);		
+		add(clockCount);
+		add(clockIcon);
 	}
 
 	public static void setClockCount(String time) {
@@ -52,9 +47,8 @@ public class TimeCount extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		if(evt.getSource() == clockIcon) {
+		if (evt.getSource() == clockIcon) {
 			Pause.doEvent();
 		}
 	}
-
-}//End class TimeCount
+}

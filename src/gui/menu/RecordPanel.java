@@ -6,7 +6,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class RecordPanel extends JPanel {
-
 	private JTable bodyTable;
 	private DefaultTableModel tableModel;
 	private String[] records;
@@ -18,14 +17,14 @@ public class RecordPanel extends JPanel {
 	private void setupPane(String level) {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setName(level);
-		
+
 		JPanel headerPane = new JPanel();
 		headerPane.setLayout(new BoxLayout(headerPane, BoxLayout.X_AXIS));
-		JLabel header = new JLabel(level+" Records");//font change
+		JLabel header = new JLabel(level + " Records");// font change
 		headerPane.add(header);
-		
+
 		JPanel bodyPane = new JPanel();
-		bodyPane.setPreferredSize(new Dimension(300,Records.RECORD_LIMIT*10));
+		bodyPane.setPreferredSize(new Dimension(300, Records.RECORD_LIMIT * 10));
 		bodyPane.setLayout(new BorderLayout());
 		createTable();
 		bodyPane.add(bodyTable, BorderLayout.CENTER);
@@ -60,16 +59,15 @@ public class RecordPanel extends JPanel {
 
 	public void refreshRecords() {
 		tableModel.setRowCount(0);
-		if(records.length % 3 == 0) {
-			for(int i=0; i<records.length; i=i+3) {
+		if (records.length % 3 == 0) {
+			for (int i = 0; i < records.length; i = i + 3) {
 				String[] row = new String[4];
-				row[0] = Integer.toString((i/3)+1);
+				row[0] = Integer.toString((i / 3) + 1);
 				row[1] = records[i];
-				row[2] = records[i+1];
-				row[3] = records[i+2];
+				row[2] = records[i + 1];
+				row[3] = records[i + 2];
 				tableModel.addRow(row);
 			}
 		}
 	}
-
-}// End RecordPanel
+}

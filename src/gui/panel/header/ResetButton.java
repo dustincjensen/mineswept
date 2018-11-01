@@ -7,12 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
-*	ResetButton.java
-*	sets up the reset button
-*	@author Dustin Jensen
-*/
+ * Renders the reset button in the header.
+ */
 public class ResetButton extends JPanel implements ActionListener {
-
 	private static ImageIcon smileyHappy;
 	private static ImageIcon smileySad;
 	private static ImageIcon smileySurprised;
@@ -21,24 +18,21 @@ public class ResetButton extends JPanel implements ActionListener {
 	private static ImageIcon smileyPaused;
 	private static JButton smileButton;
 
-	/**
-	*	Constructor
-	*/
 	public ResetButton() {
 		setLayout(new FlowLayout());
 		loadImages();
 		setupPanel();
-	}//End Constructor
+	}
 
 	private void loadImages() {
 		try {
-			smileyHappy 	= new ImageIcon(getClass().getResource("/icons/smiley-happy.png"));
-			smileySad 		= new ImageIcon(getClass().getResource("/icons/smiley-sad.png"));
+			smileyHappy = new ImageIcon(getClass().getResource("/icons/smiley-happy.png"));
+			smileySad = new ImageIcon(getClass().getResource("/icons/smiley-sad.png"));
 			smileySurprised = new ImageIcon(getClass().getResource("/icons/smiley-surprised.png"));
-			smileyCool		= new ImageIcon(getClass().getResource("/icons/smiley-cool.png"));
-			smileyRecord	= new ImageIcon(getClass().getResource("/icons/smiley-record.png"));
-			smileyPaused	= new ImageIcon(getClass().getResource("/icons/smiley-paused.png"));
-		} catch(Exception e) {
+			smileyCool = new ImageIcon(getClass().getResource("/icons/smiley-cool.png"));
+			smileyRecord = new ImageIcon(getClass().getResource("/icons/smiley-record.png"));
+			smileyPaused = new ImageIcon(getClass().getResource("/icons/smiley-paused.png"));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +43,7 @@ public class ResetButton extends JPanel implements ActionListener {
 		smileButton.setBorderPainted(false);
 		smileButton.setContentAreaFilled(false);
 		smileButton.addActionListener(this);
-		add(smileButton);		
+		add(smileButton);
 	}
 
 	public static ImageIcon getSmileyHappy() {
@@ -57,12 +51,18 @@ public class ResetButton extends JPanel implements ActionListener {
 	}
 
 	public static void setSmileyIcon(int which) {
-		if(which == 1)		smileButton.setIcon(smileyHappy);
-		else if(which == 2) smileButton.setIcon(smileySad);
-		else if(which == 3) smileButton.setIcon(smileySurprised);
-		else if(which == 4) smileButton.setIcon(smileyCool);
-		else if(which == 5) smileButton.setIcon(smileyRecord);
-		else if(which == 6) smileButton.setIcon(smileyPaused);
+		if (which == 1)
+			smileButton.setIcon(smileyHappy);
+		else if (which == 2)
+			smileButton.setIcon(smileySad);
+		else if (which == 3)
+			smileButton.setIcon(smileySurprised);
+		else if (which == 4)
+			smileButton.setIcon(smileyCool);
+		else if (which == 5)
+			smileButton.setIcon(smileyRecord);
+		else if (which == 6)
+			smileButton.setIcon(smileyPaused);
 	}
 
 	public static void reset() {
@@ -70,10 +70,9 @@ public class ResetButton extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		if(evt.getSource() == smileButton) {
+		if (evt.getSource() == smileButton) {
 			Reset.doEvent();
 			reset();
 		}
-	}	
-
-}//End class ResetButton
+	}
+}

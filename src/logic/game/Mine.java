@@ -3,7 +3,7 @@ package logic.game;
 public class Mine {
 	private int x, y;
 	private int spotValue;
-	private boolean isBomb;	
+	private boolean isBomb;
 	private boolean uncovered;
 	private boolean protect;
 	private boolean blewUp;
@@ -81,7 +81,7 @@ public class Mine {
 		return specialProtected || protect;
 	}
 
-	public int x() { 
+	public int x() {
 		return x;
 	}
 
@@ -93,7 +93,7 @@ public class Mine {
 		return y;
 	}
 
-	public void y(int value) { 
+	public void y(int value) {
 		y = value;
 	}
 }

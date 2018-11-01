@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 
 public class ClockTimer {
 
-	private static final int delay = 1000; //milliseconds
+	private static final int delay = 1000; // milliseconds
 	private static int time;
 	private static Timer timer;
 
@@ -19,11 +19,11 @@ public class ClockTimer {
 
 	public static String getTime() {
 		String timeString = "";
-		if(time < 10)
+		if (time < 10)
 			timeString = "00";
-		else if(time < 100)
+		else if (time < 100)
 			timeString = "0";
-		timeString = timeString+time;
+		timeString = timeString + time;
 		return timeString;
 	}
 
@@ -43,11 +43,11 @@ public class ClockTimer {
 
 	private static class TimerUpdate implements ActionListener {
 		public void actionPerformed(ActionEvent evt) {
-			if(time >= 999)
+			if (time >= 999)
 				timer.stop();
 			else
 				time++;
-			//set GUI
+			// set GUI
 			TimeCount.setClockCount(getTime());
 		}
 	}

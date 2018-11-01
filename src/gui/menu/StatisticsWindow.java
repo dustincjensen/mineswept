@@ -1,12 +1,11 @@
 package gui.menu;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class StatisticsWindow {
-
 	private static JFrame statisticWindow;
 	private static JPanel statisticPanel;
 	private static StatisticsWindowActions swa;
@@ -27,7 +26,7 @@ public class StatisticsWindow {
 		statisticWindow = new JFrame("Statistics");
 		statisticWindow.setContentPane(statisticPanel);
 
-		//statisticWindow.setSize(300,175+Statistics.RECORD_LIMIT*15);
+		// statisticWindow.setSize(300,175+Statistics.RECORD_LIMIT*15);
 		statisticWindow.pack();
 		statisticWindow.setLocationRelativeTo(null);
 		statisticWindow.setResizable(false);
@@ -38,9 +37,8 @@ public class StatisticsWindow {
 		statisticWindow.setVisible(t);
 	}
 
-
-
 	private static class StatisticsWindowActions implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {}			
+		public void actionPerformed(ActionEvent evt) {
+		}
 	}
 }

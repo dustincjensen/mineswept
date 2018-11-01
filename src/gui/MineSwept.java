@@ -2,42 +2,32 @@ package gui;
 
 import gui.events.EventInitialize;
 import gui.events.Exit;
+import gui.menu.MenuLine;
 import gui.menu.OptionWindow;
 import gui.menu.RecordWindow;
 import gui.menu.StatisticsWindow;
-import gui.menu.MenuLine;
 import gui.panel.MainPanel;
-import logic.Logic;
 import logic.files.FileManagement;
-
+import logic.Logic;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 
 /**
-*	MineSwept.java
-*	runs the JFrame for the game
-*	@author Dustin Jensen
-*/
+ * Runs the JFrame for the game.
+ */
 public class MineSwept implements WindowListener {
-
-	//private static int screenW = 300;
-	//private static int screenH = 300;
-
 	private static JFrame window;
 	private static MainPanel mp;
 	private static MenuLine mb;
 
-	/**
-	*	Constructor
-	*	sets up the JFrame
-	*/
-	public MineSwept() {		
+	public MineSwept() {
 		RecordWindow.init();
 		EventInitialize.init();
 		StatisticsWindow.init();
-		Logic.init();	// loaded after gui starts MOSTLY
+		// Loaded after gui starts MOSTLY
+		Logic.init();
 		OptionWindow.init();
 		mp = new MainPanel();
 		mb = new MenuLine();
@@ -58,7 +48,7 @@ public class MineSwept implements WindowListener {
 			System.out.println("Failed to load JFrame icon");
 			System.exit(1);
 		}
-	}//End Constructor
+	}
 
 	public static JFrame getWindow() {
 		return window;
@@ -75,27 +65,37 @@ public class MineSwept implements WindowListener {
 	public static void refresh() {
 		window.pack();
 		window.getContentPane().repaint();
-		//window.setLocationRelativeTo(null);
 	}
 
-	public void windowActivated(WindowEvent e) {}
- 	public void windowClosed(WindowEvent e) {}
- 	public void windowClosing(WindowEvent e) {
- 		Exit.doEvent();
- 	}
-	public void windowDeactivated(WindowEvent e) {}
-	public void windowDeiconified(WindowEvent e) {}
-	public void windowIconified(WindowEvent e) {}
-	public void windowOpened(WindowEvent e) {}
- 
+	public void windowActivated(WindowEvent e) {
+	}
+
+	public void windowClosed(WindowEvent e) {
+	}
+
+	public void windowClosing(WindowEvent e) {
+		Exit.doEvent();
+	}
+
+	public void windowDeactivated(WindowEvent e) {
+	}
+
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	public void windowIconified(WindowEvent e) {
+	}
+
+	public void windowOpened(WindowEvent e) {
+	}
+
 	/**
-	*	main
-	*	creates a window of MineSwept
-	*	and sets it visible
-	*/
+	 * Main entry point for the application.
+	 * 
+	 * @param args command line arguments.
+	 */
 	public static void main(String[] args) {
 		MineSwept ms = new MineSwept();
 		ms.getWindow().setVisible(true);
-	}//End main
-
-}//End class MineSwept
+	}
+}

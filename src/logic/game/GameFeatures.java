@@ -24,6 +24,7 @@ public class GameFeatures {
 
 	/**
 	 * Returns if the game has been started.
+	 * 
 	 * @return true if the game has started, false otherwise.
 	 */
 	public static boolean isGameStarted() {
@@ -32,6 +33,7 @@ public class GameFeatures {
 
 	/**
 	 * Returns if the game has ended.
+	 * 
 	 * @return true if the game has ended, false otherwise.
 	 */
 	public static boolean isGameOver() {
@@ -40,6 +42,7 @@ public class GameFeatures {
 
 	/**
 	 * Set the gameStarted state.
+	 * 
 	 * @param started true if the game has started.
 	 */
 	public static void setGameStarted(boolean started) {
@@ -48,6 +51,7 @@ public class GameFeatures {
 
 	/**
 	 * Set the gameOver state.
+	 * 
 	 * @param over true if the player received game over.
 	 */
 	public static void setGameOver(boolean over) {

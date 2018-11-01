@@ -1,18 +1,17 @@
 package gui.menu;
 
 import logic.files.Records;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class RecordWindow {
-
 	private static JFrame recordWindow;
 	private static JTabbedPane tabbedPane;
 	private static JPanel recordPanel, accept;
-	private static RecordPanel begin_, interm_, advan_;
+	private static RecordPanel beginner, intermediate, advanced;
 	private static JButton okButton, reset;
 	private static RecordWindowActions rwa;
 
@@ -26,9 +25,9 @@ public class RecordWindow {
 		recordPanel = new JPanel();
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
-		begin_ = new RecordPanel("Beginner");
-		interm_ = new RecordPanel("Intermediate");
-		advan_ = new RecordPanel("Advanced");
+		beginner = new RecordPanel("Beginner");
+		intermediate = new RecordPanel("Intermediate");
+		advanced = new RecordPanel("Advanced");
 
 		setupTabbedPane();
 		setupAccept();
@@ -38,9 +37,9 @@ public class RecordWindow {
 
 	private static void setupTabbedPane() {
 		tabbedPane = new JTabbedPane();
-		tabbedPane.add(begin_);
-		tabbedPane.add(interm_);
-		tabbedPane.add(advan_);
+		tabbedPane.add(beginner);
+		tabbedPane.add(intermediate);
+		tabbedPane.add(advanced);
 	}
 
 	private static void setupAccept() {
@@ -62,7 +61,7 @@ public class RecordWindow {
 		recordWindow = new JFrame("Records");
 		recordWindow.setContentPane(recordPanel);
 
-		recordWindow.setSize(300,175+Records.RECORD_LIMIT*15);
+		recordWindow.setSize(300, 175 + Records.RECORD_LIMIT * 15);
 		recordWindow.setLocationRelativeTo(null);
 		recordWindow.setResizable(false);
 		recordWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -73,39 +72,34 @@ public class RecordWindow {
 	}
 
 	public static void setBeginnerRecords(String[] arr) {
-		begin_.setRecords(arr);
+		beginner.setRecords(arr);
 	}
 
 	public static void setIntermediateRecords(String[] arr) {
-		interm_.setRecords(arr);
+		intermediate.setRecords(arr);
 	}
 
 	public static void setAdvancedRecords(String[] arr) {
-		advan_.setRecords(arr);
+		advanced.setRecords(arr);
 	}
-
 
 	private static class RecordWindowActions implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {	
-			if(evt.getSource() == okButton)
+		public void actionPerformed(ActionEvent evt) {
+			if (evt.getSource() == okButton)
 				show(false);
 
-			else if(evt.getSource() == reset) {
+			else if (evt.getSource() == reset) {
 				if (tabbedPane.getSelectedIndex() == 0) {
 					Records.resetRecords("beginner");
-					begin_.refreshRecords();
-				}
-				else if(tabbedPane.getSelectedIndex() == 1) {
+					beginner.refreshRecords();
+				} else if (tabbedPane.getSelectedIndex() == 1) {
 					Records.resetRecords("intermediate");
-					interm_.refreshRecords();
-				}
-				else if(tabbedPane.getSelectedIndex() == 2) {
+					intermediate.refreshRecords();
+				} else if (tabbedPane.getSelectedIndex() == 2) {
 					Records.resetRecords("advanced");
-					advan_.refreshRecords();
-				}	
+					advanced.refreshRecords();
+				}
 			}
-		}//End actionPerformed
+		}
 	}
-
-
-}// End RecordWindow
+}
