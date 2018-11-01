@@ -1,0 +1,4 @@
+TODO
+========
+1. Remove Loading of Preferences from MineButton.java
+2. Optimize Bomb clues to be near uncovered spaces.

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="MineSwept" default="run" basedir=".">
+
+	<!-- target CLEAN -->
+	<!-- gets ride of build directory and manifest file -->
+	<target name="clean" description="Cleans up project (Removes old build files)">
+		<delete dir="build"/>
+		<delete dir="doc"/>
+		<delete file="manifest.txt"/>
+	</target>
+
+	<!-- target COMPILE -->
+	<!-- makes the build directory and the classes directory inside -->
+	<!-- compiles the src directory and places the class files inside build/classes -->
+	<target name="compile" depends="clean" description="Compile the code into classes (build/classes/)">
+		<mkdir dir="build/classes"/>
+		<javac srcdir="src" destdir="build/classes" includeantruntime="false"/>
+	</target>
+
+	<!-- target JAVADOC -->
+	<!-- deletes the doc directory then recreates it -->
+	<!-- creates the javadocs from the src directory -->
+	<target name="javadoc">
+		<delete dir="doc"/>
+		<mkdir dir="doc"/>
+		<javadoc 
+			packagenames="src" 
+			sourcepath="src" 
+			destdir="doc"
+			author="true"
+			version="true"
+			use="true">
+
+			<fileset dir="src">
+				<include name="**/*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+
+	<!-- target JAR -->
+	<!-- makes the build/jar directory and places the class files -->
+	<!-- into a jar file named ChessG2.jar -->
+	<target name="jar" depends="compile" description="Bundle classes into a single JAR file (build/jar/)">
+		<mkdir dir="build/jar"/>
+		<jar destfile="build/jar/MineSwept.jar" basedir="build/classes">
+			<fileset dir="src/resources/">
+				<include name="icons/**/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="gui.MineSwept"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- target RUN -->
+	<!-- runs the jar file with 1g of memory -->
+	<target name="run" depends="jar" description="Execute MineSwept">
+		<java jar="build/jar/MineSwept.jar" fork="true" spawn="false" maxmemory="1g"/>
+	</target>
+
+
+</project>
