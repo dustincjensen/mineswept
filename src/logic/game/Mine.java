@@ -1,8 +1,7 @@
 package logic.game;
 
 public class Mine {
-
-	private int x,y;
+	private int x, y;
 	private int spotValue;
 	private boolean isBomb;	
 	private boolean uncovered;
@@ -11,9 +10,9 @@ public class Mine {
 	private boolean hint;
 	private boolean specialProtected;
 
-	public Mine(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Mine(int xPos, int yPos) {
+		x = xPos;
+		y = yPos;
 		isBomb = false;
 		uncovered = false;
 		protect = false;
@@ -30,32 +29,32 @@ public class Mine {
 		return isBomb;
 	}
 
-	public void setProtected(boolean protect) {
-		this.protect = protect;
+	public void setProtected(boolean value) {
+		protect = value;
 	}
 
 	public boolean isProtected() {
 		return protect;
 	}
 
-	public void setUncovered(boolean uncovered) {
-		this.uncovered = uncovered;
+	public void setUncovered(boolean value) {
+		uncovered = value;
 	}
 
 	public boolean uncovered() {
 		return uncovered;
 	}
 
-	public void setBlewUp(boolean blew) {
-		blewUp = blew;
+	public void setBlewUp(boolean value) {
+		blewUp = value;
 	}
 
 	public boolean blewUp() {
 		return blewUp;
 	}
 
-	public void setSpotValue(int spv) {
-		spotValue = spv;
+	public void setSpotValue(int value) {
+		spotValue = value;
 	}
 
 	public int getSpotValue() {
@@ -66,8 +65,8 @@ public class Mine {
 		return hint;
 	}
 
-	public void setHint(boolean hint) {
-		this.hint = hint;
+	public void setHint(boolean value) {
+		hint = value;
 	}
 
 	public boolean isSpecialProtected() {
@@ -75,16 +74,26 @@ public class Mine {
 	}
 
 	public void setSpecialProtected(boolean special) {
-		this.specialProtected = special;
+		specialProtected = special;
 	}
 
 	public boolean getAnyProtected() {
 		return specialProtected || protect;
 	}
 
-	public int x() { return x; }
-	public int y() { return y; }
-	public void x(int x) { this.x=x; }
-	public void y(int y) { this.y=y; }
+	public int x() { 
+		return x;
+	}
 
+	public void x(int value) {
+		x = value;
+	}
+
+	public int y() {
+		return y;
+	}
+
+	public void y(int value) { 
+		y = value;
+	}
 }
