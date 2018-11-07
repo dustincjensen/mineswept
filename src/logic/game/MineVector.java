@@ -3,44 +3,40 @@ package logic.game;
 import java.util.Vector;
 import logic.game.Mine;
 
-public class MineVector {
-	private Vector<Mine> mines;
-
+public class MineVector extends Vector<Mine> {
 	public MineVector(int size) {
-		mines = new Vector(size);
+		super(size);
 	}
 
-	public void add(Mine mine) {
-		mines.add(mine);
-	}
-
-	public void clear() {
-		mines.clear();
-	}
-
+	/**
+	 * Returns the index of the mine if it exists.
+	 * 
+	 * @param x the x coordinate of the mine.
+	 * @param y the y coordinate of the mine.
+	 * @return the index of the mine or -1 if it does not exist.
+	 */
 	public int contains(int x, int y) {
-		for (int i = 0; i < this.size(); i++) {
-			if (x == this.get(i).x() && y == this.get(i).y()) {
+		for (int i = 0; i < size(); i++) {
+			if (x == get(i).x() && y == get(i).y()) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public Mine get(int i) {
-		return mines.get(i);
-	}
-
+	/**
+	 * Returns the mine at position (x, y).
+	 * 
+	 * @param x the x coordinate of the mine.
+	 * @param y the y coordinate of the mine.
+	 * @return the mine or null if it does not exist.
+	 */
 	public Mine get(int x, int y) {
-		for (int i = 0; i < this.size(); i++) {
-			if (x == this.get(i).x() && y == this.get(i).y()) {
-				return this.get(i);
+		for (int i = 0; i < size(); i++) {
+			if (x == get(i).x() && y == get(i).y()) {
+				return get(i);
 			}
 		}
 		return null;
-	}
-
-	public int size() {
-		return mines.size();
 	}
 }
