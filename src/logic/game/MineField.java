@@ -3,6 +3,7 @@ package logic.game;
 import logic.util.RandomGen;
 import logic.files.Preferences;
 import gui.panel.header.ResetButton;
+import gui.panel.header.SmileyEnum;
 
 public class MineField {
 
@@ -175,7 +176,7 @@ public class MineField {
 		}
 		GameFeatures.setGameOver(true);
 		ClockTimer.stop();
-		ResetButton.setSmileyIcon(2);
+		ResetButton.setSmileyIcon(SmileyEnum.sad);
 	}
 
 	public static void uncover(int i) {
@@ -221,7 +222,7 @@ public class MineField {
 		{
 			GameFeatures.setGameOver(true);
 			ClockTimer.stop();
-			ResetButton.setSmileyIcon(4);
+			ResetButton.setSmileyIcon(SmileyEnum.cool);
 		}
 	}
 
