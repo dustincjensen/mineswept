@@ -1,57 +1,67 @@
 package gui.menu;
 
-import gui.events.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import gui.events.EventPublisher;
+import gui.events.QuitGameEvent;
+import gui.events.ResetGameEvent;
+import gui.events.ShowOptionsEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  * Sets up the game menu.
  */
-public class GameMenu extends JMenu implements ActionListener {
-	private static JMenuItem newGame;
-	private static JMenuItem gameOptions;
-	private static JMenuItem exitGame;
+public class GameMenu extends JMenu {
+	private EventPublisher service;
 
 	public GameMenu() {
 		super("Game");
 
-		// Initialize menu items
-		newGame = new JMenuItem("New Game");
-		gameOptions = new JMenuItem("Options");
-		exitGame = new JMenuItem("Close");
+		// TODO replace with dependency injection.
+		// Create an event publisher for the menu items to use.
+		service = new EventPublisher();
 
-		// Set mnemonics
-		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, 2));
-		gameOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
-		exitGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, 2));
-
-		// Add actionlisteners
-		newGame.addActionListener(this);
-		gameOptions.addActionListener(this);
-		exitGame.addActionListener(this);
-
-		// Add to game menu
-		add(newGame);
+		add(newGame());
 		addSeparator();
-		add(gameOptions);
+		add(options());
 		addSeparator();
-		add(exitGame);
+		add(quit());
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		var pub = new EventPublisher();
-		if (evt.getSource() == newGame) {
-			pub.publish(new ResetGameEvent());
-		}
-		if (evt.getSource() == gameOptions) {
-			pub.publish(new ShowOptionsEvent(true));
-		}
-		if (evt.getSource() == exitGame) {
-			pub.publish(new QuitGameEvent());
-		}
+	/**
+	 * Return a menu item that allows the player to start a new game.
+	 * 
+	 * @return the new game menu item.
+	 */
+	public JMenuItem newGame() {
+		var newGame = new JMenuItem("New Game");
+		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, 2));
+		newGame.addActionListener(evt -> service.publish(new ResetGameEvent()));
+		return newGame;
+	}
+
+	/**
+	 * Return a menu item that allows the player to open the options window.
+	 * 
+	 * @return the options menu item.
+	 */
+	public JMenuItem options() {
+		var gameOptions = new JMenuItem("Options");
+		gameOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
+		gameOptions.addActionListener(evt -> service.publish(new ShowOptionsEvent(true)));
+		return gameOptions;
+	}
+
+	/**
+	 * Return a menu item that allows the player to quit the game.
+	 * 
+	 * @return the quit menu item.
+	 */
+	public JMenuItem quit() {
+		var quitGame = new JMenuItem("Quit");
+		quitGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, 2));
+		quitGame.addActionListener(evt -> service.publish(new QuitGameEvent()));
+		return quitGame;
 	}
 }

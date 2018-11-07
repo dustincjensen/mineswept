@@ -2,30 +2,33 @@ package gui.menu;
 
 import gui.events.AboutEvent;
 import gui.events.EventPublisher;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 /**
  * Sets up the help menu.
  */
-public class HelpMenu extends JMenu implements ActionListener {
-	private static JMenuItem about;
+public class HelpMenu extends JMenu {
+	private EventPublisher service;
 
 	public HelpMenu() {
 		super("Help");
-		about = new JMenuItem("About");
-		about.addActionListener(this);
-		add(about);
+
+		// TODO replace with dependency injection.
+		// Create an event publisher for the menu items to use.
+		service = new EventPublisher();
+
+		add(about());
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == about) {
-			var pub = new EventPublisher();
-			pub.publish(new AboutEvent());
-		}
+	/**
+	 * Return a menu item that activates a dialog with information about the game.
+	 * 
+	 * @return the about menu item.
+	 */
+	public JMenuItem about() {
+		var about = new JMenuItem("About");
+		about.addActionListener(evt -> service.publish(new AboutEvent()));
+		return about;
 	}
 }

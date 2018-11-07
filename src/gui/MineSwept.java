@@ -2,17 +2,17 @@ package gui;
 
 import gui.events.EventPublisher;
 import gui.events.QuitGameEvent;
-import gui.menu.MenuLine;
+import gui.menu.Menus;
 import gui.menu.OptionWindow;
 import gui.menu.RecordWindow;
 import gui.menu.StatisticsWindow;
 import gui.panel.MainPanel;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.*;
 import logic.files.FileManagement;
 import logic.Logic;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowEvent;
 
 /**
  * Runs the JFrame for the game.
@@ -20,7 +20,7 @@ import java.awt.event.WindowEvent;
 public class MineSwept implements WindowListener {
 	private static JFrame window;
 	private static MainPanel mp;
-	private static MenuLine mb;
+	private static Menus mb;
 
 	public MineSwept() {
 		RecordWindow.init();
@@ -29,7 +29,7 @@ public class MineSwept implements WindowListener {
 		Logic.init();
 		OptionWindow.init();
 		mp = new MainPanel();
-		mb = new MenuLine();
+		mb = new Menus();
 
 		window = new JFrame("MineSwept");
 		window.setContentPane(mp);
@@ -55,10 +55,6 @@ public class MineSwept implements WindowListener {
 
 	public static MainPanel getMainPanel() {
 		return mp;
-	}
-
-	public static MenuLine getMenuLine() {
-		return mb;
 	}
 
 	public static void refresh() {
