@@ -1,6 +1,7 @@
 package gui.menu;
 
 import gui.events.*;
+import gui.events.EventPublisher;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,10 +37,12 @@ public class ViewMenu extends JMenu implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
+		var pub = new EventPublisher();
+
 		if (evt.getSource() == records) {
-			RecordEvent.doEvent();
+			pub.publish(new ShowRecordsEvent(true));
 		} else if (evt.getSource() == statistics) {
-			StatisticsEvent.doEvent();
+			pub.publish(new ShowStatisticsEvent(true));
 		}
 	}
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project name="MineSwept" default="run" basedir=".">
 
 	<!-- target CLEAN -->
@@ -58,6 +57,5 @@
 	<target name="run" depends="jar" description="Execute MineSwept">
 		<java jar="build/jar/MineSwept.jar" fork="true" spawn="false" maxmemory="1g"/>
 	</target>
-
 
 </project>

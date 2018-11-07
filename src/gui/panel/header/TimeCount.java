@@ -1,12 +1,14 @@
 package gui.panel.header;
 
-import gui.events.Pause;
+import gui.events.EventPublisher;
+import gui.events.PauseGameEvent;
 import gui.FontChange;
 import gui.panel.MainPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import logic.game.GameFeatures;
 
 /**
  * Renders the time count in the header.
@@ -48,7 +50,8 @@ public class TimeCount extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == clockIcon) {
-			Pause.doEvent();
+			var pub = new EventPublisher();
+			pub.publish(new PauseGameEvent(!GameFeatures.isGamePaused()));
 		}
 	}
 }

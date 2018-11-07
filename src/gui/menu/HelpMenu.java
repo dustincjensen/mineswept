@@ -1,6 +1,7 @@
 package gui.menu;
 
-import gui.events.About;
+import gui.events.AboutEvent;
+import gui.events.EventPublisher;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,8 @@ public class HelpMenu extends JMenu implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == about) {
-			About.doEvent();
+			var pub = new EventPublisher();
+			pub.publish(new AboutEvent());
 		}
 	}
 }

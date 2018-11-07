@@ -1,6 +1,7 @@
 package gui.panel.header;
 
-import gui.events.Reset;
+import gui.events.ResetGameEvent;
+import gui.events.EventPublisher;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -71,8 +72,8 @@ public class ResetButton extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == smileButton) {
-			Reset.doEvent();
-			reset();
+			var pub = new EventPublisher();
+			pub.publish(new ResetGameEvent());
 		}
 	}
 }

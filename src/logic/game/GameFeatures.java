@@ -6,6 +6,7 @@ package logic.game;
 public class GameFeatures {
 	private static boolean gameStarted;
 	private static boolean gameOver;
+	private static boolean gamePaused;
 
 	/**
 	 * Initialize the game state.
@@ -13,6 +14,7 @@ public class GameFeatures {
 	public static void init() {
 		gameStarted = false;
 		gameOver = false;
+		gamePaused = false;
 	}
 
 	/**
@@ -41,6 +43,15 @@ public class GameFeatures {
 	}
 
 	/**
+	 * Returns if the game is paused.
+	 * 
+	 * @return true if the game is paused, false otherwise;
+	 */
+	public static boolean isGamePaused() {
+		return gamePaused;
+	}
+
+	/**
 	 * Set the gameStarted state.
 	 * 
 	 * @param started true if the game has started.
@@ -56,5 +67,14 @@ public class GameFeatures {
 	 */
 	public static void setGameOver(boolean over) {
 		gameOver = over;
+	}
+
+	/**
+	 * Set the gamePaused state.
+	 * 
+	 * @param paused true if the game should be paused.
+	 */
+	public static void setGamePaused(boolean paused) {
+		gamePaused = paused;
 	}
 }

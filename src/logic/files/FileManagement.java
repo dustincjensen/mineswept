@@ -64,6 +64,7 @@ public class FileManagement {
 	
 	public static void saveFiles() {
 		// TODO save to the file system.
+		System.out.println("TODO save files to system.");
 	}
 	
 	private static boolean gameDirectory() {

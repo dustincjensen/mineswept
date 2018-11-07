@@ -1,7 +1,7 @@
 package gui;
 
-import gui.events.EventInitialize;
-import gui.events.Exit;
+import gui.events.EventPublisher;
+import gui.events.QuitGameEvent;
 import gui.menu.MenuLine;
 import gui.menu.OptionWindow;
 import gui.menu.RecordWindow;
@@ -24,7 +24,6 @@ public class MineSwept implements WindowListener {
 
 	public MineSwept() {
 		RecordWindow.init();
-		EventInitialize.init();
 		StatisticsWindow.init();
 		// Loaded after gui starts MOSTLY
 		Logic.init();
@@ -74,7 +73,8 @@ public class MineSwept implements WindowListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
-		Exit.doEvent();
+		var pub = new EventPublisher();
+		pub.publish(new QuitGameEvent());
 	}
 
 	public void windowDeactivated(WindowEvent e) {

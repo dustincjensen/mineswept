@@ -43,11 +43,15 @@ public class GameMenu extends JMenu implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == newGame)
-			New.doEvent();
-		if (evt.getSource() == gameOptions)
-			Options.doEvent();
-		if (evt.getSource() == exitGame)
-			Exit.doEvent();
+		var pub = new EventPublisher();
+		if (evt.getSource() == newGame) {
+			pub.publish(new ResetGameEvent());
+		}
+		if (evt.getSource() == gameOptions) {
+			pub.publish(new ShowOptionsEvent(true));
+		}
+		if (evt.getSource() == exitGame) {
+			pub.publish(new QuitGameEvent());
+		}
 	}
 }
