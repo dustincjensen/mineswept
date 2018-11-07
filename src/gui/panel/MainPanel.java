@@ -10,29 +10,21 @@ import gui.panel.mines.PausePanel;
  * Sets up the JFrame content pane.
  */
 public class MainPanel extends JPanel {
-	private static HeaderPanel hp;
-	private static MinePanel mp;
-	private static PausePanel pp;
+	private static MinePanel minePanel;
+	private PausePanel pausePanel;
 
 	public MainPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		hp = new HeaderPanel();
-		mp = new MinePanel();
-		pp = new PausePanel();
-		add(hp);
-		add(mp);
-	}
 
-	public static HeaderPanel getHeaderPanel() {
-		return hp;
+		minePanel = new MinePanel();
+		pausePanel = new PausePanel();
+
+		add(new HeaderPanel());
+		add(minePanel);
 	}
 
 	public static MinePanel getMinePanel() {
-		return mp;
-	}
-
-	public static PausePanel getPausePanel() {
-		return pp;
+		return minePanel;
 	}
 
 	/**
@@ -42,11 +34,11 @@ public class MainPanel extends JPanel {
 	 */
 	public void pausePanel(boolean pause) {
 		if (pause) {
-			remove(mp);
-			add(pp);
+			remove(minePanel);
+			add(pausePanel);
 		} else {
-			remove(pp);
-			add(mp);
+			remove(pausePanel);
+			add(minePanel);
 		}
 		this.repaint();
 		this.revalidate();
