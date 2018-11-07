@@ -1,30 +1,40 @@
 package logic.game;
 
 import gui.panel.header.TimeCount;
-import javax.swing.Timer;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.Timer;
 
 public class ClockTimer {
+	private static final int DELAY_IN_MILLISECONDS = 1000;
+	private static final int MAXIMUM_SECONDS_TO_COUNT = 999;
 
-	private static final int delay = 1000; // milliseconds
 	private static int time;
 	private static Timer timer;
 
 	public static void init() {
-		TimerUpdate tu = new TimerUpdate();
 		time = 0;
-		timer = new Timer(delay, tu);
+		timer = new Timer(DELAY_IN_MILLISECONDS, tickEvent());
+	}
+
+	public static ActionListener tickEvent() {
+		return evt -> {
+			if (time >= MAXIMUM_SECONDS_TO_COUNT) {
+				stop();
+			} else {
+				time++;
+			}
+			TimeCount.setClockCount(getTime());
+		};
 	}
 
 	public static String getTime() {
-		String timeString = "";
-		if (time < 10)
-			timeString = "00";
-		else if (time < 100)
-			timeString = "0";
-		timeString = timeString + time;
-		return timeString;
+		if (time < 10) {
+			return "00" + time;
+		} else if (time < 100) {
+			return "0" + time;
+		} else {
+			return "" + time;
+		}
 	}
 
 	public static void start() {
@@ -39,16 +49,5 @@ public class ClockTimer {
 		timer.stop();
 		time = 0;
 		TimeCount.setClockCount(getTime());
-	}
-
-	private static class TimerUpdate implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-			if (time >= 999)
-				timer.stop();
-			else
-				time++;
-			// set GUI
-			TimeCount.setClockCount(getTime());
-		}
 	}
 }
