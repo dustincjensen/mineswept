@@ -15,8 +15,8 @@ public class RecordPanel extends JPanel {
 	}
 
 	private void setupPane(String level) {
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setName(level);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setName(level);
 
 		JPanel headerPane = new JPanel();
 		headerPane.setLayout(new BoxLayout(headerPane, BoxLayout.X_AXIS));
@@ -29,9 +29,9 @@ public class RecordPanel extends JPanel {
 		createTable();
 		bodyPane.add(bodyTable, BorderLayout.CENTER);
 
-		this.add(headerPane);
-		this.add(bodyTable.getTableHeader());
-		this.add(bodyPane);
+		add(headerPane);
+		add(bodyTable.getTableHeader());
+		add(bodyPane);
 	}
 
 	private void createTable() {

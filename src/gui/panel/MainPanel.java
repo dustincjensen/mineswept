@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
 			remove(pausePanel);
 			add(minePanel);
 		}
-		this.repaint();
-		this.revalidate();
+		repaint();
+		revalidate();
 	}
 }
