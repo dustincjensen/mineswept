@@ -8,18 +8,16 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import com.google.inject.Inject;
 
 /**
  * Sets up the game menu.
  */
 public class GameMenu extends JMenu {
-	@Inject
 	private IEventPublisher eventPublisher;
 
-	public GameMenu() {
+	public GameMenu(IEventPublisher publisher) {
 		super("Game");
-
+		eventPublisher = publisher;
 		add(newGame());
 		addSeparator();
 		add(options());

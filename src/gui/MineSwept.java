@@ -29,7 +29,10 @@ public class MineSwept implements WindowListener {
 		Logic.init();
 		OptionWindow.init();
 		mp = new MainPanel();
-		mb = new Menus();
+
+		// TODO replace...
+		// mb = new Menus();
+		mb = ClassFactory.create(Menus.class);
 
 		window = new JFrame("MineSwept");
 		window.setContentPane(mp);

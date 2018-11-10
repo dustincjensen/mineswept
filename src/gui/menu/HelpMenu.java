@@ -4,17 +4,16 @@ import gui.events.AboutEvent;
 import gui.events.IEventPublisher;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import com.google.inject.Inject;
 
 /**
  * Sets up the help menu.
  */
 public class HelpMenu extends JMenu {
-	@Inject
-	private IEventPublisher service;
+	private IEventPublisher eventPublisher;
 
-	public HelpMenu() {
+	public HelpMenu(IEventPublisher publisher) {
 		super("Help");
+		eventPublisher = publisher;
 		add(about());
 	}
 
@@ -25,7 +24,7 @@ public class HelpMenu extends JMenu {
 	 */
 	public JMenuItem about() {
 		var about = new JMenuItem("About");
-		about.addActionListener(evt -> service.publish(new AboutEvent()));
+		about.addActionListener(evt -> eventPublisher.publish(new AboutEvent()));
 		return about;
 	}
 }

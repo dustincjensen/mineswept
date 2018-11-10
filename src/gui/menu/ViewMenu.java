@@ -7,17 +7,16 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import com.google.inject.Inject;
 
 /**
  * Sets up the view menu
  */
 public class ViewMenu extends JMenu {
-	@Inject
-	private IEventPublisher service;
+	private IEventPublisher eventPublisher;
 
-	public ViewMenu() {
+	public ViewMenu(IEventPublisher publisher) {
 		super("View");
+		eventPublisher = publisher;
 		add(showRecords());
 		add(showStatistics());
 	}
@@ -30,7 +29,7 @@ public class ViewMenu extends JMenu {
 	public JMenuItem showRecords() {
 		var records = new JMenuItem("Records");
 		records.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 2));
-		records.addActionListener(evt -> service.publish(new ShowRecordsEvent(true)));
+		records.addActionListener(evt -> eventPublisher.publish(new ShowRecordsEvent(true)));
 		return records;
 	}
 
@@ -42,7 +41,7 @@ public class ViewMenu extends JMenu {
 	public JMenuItem showStatistics() {
 		var statistics = new JMenuItem("Statistics");
 		statistics.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
-		statistics.addActionListener(evt -> service.publish(new ShowStatisticsEvent(true)));
+		statistics.addActionListener(evt -> eventPublisher.publish(new ShowStatisticsEvent(true)));
 		return statistics;
 	}
 }

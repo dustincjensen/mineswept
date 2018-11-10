@@ -8,7 +8,7 @@ public class EventPublisher implements IEventPublisher {
     private ArrayList<IEventHandler> handlers;
 
     public EventPublisher() {
-        System.out.println("Creating new Event publisher...");
+        System.out.println("Creating Event Publisher");
         handlers = new ArrayList<IEventHandler>();
         handlers.add(new AboutEventHandler());
         handlers.add(new GetHintEventHandler());

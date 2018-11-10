@@ -1,14 +1,22 @@
 package gui;
 
-import gui.events.EventPublisher;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import gui.events.EventModule;
 import gui.events.IEventPublisher;
-import com.google.inject.*;
+import gui.menu.MenuModule;
+import gui.panel.mines.PausePanel;
 
 public class InjectionModule extends AbstractModule {
     @Override
     protected void configure() {
-        // Event publisher should only exist once for the entire application.
-        bind(EventPublisher.class).in(Singleton.class);
-        bind(IEventPublisher.class).to(EventPublisher.class);
+        install(new EventModule());
+        install(new MenuModule());
+    }
+
+    // TODO move this into it's own module...
+    @Provides
+    public PausePanel providePausePanel(IEventPublisher publisher) {
+        return new PausePanel(publisher);
     }
 }

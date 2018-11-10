@@ -5,23 +5,23 @@ import gui.events.PauseGameEvent;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import com.google.inject.Inject;
 
 /**
  * Renders a pause screen and allows the user to restart the game.
  */
 public class PausePanel extends JPanel {
-	@Inject
-	private IEventPublisher service;
+	private IEventPublisher eventPublisher;
 
-	public PausePanel() {
+	public PausePanel(IEventPublisher publisher) {
+		eventPublisher = publisher;
+
 		setLayout(new FlowLayout());
 		add(continueButton());
 	}
 
 	public JButton continueButton() {
 		var button = new JButton("Continue Playing");
-		button.addActionListener(evt -> service.publish(new PauseGameEvent(false)));
+		button.addActionListener(evt -> eventPublisher.publish(new PauseGameEvent(false)));
 		return button;
 	}
 }
