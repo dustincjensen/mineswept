@@ -14,7 +14,15 @@
 	<!-- compiles the src directory and places the class files inside build/classes -->
 	<target name="compile" depends="clean" description="Compile the code into classes (build/classes/)">
 		<mkdir dir="build/classes"/>
-		<javac srcdir="src" destdir="build/classes" includeantruntime="false"/>
+		
+		<javac srcdir="src" destdir="build/classes" includeantruntime="false">
+			<classpath>
+				<path location="lib/aopalliance.jar" />
+				<path location="lib/guava-26.0-jre.jar" />
+				<path location="lib/guice-4.2.2.jar" />
+				<path location="lib/javax.inject.jar" />
+			</classpath>
+		</javac>
 	</target>
 
 	<!-- target JAVADOC -->
@@ -42,10 +50,14 @@
 	<!-- into a jar file named ChessG2.jar -->
 	<target name="jar" depends="compile" description="Bundle classes into a single JAR file (build/jar/)">
 		<mkdir dir="build/jar"/>
+
 		<jar destfile="build/jar/MineSwept.jar" basedir="build/classes">
 			<fileset dir="src/resources/">
 				<include name="icons/**/*"/>
 			</fileset>
+
+			<zipgroupfileset dir="lib/" includes="**/*.jar" />
+
 			<manifest>
 				<attribute name="Main-Class" value="gui.MineSwept"/>
 			</manifest>

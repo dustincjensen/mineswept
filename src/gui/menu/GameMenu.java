@@ -1,6 +1,6 @@
 package gui.menu;
 
-import gui.events.EventPublisher;
+import gui.events.IEventPublisher;
 import gui.events.QuitGameEvent;
 import gui.events.ResetGameEvent;
 import gui.events.ShowOptionsEvent;
@@ -8,19 +8,17 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import com.google.inject.Inject;
 
 /**
  * Sets up the game menu.
  */
 public class GameMenu extends JMenu {
-	private EventPublisher service;
+	@Inject
+	private IEventPublisher eventPublisher;
 
 	public GameMenu() {
 		super("Game");
-
-		// TODO replace with dependency injection.
-		// Create an event publisher for the menu items to use.
-		service = new EventPublisher();
 
 		add(newGame());
 		addSeparator();
@@ -37,7 +35,7 @@ public class GameMenu extends JMenu {
 	public JMenuItem newGame() {
 		var newGame = new JMenuItem("New Game");
 		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, 2));
-		newGame.addActionListener(evt -> service.publish(new ResetGameEvent()));
+		newGame.addActionListener(evt -> eventPublisher.publish(new ResetGameEvent()));
 		return newGame;
 	}
 
@@ -49,7 +47,7 @@ public class GameMenu extends JMenu {
 	public JMenuItem options() {
 		var gameOptions = new JMenuItem("Options");
 		gameOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
-		gameOptions.addActionListener(evt -> service.publish(new ShowOptionsEvent(true)));
+		gameOptions.addActionListener(evt -> eventPublisher.publish(new ShowOptionsEvent(true)));
 		return gameOptions;
 	}
 
@@ -61,7 +59,7 @@ public class GameMenu extends JMenu {
 	public JMenuItem quit() {
 		var quitGame = new JMenuItem("Quit");
 		quitGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, 2));
-		quitGame.addActionListener(evt -> service.publish(new QuitGameEvent()));
+		quitGame.addActionListener(evt -> eventPublisher.publish(new QuitGameEvent()));
 		return quitGame;
 	}
 }

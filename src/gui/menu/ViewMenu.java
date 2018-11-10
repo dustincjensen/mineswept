@@ -1,26 +1,23 @@
 package gui.menu;
 
-import gui.events.EventPublisher;
+import gui.events.IEventPublisher;
 import gui.events.ShowRecordsEvent;
 import gui.events.ShowStatisticsEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import com.google.inject.Inject;
 
 /**
  * Sets up the view menu
  */
 public class ViewMenu extends JMenu {
-	private EventPublisher service;
+	@Inject
+	private IEventPublisher service;
 
 	public ViewMenu() {
 		super("View");
-
-		// TODO replace with dependency injection.
-		// Create an event publisher for the menu items to use.
-		service = new EventPublisher();
-
 		add(showRecords());
 		add(showStatistics());
 	}

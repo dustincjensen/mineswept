@@ -4,10 +4,11 @@ import gui.events.handlers.*;
 import java.util.ArrayList;
 import java.lang.reflect.ParameterizedType;
 
-public class EventPublisher {
+public class EventPublisher implements IEventPublisher {
     private ArrayList<IEventHandler> handlers;
 
     public EventPublisher() {
+        System.out.println("Creating new Event publisher...");
         handlers = new ArrayList<IEventHandler>();
         handlers.add(new AboutEventHandler());
         handlers.add(new GetHintEventHandler());

@@ -1,23 +1,20 @@
 package gui.menu;
 
 import gui.events.AboutEvent;
-import gui.events.EventPublisher;
+import gui.events.IEventPublisher;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import com.google.inject.Inject;
 
 /**
  * Sets up the help menu.
  */
 public class HelpMenu extends JMenu {
-	private EventPublisher service;
+	@Inject
+	private IEventPublisher service;
 
 	public HelpMenu() {
 		super("Help");
-
-		// TODO replace with dependency injection.
-		// Create an event publisher for the menu items to use.
-		service = new EventPublisher();
-
 		add(about());
 	}
 

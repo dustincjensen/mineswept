@@ -1,5 +1,6 @@
 package gui.menu;
 
+import gui.ClassFactory;
 import javax.swing.JMenuBar;
 
 /**
@@ -7,8 +8,8 @@ import javax.swing.JMenuBar;
  */
 public class Menus extends JMenuBar {
 	public Menus() {
-		add(new GameMenu());
-		add(new ViewMenu());
-		add(new HelpMenu());
+		add(ClassFactory.create(GameMenu.class));
+		add(ClassFactory.create(ViewMenu.class));
+		add(ClassFactory.create(HelpMenu.class));
 	}
 }

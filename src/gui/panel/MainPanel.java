@@ -2,6 +2,8 @@ package gui.panel;
 
 import javax.swing.*;
 import java.awt.*;
+
+import gui.ClassFactory;
 import gui.panel.header.HeaderPanel;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
@@ -17,7 +19,7 @@ public class MainPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		minePanel = new MinePanel();
-		pausePanel = new PausePanel();
+		pausePanel = ClassFactory.create(PausePanel.class);
 
 		add(new HeaderPanel());
 		add(minePanel);
