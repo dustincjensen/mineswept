@@ -2,6 +2,7 @@ package gui.events;
 
 import gui.events.IEventPublisher;
 import gui.options.OptionWindow;
+import gui.statistics.StatisticsWindow;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -15,7 +16,7 @@ public class EventModule extends AbstractModule {
     // for one of the event handlers.
     @Singleton
     @Provides
-    public IEventPublisher provideEventPublisher(OptionWindow optionWindow) {
-        return new EventPublisher(optionWindow);
+    public IEventPublisher provideEventPublisher(OptionWindow optionWindow, StatisticsWindow statisticsWindow) {
+        return new EventPublisher(optionWindow, statisticsWindow);
     }
 }

@@ -1,30 +1,14 @@
 package gui.statistics;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class StatisticsWindow {
-	private static JFrame statisticWindow;
-	private static JPanel statisticPanel;
-	private static StatisticsWindowActions swa;
+	private JFrame statisticWindow;
 
-	public static void init() {
-		swa = new StatisticsWindowActions();
-		setupPane();
-		setupWindow();
-	}
-
-	private static void setupPane() {
-		statisticPanel = new JPanel();
-		statisticPanel.setLayout(new BoxLayout(statisticPanel, BoxLayout.Y_AXIS));
-		statisticPanel.add(new JButton("Statistics"));
-	}
-
-	public static void setupWindow() {
+	public StatisticsWindow() {
 		statisticWindow = new JFrame("Statistics");
-		statisticWindow.setContentPane(statisticPanel);
+		statisticWindow.setContentPane(setupPanel());
 
 		// statisticWindow.setSize(300,175+Statistics.RECORD_LIMIT*15);
 		statisticWindow.pack();
@@ -33,12 +17,14 @@ public class StatisticsWindow {
 		statisticWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 
-	public static void show(boolean t) {
+	public void show(boolean t) {
 		statisticWindow.setVisible(t);
 	}
 
-	private static class StatisticsWindowActions implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-		}
+	private JPanel setupPanel() {
+		var panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(new JButton("Statistics"));
+		return panel;
 	}
 }

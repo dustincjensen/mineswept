@@ -3,6 +3,7 @@ package gui.panel.header;
 import gui.events.EventPublisher;
 import gui.events.GetHintEvent;
 import gui.options.OptionWindow;
+import gui.statistics.StatisticsWindow;
 import gui.FontChange;
 import logic.game.MineField;
 import javax.swing.*;
@@ -55,7 +56,7 @@ public class MineCount extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == mineIcon) {
-			var pub = new EventPublisher(new OptionWindow());
+			var pub = new EventPublisher(new OptionWindow(), new StatisticsWindow());
 			pub.publish(new GetHintEvent());
 		}
 	}
