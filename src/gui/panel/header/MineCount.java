@@ -1,63 +1,60 @@
 package gui.panel.header;
 
-import gui.events.EventPublisher;
 import gui.events.GetHintEvent;
-import gui.options.OptionWindow;
-import gui.statistics.StatisticsWindow;
+import gui.events.IEventPublisher;
 import gui.FontChange;
-import logic.game.MineField;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
+import logic.game.MineField;
 
 /**
  * Renders the mine count panel in the header.
  */
-public class MineCount extends JPanel implements ActionListener {
-	private static ImageIcon mineImage;
-	private static JButton mineIcon;
+public class MineCount extends JPanel {
+	private IEventPublisher eventPublisher;
+	private ImageIcon mineImage;
+	private JButton mineIcon;
+	// TODO make non-static
 	private static JLabel mineCount;
 
-	public MineCount() {
+	public MineCount(IEventPublisher publisher) {
+		eventPublisher = publisher;
 		setLayout(new FlowLayout(FlowLayout.LEADING));
-		loadImages();
 		setupPanel();
 	}
 
-	private void loadImages() {
-		try {
-			mineImage = new ImageIcon(getClass().getResource("/icons/bomb.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void setupPanel() {
-		mineIcon = new JButton(mineImage);
-		mineIcon.setToolTipText("Get a hint");
-		mineIcon.setBorderPainted(false);
-		mineIcon.setContentAreaFilled(false);
-		mineIcon.addActionListener(this);
-		mineCount = new JLabel("");
-		reset();
-		FontChange.setFont(mineCount, 24);
-		add(mineIcon);
-		add(mineCount);
-	}
-
+	// TODO make non-static
 	public static void setMineCount(int minesLeft) {
 		mineCount.setText("" + minesLeft);
 	}
 
+	// TODO make non-static
 	public static void reset() {
 		setMineCount(MineField.getMineCount());
 	}
 
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == mineIcon) {
-			var pub = new EventPublisher(new OptionWindow(), new StatisticsWindow());
-			pub.publish(new GetHintEvent());
+	private void setupPanel() {
+		mineIcon = new JButton(loadImage());
+		mineIcon.setToolTipText("Get a hint");
+		mineIcon.setBorderPainted(false);
+		mineIcon.setContentAreaFilled(false);
+		mineIcon.addActionListener(evt -> {
+			eventPublisher.publish(new GetHintEvent());
+		});
+		add(mineIcon);
+
+		mineCount = new JLabel("");
+		reset();
+		FontChange.setFont(mineCount, 24);
+		add(mineCount);
+	}
+
+	private ImageIcon loadImage() {
+		try {
+			return new ImageIcon(getClass().getResource("/icons/bomb.png"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 }

@@ -5,12 +5,14 @@ import com.google.inject.Provides;
 import gui.events.EventModule;
 import gui.events.IEventPublisher;
 import gui.menu.MenuModule;
+import gui.panel.header.HeaderModule;
 import gui.panel.mines.PausePanel;
 
 public class InjectionModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new EventModule());
+        install(new HeaderModule());
         install(new MenuModule());
     }
 

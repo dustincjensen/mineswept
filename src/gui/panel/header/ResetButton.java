@@ -1,27 +1,55 @@
 package gui.panel.header;
 
+import gui.events.IEventPublisher;
 import gui.events.ResetGameEvent;
-import gui.options.OptionWindow;
-import gui.statistics.StatisticsWindow;
-import gui.events.EventPublisher;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.event.ActionEvent;
 
 /**
  * Renders the reset button in the header.
  */
-public class ResetButton extends JPanel implements ActionListener {
+public class ResetButton extends JPanel {
+	private IEventPublisher eventPublisher;
+
+	// TODO make non-static
 	private static JButton smileButton;
+	// TODO make non-static
 	private static Map<SmileyEnum, ImageIcon> smileMap;
 
-	public ResetButton() {
+	public ResetButton(IEventPublisher publisher) {
+		eventPublisher = publisher;
 		setLayout(new FlowLayout());
-		loadImages();
 		setupPanel();
+	}
+
+	// TODO make non-static
+	public static ImageIcon getSmileyHappy() {
+		return smileMap.get(SmileyEnum.happy);
+	}
+
+	// TODO make non-static
+	public static void setSmileyIcon(SmileyEnum smile) {
+		smileButton.setIcon(smileMap.get(smile));
+	}
+
+	// TODO make non-static
+	public static void reset() {
+		smileButton.setIcon(smileMap.get(SmileyEnum.happy));
+	}
+
+	private void setupPanel() {
+		loadImages();
+
+		smileButton = new JButton(smileMap.get(SmileyEnum.happy));
+		smileButton.setToolTipText("Reset the field!");
+		smileButton.setBorderPainted(false);
+		smileButton.setContentAreaFilled(false);
+		smileButton.addActionListener(evt -> {
+			eventPublisher.publish(new ResetGameEvent());
+		});
+		add(smileButton);
 	}
 
 	private void loadImages() {
@@ -35,34 +63,7 @@ public class ResetButton extends JPanel implements ActionListener {
 			smileMap.put(SmileyEnum.paused, new ImageIcon(getClass().getResource("/icons/smiley-paused.png")));
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	private void setupPanel() {
-		smileButton = new JButton(smileMap.get(SmileyEnum.happy));
-		smileButton.setToolTipText("Reset the field!");
-		smileButton.setBorderPainted(false);
-		smileButton.setContentAreaFilled(false);
-		smileButton.addActionListener(this);
-		add(smileButton);
-	}
-
-	public static ImageIcon getSmileyHappy() {
-		return smileMap.get(SmileyEnum.happy);
-	}
-
-	public static void setSmileyIcon(SmileyEnum smile) {
-		smileButton.setIcon(smileMap.get(smile));
-	}
-
-	public static void reset() {
-		smileButton.setIcon(smileMap.get(SmileyEnum.happy));
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == smileButton) {
-			var pub = new EventPublisher(new OptionWindow(), new StatisticsWindow());
-			pub.publish(new ResetGameEvent());
+			throw e;
 		}
 	}
 }

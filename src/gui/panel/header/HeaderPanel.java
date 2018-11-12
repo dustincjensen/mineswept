@@ -8,10 +8,10 @@ import javax.swing.JPanel;
  * reset and timer.
  */
 public class HeaderPanel extends JPanel {
-	public HeaderPanel() {
+	public HeaderPanel(MineCount mineCount, ResetButton resetButton, TimeCount timeCount) {
 		setLayout(new GridLayout(0, 3));
-		add(new MineCount());
-		add(new ResetButton());
-		add(new TimeCount());
+		add(mineCount);
+		add(resetButton);
+		add(timeCount);
 	}
 }
