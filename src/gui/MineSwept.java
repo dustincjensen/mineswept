@@ -3,7 +3,6 @@ package gui;
 import gui.events.IEventPublisher;
 import gui.events.QuitGameEvent;
 import gui.menu.Menus;
-import gui.records.RecordWindow;
 import gui.panel.MainPanel;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -26,7 +25,6 @@ public class MineSwept implements WindowListener {
 	public MineSwept(Menus menus, IEventPublisher publisher) {
 		eventPublisher = publisher;
 
-		RecordWindow.init();
 		// Loaded after gui starts MOSTLY
 		Logic.init();
 		mp = new MainPanel();

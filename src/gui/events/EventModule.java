@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import gui.events.IEventPublisher;
 import gui.events.handlers.*;
 import gui.options.OptionWindow;
+import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
 import java.util.List;
 
@@ -32,6 +33,11 @@ public class EventModule extends AbstractModule {
     @Provides
     public ShowOptionsEventHandler provideShowOptionsEventHandler(OptionWindow optionWindow) {
         return new ShowOptionsEventHandler(optionWindow);
+    }
+
+    @Provides
+    public ShowRecordsEventHandler provideShowRecordsEventHandler(RecordWindow recordWindow) {
+        return new ShowRecordsEventHandler(recordWindow);
     }
 
     @Provides

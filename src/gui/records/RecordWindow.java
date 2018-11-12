@@ -8,66 +8,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class RecordWindow {
-	private static JFrame recordWindow;
-	private static JTabbedPane tabbedPane;
-	private static JPanel recordPanel, accept;
+	private JFrame recordWindow;
+	private JTabbedPane tabs;
+	// TODO make non-static
 	private static RecordPanel beginner, intermediate, advanced;
-	private static JButton okButton, reset;
-	private static RecordWindowActions rwa;
 
-	public static void init() {
-		rwa = new RecordWindowActions();
-		setupPane();
+	public RecordWindow() {
 		setupWindow();
 	}
 
-	private static void setupPane() {
-		recordPanel = new JPanel();
-		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
-
-		beginner = new RecordPanel("Beginner");
-		intermediate = new RecordPanel("Intermediate");
-		advanced = new RecordPanel("Advanced");
-
-		setupTabbedPane();
-		setupAccept();
-		recordPanel.add(tabbedPane);
-		recordPanel.add(accept);
-	}
-
-	private static void setupTabbedPane() {
-		tabbedPane = new JTabbedPane();
-		tabbedPane.add(beginner);
-		tabbedPane.add(intermediate);
-		tabbedPane.add(advanced);
-	}
-
-	private static void setupAccept() {
-		accept = new JPanel();
-		accept.setLayout(new BoxLayout(accept, BoxLayout.X_AXIS));
-
-		okButton = new JButton("OK");
-		okButton.addActionListener(rwa);
-		reset = new JButton("Reset");
-		reset.addActionListener(rwa);
-
-		accept.add(Box.createHorizontalGlue());
-		accept.add(okButton);
-		accept.add(reset);
-		accept.add(Box.createHorizontalGlue());
-	}
-
-	public static void setupWindow() {
-		recordWindow = new JFrame("Records");
-		recordWindow.setContentPane(recordPanel);
-
-		recordWindow.setSize(300, 175 + Records.RECORD_LIMIT * 15);
-		recordWindow.setLocationRelativeTo(null);
-		recordWindow.setResizable(false);
-		recordWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-	}
-
-	public static void show(boolean t) {
+	public void show(boolean t) {
 		recordWindow.setVisible(t);
 	}
 
@@ -83,23 +33,70 @@ public class RecordWindow {
 		advanced.setRecords(arr);
 	}
 
-	private static class RecordWindowActions implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-			if (evt.getSource() == okButton)
-				show(false);
+	private void setupWindow() {
+		recordWindow = new JFrame("Records");
+		recordWindow.setContentPane(recordPanel());
 
-			else if (evt.getSource() == reset) {
-				if (tabbedPane.getSelectedIndex() == 0) {
-					Records.resetRecords("beginner");
-					beginner.refreshRecords();
-				} else if (tabbedPane.getSelectedIndex() == 1) {
-					Records.resetRecords("intermediate");
-					intermediate.refreshRecords();
-				} else if (tabbedPane.getSelectedIndex() == 2) {
-					Records.resetRecords("advanced");
-					advanced.refreshRecords();
-				}
+		recordWindow.setSize(300, 175 + Records.RECORD_LIMIT * 15);
+		recordWindow.setLocationRelativeTo(null);
+		recordWindow.setResizable(false);
+		recordWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+
+	private JPanel recordPanel() {
+		var recordPanel = new JPanel();
+		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
+
+		beginner = new RecordPanel("Beginner");
+		intermediate = new RecordPanel("Intermediate");
+		advanced = new RecordPanel("Advanced");
+
+		recordPanel.add(tabs());
+		recordPanel.add(okReset());
+
+		return recordPanel;
+	}
+
+	private JTabbedPane tabs() {
+		tabs = new JTabbedPane();
+		tabs.add(beginner);
+		tabs.add(intermediate);
+		tabs.add(advanced);
+		return tabs;
+	}
+
+	private JPanel okReset() {
+		var accept = new JPanel();
+		accept.setLayout(new BoxLayout(accept, BoxLayout.X_AXIS));
+		accept.add(Box.createHorizontalGlue());
+		accept.add(ok());
+		accept.add(reset());
+		accept.add(Box.createHorizontalGlue());
+		return accept;
+	}
+
+	private JButton ok() {
+		var okButton = new JButton("OK");
+		okButton.addActionListener(evt -> {
+			show(false);
+		});
+		return okButton;
+	}
+
+	private JButton reset() {
+		var reset = new JButton("Reset");
+		reset.addActionListener(evt -> {
+			if (tabs.getSelectedIndex() == 0) {
+				Records.resetRecords("beginner");
+				beginner.refreshRecords();
+			} else if (tabs.getSelectedIndex() == 1) {
+				Records.resetRecords("intermediate");
+				intermediate.refreshRecords();
+			} else if (tabs.getSelectedIndex() == 2) {
+				Records.resetRecords("advanced");
+				advanced.refreshRecords();
 			}
-		}
+		});
+		return reset;
 	}
 }
