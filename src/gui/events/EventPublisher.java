@@ -3,30 +3,19 @@ package gui.events;
 import gui.events.handlers.*;
 import gui.options.OptionWindow;
 import gui.statistics.StatisticsWindow;
-import java.util.ArrayList;
+import java.util.List;
 import java.lang.reflect.ParameterizedType;
 
 public class EventPublisher implements IEventPublisher {
-    private ArrayList<IEventHandler> handlers;
+    private List<IEventHandler> eventHandlers;
 
-    // TODO this should not rely on OptionWindow, this should only ask for
-    // IEventHandler's and those dependencies will be created by the injection
-    // handler.
-    public EventPublisher(OptionWindow optionWindow, StatisticsWindow statisticsWindow) {
+    public EventPublisher(List<IEventHandler> handlers) {
         System.out.println("Creating Event Publisher");
-        handlers = new ArrayList<IEventHandler>();
-        handlers.add(new AboutEventHandler());
-        handlers.add(new GetHintEventHandler());
-        handlers.add(new PauseGameEventHandler());
-        handlers.add(new QuitGameEventHandler());
-        handlers.add(new ResetGameEventHandler());
-        handlers.add(new ShowOptionsEventHandler(optionWindow));
-        handlers.add(new ShowRecordsEventHandler());
-        handlers.add(new ShowStatisticsEventHandler(statisticsWindow));
+        eventHandlers = handlers;
     }
 
     public <T> void publish(T event) {
-        for (var handler : handlers) {
+        for (var handler : eventHandlers) {
             for (var i : handler.getClass().getGenericInterfaces()) {
                 if (i instanceof ParameterizedType) {
                     var genericTypes = ((ParameterizedType) i).getActualTypeArguments();
