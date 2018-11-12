@@ -22,7 +22,7 @@ public class HelpMenu extends JMenu {
 	 * 
 	 * @return the about menu item.
 	 */
-	public JMenuItem about() {
+	private JMenuItem about() {
 		var about = new JMenuItem("About");
 		about.addActionListener(evt -> eventPublisher.publish(new AboutEvent()));
 		return about;

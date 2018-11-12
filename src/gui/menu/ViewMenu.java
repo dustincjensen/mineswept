@@ -26,7 +26,7 @@ public class ViewMenu extends JMenu {
 	 * 
 	 * @return the records menu item.
 	 */
-	public JMenuItem showRecords() {
+	private JMenuItem showRecords() {
 		var records = new JMenuItem("Records");
 		records.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 2));
 		records.addActionListener(evt -> eventPublisher.publish(new ShowRecordsEvent(true)));
@@ -38,7 +38,7 @@ public class ViewMenu extends JMenu {
 	 * 
 	 * @return the statistics menu item.
 	 */
-	public JMenuItem showStatistics() {
+	private JMenuItem showStatistics() {
 		var statistics = new JMenuItem("Statistics");
 		statistics.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
 		statistics.addActionListener(evt -> eventPublisher.publish(new ShowStatisticsEvent(true)));
