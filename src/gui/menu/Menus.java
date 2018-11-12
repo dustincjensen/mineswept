@@ -1,6 +1,5 @@
 package gui.menu;
 
-import gui.ClassFactory;
 import javax.swing.JMenuBar;
 
 /**

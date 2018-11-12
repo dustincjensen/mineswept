@@ -1,7 +1,7 @@
 package gui.events.handlers;
 
 import gui.events.ShowRecordsEvent;
-import gui.menu.RecordWindow;
+import gui.records.RecordWindow;
 
 public class ShowRecordsEventHandler implements IEventHandler<ShowRecordsEvent> {
     @Override

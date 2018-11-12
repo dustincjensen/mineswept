@@ -1,4 +1,4 @@
-package gui.menu;
+package gui.statistics;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

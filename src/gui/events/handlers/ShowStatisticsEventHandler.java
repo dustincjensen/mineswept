@@ -1,7 +1,7 @@
 package gui.events.handlers;
 
 import gui.events.ShowStatisticsEvent;
-import gui.menu.StatisticsWindow;
+import gui.statistics.StatisticsWindow;
 
 public class ShowStatisticsEventHandler implements IEventHandler<ShowStatisticsEvent> {
     @Override

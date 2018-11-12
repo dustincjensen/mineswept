@@ -1,7 +1,7 @@
 package gui.events.handlers;
 
 import gui.events.ShowOptionsEvent;
-import gui.menu.OptionWindow;
+import gui.options.OptionWindow;
 
 public class ShowOptionsEventHandler implements IEventHandler<ShowOptionsEvent> {
     @Override

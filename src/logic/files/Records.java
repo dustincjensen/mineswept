@@ -1,6 +1,6 @@
 package logic.files;
 
-import gui.menu.RecordWindow;
+import gui.records.RecordWindow;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;

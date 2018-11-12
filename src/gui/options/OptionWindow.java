@@ -1,4 +1,4 @@
-package gui.menu;
+package gui.options;
 
 import logic.game.MineField;
 import gui.panel.header.ResetButton;

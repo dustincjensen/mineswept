@@ -1,4 +1,4 @@
-package gui.menu;
+package gui.records;
 
 import logic.files.Records;
 import java.awt.*;
