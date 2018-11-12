@@ -1,11 +1,9 @@
 package gui;
 
-import gui.events.EventPublisher;
+import gui.events.IEventPublisher;
 import gui.events.QuitGameEvent;
 import gui.menu.Menus;
-import gui.options.OptionWindow;
 import gui.records.RecordWindow;
-import gui.statistics.StatisticsWindow;
 import gui.panel.MainPanel;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -18,23 +16,24 @@ import logic.Logic;
  * Runs the JFrame for the game.
  */
 public class MineSwept implements WindowListener {
+	private IEventPublisher eventPublisher;
+	private Menus menus;
+
+	// TODO make non-static
 	private static JFrame window;
 	private static MainPanel mp;
-	private static Menus mb;
 
-	public MineSwept() {
+	public MineSwept(Menus menus, IEventPublisher publisher) {
+		eventPublisher = publisher;
+
 		RecordWindow.init();
 		// Loaded after gui starts MOSTLY
 		Logic.init();
 		mp = new MainPanel();
 
-		// TODO replace...
-		// mb = new Menus();
-		mb = ClassFactory.create(Menus.class);
-
 		window = new JFrame("MineSwept");
 		window.setContentPane(mp);
-		window.setJMenuBar(mb);
+		window.setJMenuBar(menus);
 		window.pack();
 		window.setResizable(false);
 		window.setLocationRelativeTo(null);
@@ -70,8 +69,7 @@ public class MineSwept implements WindowListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
-		var pub = new EventPublisher(new OptionWindow(), new StatisticsWindow());
-		pub.publish(new QuitGameEvent());
+		eventPublisher.publish(new QuitGameEvent());
 	}
 
 	public void windowDeactivated(WindowEvent e) {
@@ -92,7 +90,7 @@ public class MineSwept implements WindowListener {
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		MineSwept ms = new MineSwept();
+		MineSwept ms = ClassFactory.create(MineSwept.class);
 		ms.getWindow().setVisible(true);
 	}
 }
