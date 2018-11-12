@@ -27,7 +27,6 @@ public class MineSwept implements WindowListener {
 		StatisticsWindow.init();
 		// Loaded after gui starts MOSTLY
 		Logic.init();
-		OptionWindow.init();
 		mp = new MainPanel();
 
 		// TODO replace...
@@ -72,7 +71,7 @@ public class MineSwept implements WindowListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
-		var pub = new EventPublisher();
+		var pub = new EventPublisher(new OptionWindow());
 		pub.publish(new QuitGameEvent());
 	}
 

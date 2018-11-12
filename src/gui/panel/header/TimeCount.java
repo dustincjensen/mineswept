@@ -2,6 +2,7 @@ package gui.panel.header;
 
 import gui.events.EventPublisher;
 import gui.events.PauseGameEvent;
+import gui.options.OptionWindow;
 import gui.FontChange;
 import gui.panel.MainPanel;
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class TimeCount extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == clockIcon) {
-			var pub = new EventPublisher();
+			var pub = new EventPublisher(new OptionWindow());
 			pub.publish(new PauseGameEvent(!GameFeatures.isGamePaused()));
 		}
 	}

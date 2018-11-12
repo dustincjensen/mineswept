@@ -1,13 +1,17 @@
 package gui.events;
 
 import gui.events.handlers.*;
+import gui.options.OptionWindow;
 import java.util.ArrayList;
 import java.lang.reflect.ParameterizedType;
 
 public class EventPublisher implements IEventPublisher {
     private ArrayList<IEventHandler> handlers;
 
-    public EventPublisher() {
+    // TODO this should not rely on OptionWindow, this should only ask for
+    // IEventHandler's and those dependencies will be created by the injection
+    // handler.
+    public EventPublisher(OptionWindow window) {
         System.out.println("Creating Event Publisher");
         handlers = new ArrayList<IEventHandler>();
         handlers.add(new AboutEventHandler());
@@ -15,7 +19,7 @@ public class EventPublisher implements IEventPublisher {
         handlers.add(new PauseGameEventHandler());
         handlers.add(new QuitGameEventHandler());
         handlers.add(new ResetGameEventHandler());
-        handlers.add(new ShowOptionsEventHandler());
+        handlers.add(new ShowOptionsEventHandler(window));
         handlers.add(new ShowRecordsEventHandler());
         handlers.add(new ShowStatisticsEventHandler());
     }
