@@ -2,6 +2,7 @@ package logic.game;
 
 import gui.panel.header.ResetButton;
 import gui.panel.header.SmileyEnum;
+import java.util.ArrayList;
 import logic.util.RandomGen;
 import logic.files.Preferences;
 
@@ -17,6 +18,8 @@ public class MineField {
 
 	public static void init() {
 		nextPuzzle = -1;
+		// Initial size is the capacity, which will never have to be increased,
+		// but calling .size() only gives the ones that are filled in.
 		mines = new MineVector(w[2]*h[2]);
 		setupField();
 	}
@@ -28,52 +31,88 @@ public class MineField {
 	}
 
 	public static void initMines() {
-		for(int y=0; y<h[currentPuzzle]; y++) {
-			for(int x=0; x<w[currentPuzzle]; x++) {
+		for (int y = 0; y < h[currentPuzzle]; y++) {
+			for (int x = 0; x < w[currentPuzzle]; x++) {
 				mines.add(new Mine(x,y));
 			}
 		}
 	}
 
 	public static void fillMines() {
-		int randomLen = numMines[currentPuzzle];
-		for(int i=0; i<randomLen; i++) {
-			boolean set = false;
-			do {
-				int rand = RandomGen.getRandomInt(mines.size());
-				if(!mines.get(rand).isBomb()) {
-					mines.get(rand).setBomb(true);
-					set = true;
+		int numberOfMines = numMines[currentPuzzle];
+		for (int i=0; i<numberOfMines; i++) {
+			while (true) {
+				int randomNumber = RandomGen.getRandomInt(mines.size());
+				var mine = mines.get(randomNumber);
+
+				if (!mine.isBomb()) {
+					mine.setBomb(true);
+					break;
 				}
-			} while(!set);
+			}
 		}
 	}
 
 	public static void fillNumbers() {
-		for(int i=0; i<mines.size(); i++) {
-			if(mines.get(i).isBomb())
-				continue;
-			int count = 0;
+		for (int i=0; i < mines.size(); i++) {
+			var mine = mines.get(i);
 
-			try { if(mines.get(i-w[currentPuzzle]  ).isBomb()) count++; } catch (Exception e) {} //ABOVE
-			try { if(mines.get(i+w[currentPuzzle]  ).isBomb()) count++; } catch (Exception e) {} //BELOW
-			if(i%w[currentPuzzle]!=0) { //if you aren't a left side spot
-				try { if(mines.get(i-w[currentPuzzle]-1).isBomb()) count++; } catch (Exception e) {} //ABOVE LEFT	
-				try { if(mines.get(i-1                 ).isBomb()) count++; } catch (Exception e) {} //LEFT
-				try { if(mines.get(i+w[currentPuzzle]-1).isBomb()) count++; } catch (Exception e) {} //BELOW LEFT
+			// If we are a bomb, we don't need a number.
+			if (mine.isBomb()) {
+				continue;
 			}
-			if((i+1)%w[currentPuzzle]!=0) { //if you aren't a right side spot
-				try { if(mines.get(i-w[currentPuzzle]+1).isBomb()) count++; } catch (Exception e) {} //ABOVE RIGHT
-				try { if(mines.get(i+1                 ).isBomb()) count++; } catch (Exception e) {} //RIGHT
-				try { if(mines.get(i+w[currentPuzzle]+1).isBomb()) count++; } catch (Exception e) {} //BELOW RIGHT
-			}
-			mines.get(i).setSpotValue(count);
+
+			var count = getPositionsToCheck(i, w[currentPuzzle], mines.size())
+				.stream()
+				.map(position -> mines.get(position).isBomb())
+				.filter(isBomb -> isBomb)
+				.count();
+
+			mine.setSpotValue((int)count);
 		}
+	}
+	
+	public static ArrayList<Integer> getPositionsToCheck(int index, int width, int maxLength) {
+		ArrayList<Integer> positionsToCheck = new ArrayList<Integer>(8);
+		if (index - width >= 0) {
+			positionsToCheck.add(index - width);
+		}
+		if (index + width < maxLength) {
+			positionsToCheck.add(index + width);
+		}
+
+		// You are not on the left side of the puzzle.
+		if (index % width != 0) {
+			if (index - width - 1 >= 0) {
+				positionsToCheck.add(index - width - 1);
+			}
+			if (index - 1 >= 0) {
+				positionsToCheck.add(index - 1);
+			}
+			if (index + width - 1 < maxLength) {
+				positionsToCheck.add(index + width - 1);
+			}
+		}
+
+		// You are not on the right side of the puzzle.
+		if ((index + 1) % width != 0) {
+			if (index - width + 1 >= 0) {
+				positionsToCheck.add(index - width + 1);
+			}
+			if (index + 1 < maxLength) {
+				positionsToCheck.add(index + 1);
+			}
+			if (index + width + 1 < maxLength) {
+				positionsToCheck.add(index + width + 1);
+			}
+		}
+
+		return positionsToCheck;
 	}
 
 	public static void reset() {
 		mines.clear();
-		if(nextPuzzle != -1) {
+		if (nextPuzzle != -1) {
 			currentPuzzle = nextPuzzle;
 			nextPuzzle = -1;
 		}
@@ -112,119 +151,111 @@ public class MineField {
 	}
 
 	public static void specialUncover(int i) {
-		Mine now = mines.get(i);
-		int flagCount = 0;
-		
-		try { if(mines.get(i-w[currentPuzzle]).getAnyProtected()) flagCount++; } catch (Exception e) {} //ABOVE
-		try { if(mines.get(i+w[currentPuzzle]).getAnyProtected()) flagCount++; } catch (Exception e) {} //BELOW
-		if(i%w[currentPuzzle]!=0) { //if you aren't a left side spot
-			try { if(mines.get(i-w[currentPuzzle]-1).getAnyProtected()) flagCount++; } catch (Exception e) {} //ABOVE LEFT	
-			try { if(mines.get(i-1).getAnyProtected())                  flagCount++; } catch (Exception e) {} //LEFT
-			try { if(mines.get(i+w[currentPuzzle]-1).getAnyProtected()) flagCount++; } catch (Exception e) {} //BELOW LEFT
-		}
-		if((i+1)%w[currentPuzzle]!=0) { //if you aren't a right side spot
-			try { if(mines.get(i-w[currentPuzzle]+1).getAnyProtected()) flagCount++; } catch (Exception e) {} //ABOVE RIGHT
-			try { if(mines.get(i+1).getAnyProtected())                  flagCount++; } catch (Exception e) {} //RIGHT
-			try { if(mines.get(i+w[currentPuzzle]+1).getAnyProtected()) flagCount++; } catch (Exception e) {} //BELOW RIGHT
-		}
+		// Retrieve the squares around this position on which we should check for flags.
+		var positionsToCheck = getPositionsToCheck(i, w[currentPuzzle], mines.size());
 
-		/* If the spot you clicked has appropriate flags marked do the uncovering */
-		if(flagCount >= now.getSpotValue()) {
-			try { specialUncoverOne(i-w[currentPuzzle]); } catch (Exception e) {} //ABOVE
-			try { specialUncoverOne(i+w[currentPuzzle]); } catch (Exception e) {} //BELOW
-			if(i%w[currentPuzzle]!=0) { //if you aren't a left side spot
-				try { specialUncoverOne(i-w[currentPuzzle]-1);   } catch (Exception e) {} //ABOVE LEFT	
-				try { specialUncoverOne(i-1);                    } catch (Exception e) {} //LEFT
-				try { specialUncoverOne(i+w[currentPuzzle]-1);   } catch (Exception e) {} //BELOW LEFT
-			}
-			if((i+1)%w[currentPuzzle]!=0) { //if you aren't a right side spot
-				try { specialUncoverOne(i-w[currentPuzzle]+1); } catch (Exception e) {} //ABOVE RIGHT
-				try { specialUncoverOne(i+1);                  } catch (Exception e) {} //RIGHT
-				try { specialUncoverOne(i+w[currentPuzzle]+1); } catch (Exception e) {} //BELOW RIGHT
+		// Count the number of flags in the positions around the current.
+		var flagCount = positionsToCheck
+			.stream()
+			.map(position -> mines.get(position).getAnyProtected())
+			.filter(isProtected -> isProtected)
+			.count();
+
+		// If the spot you clicked has appropriate flags marked do the uncovering
+		if (flagCount >= mines.get(i).getSpotValue()) {
+			for (var pos : positionsToCheck) {
+				specialUncoverOne(pos);
 			}
 		}
-
 	}
 
 	public static void specialUncoverOne(int i) {
-		Mine now = mines.get(i);
-		if(now.isBomb() && !now.getAnyProtected()) {
-			mines.get(i).setBlewUp(true);
+		Mine currentMine = mines.get(i);
+		
+		// If we are a bomb and am not protected, we need to blow up.
+		if (currentMine.isBomb() && !currentMine.getAnyProtected()) {
+			currentMine.setBlewUp(true);
 			uncoverAll();
 			return;
 		}
-		if(now.uncovered()) 
-			return;
 
-		if(now.getSpotValue() == 0) {
-			if(!now.getAnyProtected())
-				now.setUncovered(true);
-			try { specialUncoverOne(i-w[currentPuzzle]); } catch (Exception e) {} //ABOVE
-			try { specialUncoverOne(i+w[currentPuzzle]); } catch (Exception e) {} //BELOW
-			if(i%w[currentPuzzle]!=0) { //if you aren't a left side spot
-				try { specialUncoverOne(i-w[currentPuzzle]-1);   } catch (Exception e) {} //ABOVE LEFT	
-				try { specialUncoverOne(i-1);                    } catch (Exception e) {} //LEFT
-				try { specialUncoverOne(i+w[currentPuzzle]-1);   } catch (Exception e) {} //BELOW LEFT
+		// If we are already uncovered, nothing to do here. Or it is protected... move on.
+		if (currentMine.uncovered() || currentMine.getAnyProtected()) {
+			return;
+		}
+
+		// Uncover the current mine if it is not protected.
+		if (!currentMine.getAnyProtected()) {
+			currentMine.setUncovered(true);
+		}
+
+		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
+		if (currentMine.getSpotValue() == 0) {
+			var positionsToCheck = getPositionsToCheck(i, w[currentPuzzle], mines.size());
+			for (var position : positionsToCheck) {
+				specialUncoverOne(position);
 			}
-			if((i+1)%w[currentPuzzle]!=0) { //if you aren't a right side spot
-				try { specialUncoverOne(i-w[currentPuzzle]+1); } catch (Exception e) {} //ABOVE RIGHT
-				try { specialUncoverOne(i+1);                  } catch (Exception e) {} //RIGHT
-				try { specialUncoverOne(i+w[currentPuzzle]+1); } catch (Exception e) {} //BELOW RIGHT
-			}
-		} else if(!now.getAnyProtected()) {
-			now.setUncovered(true);		
 		}
 	}
 
 	public static void uncoverAll() {
-		for(int i=0; i<mines.size(); i++) {
-			if( (mines.get(i).isBomb() && !mines.get(i).getAnyProtected()) ||
-			    (mines.get(i).getAnyProtected() && !mines.get(i).isBomb()) )
-				mines.get(i).setUncovered(true);
+		for (int i=0; i < mines.size(); i++) {
+			Mine mine = mines.get(i);
+			boolean isBombAndNotProtected = mine.isBomb() && !mine.getAnyProtected();
+			boolean isNotBombAndIsProtected = mine.getAnyProtected() && !mine.isBomb();
+
+			if(isBombAndNotProtected || isNotBombAndIsProtected) {
+				mine.setUncovered(true);
+			}
 		}
+
 		GameFeatures.setGameOver(true);
 		ClockTimer.stop();
 		ResetButton.setSmileyIcon(SmileyEnum.sad);
 	}
 
 	public static void uncover(int i) {
-		Mine now = mines.get(i);
-		if(now.isBomb())
-			return;
-		if(now.uncovered())
-			return;
+		Mine currentMine = mines.get(i);
 
-		if(now.getSpotValue() == 0) {
-			if(!now.getAnyProtected())
-				now.setUncovered(true);
-			try { uncover(i-w[currentPuzzle]); } catch (Exception e) {} //ABOVE
-			try { uncover(i+w[currentPuzzle]); } catch (Exception e) {} //BELOW
-			if(i%w[currentPuzzle]!=0) { //if you aren't a left side spot
-				try { uncover(i-w[currentPuzzle]-1);   } catch (Exception e) {} //ABOVE LEFT	
-				try { uncover(i-1);                    } catch (Exception e) {} //LEFT
-				try { uncover(i+w[currentPuzzle]-1);   } catch (Exception e) {} //BELOW LEFT
+		// We already do a check where from we call uncover.
+		if (currentMine.isBomb()) {
+			return;
+		}
+
+		// If we are already uncovered, nothing to do here.
+		if (currentMine.uncovered() || currentMine.getAnyProtected()) {
+			return;
+		}
+
+		// Uncover the current mine if it is not protected.
+		if(!currentMine.getAnyProtected()) {
+			currentMine.setUncovered(true);
+		}
+
+		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
+		if (currentMine.getSpotValue() == 0) {
+			var positionsToCheck = getPositionsToCheck(i, w[currentPuzzle], mines.size());
+			for (var position : positionsToCheck) {
+				uncover(position);
 			}
-			if((i+1)%w[currentPuzzle]!=0) { //if you aren't a right side spot
-				try { uncover(i-w[currentPuzzle]+1); } catch (Exception e) {} //ABOVE RIGHT
-				try { uncover(i+1);                  } catch (Exception e) {} //RIGHT
-				try { uncover(i+w[currentPuzzle]+1); } catch (Exception e) {} //BELOW RIGHT
-			}
-		} else
-			if(!now.getAnyProtected())
-				now.setUncovered(true);
+		}
 	}
 
 	public static void checkGameCondition() {
 		int uncoveredPieces = 0;
 		boolean bombBlew = false;
-		for(int i=0; i<mines.size(); i++) {
-			if(mines.get(i).blewUp())
+
+		for (int i=0; i<mines.size(); i++) {
+			if (mines.get(i).blewUp()) {
 				bombBlew = true;
-			if(mines.get(i).uncovered())
+			}
+			
+			if (mines.get(i).uncovered()) {
 				uncoveredPieces++;
+			}
 		}
 
-		//Winning condition
+		// Winning condition
 		if(uncoveredPieces == (w[currentPuzzle]*h[currentPuzzle])-numMines[currentPuzzle]
 			&& !bombBlew)
 		{
@@ -235,36 +266,30 @@ public class MineField {
 	}
 
 	public static void getHint() {
-		// Get empty spaces first
-		boolean emptySpace = false;
-		for (int i=0; i<mines.size(); i++) {
+		// Do empty spaces first
+		for (int i=0; i < mines.size(); i++) {
 			Mine m = mines.get(i);
 
 			// Empty space
 			if (m.getSpotValue() == 0 && !m.uncovered()) {
 				m.setHint(true);
 				m.setProtected(false);
-				emptySpace = true;
-				break;
+				return;
 			}
 		}
 
-		// if we found an empty space return OTHERWISE
-		if (emptySpace)
-			return;
-
 		// Find bombs ...
 		// will use a blue flag and make it unchangeable
-		for (int i=0; i<mines.size(); i++) {
+		for (int i=0; i < mines.size(); i++) {
 			Mine m = mines.get(i);
 
 			if (m.isBomb() && !m.getAnyProtected()) {
 				m.setHint(true);
 				m.setSpecialProtected(true);
-				break;
+				return;
 			}
 		}
-	}// End getHint
+	}
 
 	public static Mine getMine(int x, int y) {
 		return mines.get(x,y);
@@ -272,8 +297,10 @@ public class MineField {
 
 	public static int getMineCount() {
 		int count = 0;
-		for(int i=0; i<mines.size(); i++) {
-			if(mines.get(i).getAnyProtected()) count++;
+		for (int i=0; i<mines.size(); i++) {
+			if (mines.get(i).getAnyProtected()) {
+				count++;
+			}
 		}
 		return getNumMines()-count;
 	}
