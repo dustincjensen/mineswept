@@ -171,7 +171,7 @@ public class MineField {
 				try { specialUncoverOne(i+1);                  } catch (Exception e) {} //RIGHT
 				try { specialUncoverOne(i+w[currentPuzzle]+1); } catch (Exception e) {} //BELOW RIGHT
 			}
-		} else if(!now.getAnyProtected())
+		} else if(!now.getAnyProtected()) {
 			now.setUncovered(true);		
 		}
 	}
