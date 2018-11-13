@@ -123,14 +123,14 @@ public class MineField {
 		int i = mines.contains(x,y);
 		var mine = mines.get(i);
 
-		// If already uncovered, use a special uncover.
-		if (mine.uncovered()) {
-			specialUncover(i);
-		}
-
 		// If the mine is protected we cannot do anything to it.
 		if (mine.getAnyProtected()) {
 			return;
+		}
+
+		// If already uncovered, use a special uncover.
+		if (mine.uncovered()) {
+			specialUncover(i);
 		}
 
 		// If we are a bomb, then uncover everything and mark the bomb that caused the failure.
@@ -162,7 +162,7 @@ public class MineField {
 			.count();
 
 		// If the spot you clicked has appropriate flags marked do the uncovering
-		if (flagCount >= mines.get(i).getSpotValue()) {
+		if (flagCount == mines.get(i).getSpotValue()) {
 			for (var pos : positionsToCheck) {
 				specialUncoverOne(pos);
 			}
@@ -217,20 +217,13 @@ public class MineField {
 	public static void uncover(int i) {
 		Mine currentMine = mines.get(i);
 
-		// We already do a check where from we call uncover.
-		if (currentMine.isBomb()) {
+		// If we are already uncovered, protected or are a bomb, nothing to do here.
+		if (currentMine.isBomb() || currentMine.uncovered() || currentMine.getAnyProtected()) {
 			return;
 		}
 
-		// If we are already uncovered, nothing to do here.
-		if (currentMine.uncovered() || currentMine.getAnyProtected()) {
-			return;
-		}
-
-		// Uncover the current mine if it is not protected.
-		if(!currentMine.getAnyProtected()) {
-			currentMine.setUncovered(true);
-		}
+		// Uncover the current mine.
+		currentMine.setUncovered(true);
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
