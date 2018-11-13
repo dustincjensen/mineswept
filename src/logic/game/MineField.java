@@ -1,28 +1,22 @@
 package logic.game;
 
-import logic.util.RandomGen;
-import logic.files.Preferences;
 import gui.panel.header.ResetButton;
 import gui.panel.header.SmileyEnum;
+import logic.util.RandomGen;
+import logic.files.Preferences;
 
 public class MineField {
 
 	private static int currentPuzzle;
 	private static int nextPuzzle;
-	private static boolean isCustom;
 	private static MineVector mines;
 
 	private static final int[] w = {9, 16, 30};
 	private static final int[] h = {9, 16, 16};
 	private static final int[] numMines = {10, 40, 99};
 
-	private static int customW = 16;
-	private static int customH = 30;
-	private static int customNumMines = 99;
-
 	public static void init() {
 		nextPuzzle = -1;
-		isCustom = false;
 		mines = new MineVector(w[2]*h[2]);
 		setupField();
 	}
@@ -39,7 +33,7 @@ public class MineField {
 				mines.add(new Mine(x,y));
 			}
 		}
-	}//End initMines
+	}
 
 	public static void fillMines() {
 		int randomLen = numMines[currentPuzzle];
@@ -53,7 +47,7 @@ public class MineField {
 				}
 			} while(!set);
 		}
-	}//End fillMines
+	}
 
 	public static void fillNumbers() {
 		for(int i=0; i<mines.size(); i++) {
@@ -75,7 +69,7 @@ public class MineField {
 			}
 			mines.get(i).setSpotValue(count);
 		}
-	}//End fillNumbers
+	}
 
 	public static void reset() {
 		mines.clear();
@@ -88,14 +82,28 @@ public class MineField {
 
 	public static void leftClicked(int x, int y) {
 		int i = mines.contains(x,y);
+		var mine = mines.get(i);
 
-		if(mines.get(i).uncovered()) specialUncover(i); //if already uncovered return
-		if(mines.get(i).getAnyProtected()) return;		//if protected by a flag return
-		if(mines.get(i).isBomb()) {
-			uncoverAll();						//if bomb uncover all
-			mines.get(i).setBlewUp(true);		//record the cause of the failure
+		// If already uncovered, use a special uncover.
+		if (mine.uncovered()) {
+			specialUncover(i);
 		}
-		else uncover(i);						//otherwise uncover square(s)
+
+		// If the mine is protected we cannot do anything to it.
+		if (mine.getAnyProtected()) {
+			return;
+		}
+
+		// If we are a bomb, then uncover everything and mark the bomb that caused the failure.
+		if (mine.isBomb()) {
+			uncoverAll();
+			mine.setBlewUp(true);
+		}
+		else {
+			// Otherwise uncover the square
+			uncover(i);
+		}
+		
 		checkGameCondition();
 	}
 
@@ -163,9 +171,9 @@ public class MineField {
 				try { specialUncoverOne(i+1);                  } catch (Exception e) {} //RIGHT
 				try { specialUncoverOne(i+w[currentPuzzle]+1); } catch (Exception e) {} //BELOW RIGHT
 			}
-		} else
-			if(!now.getAnyProtected())
-				now.setUncovered(true);		
+		} else if(!now.getAnyProtected())
+			now.setUncovered(true);		
+		}
 	}
 
 	public static void uncoverAll() {
@@ -270,18 +278,6 @@ public class MineField {
 		return getNumMines()-count;
 	}
 
-	public static void setCustomWidth(int w) {
-		customW = w;
-	}
-
-	public static void setCustomHeight(int h) {
-		customH = h;
-	}
-
-	public static void setCustomNumMines(int numMines) {
-		customNumMines = numMines;
-	}
-
 	public static void setCurrentPuzzle(int puzzle) {
 		currentPuzzle = puzzle;
 	}
@@ -290,47 +286,38 @@ public class MineField {
 		nextPuzzle = puzzle;
 	}
 
-	public static void setIsCustom(boolean custom) {
-		isCustom = custom;
-	}
-
 	public static int getWidth() {
-		if(!isCustom)
-			return w[currentPuzzle];
-		return customW;
+		return w[currentPuzzle];
 	}
 
 	public static int getHeight() {
-		if(!isCustom)
-			return h[currentPuzzle];
-		return customH;
+		return h[currentPuzzle];
 	}
 
 	public static int getNumMines() {
-		if(!isCustom)
-			return numMines[currentPuzzle];
-		return customNumMines;
+		return numMines[currentPuzzle];
 	}
 
 	public static int getCurrentPuzzle() {
 		return currentPuzzle;
 	}
 
-	public static boolean isCustom() {
-		return isCustom;
-	}
-
-	public static void parseDifficulty(String d) {
-		d = d.toLowerCase();
-		if(d.matches("easy")) setCurrentPuzzle(0);
-		else if(d.matches("medium")) setCurrentPuzzle(1);
-		else if(d.matches("hard")) setCurrentPuzzle(2);
+	public static void parseDifficulty(String difficulty) {
+		difficulty = difficulty.toLowerCase();
+		if (difficulty.matches("easy")) {
+			setCurrentPuzzle(0);
+		}
+		else if(difficulty.matches("medium")) {
+			setCurrentPuzzle(1);
+		}
+		else if(difficulty.matches("hard")) {
+			setCurrentPuzzle(2);
+		}
 		else {
 			setCurrentPuzzle(0);
 			Preferences.writeWarning("Possible Corrupted Preferences File:\n  Difficulty is not set to easy, medium, hard or custom.");
 			return;
 		}
-		//else if(d.matches("custom")) setCurrentPuzzle(3);
 	}
 
 }
