@@ -7,7 +7,6 @@ import java.util.Optional;
 public class Records {
 	public static final int RECORD_LIMIT = 10;
 	private static String[] defaultFileLines = {
-		"MineSwept Records\n",
 		"[Beginner]\n",
 		"[Intermediate]\n",
 		"[Advanced]\n"
@@ -17,6 +16,8 @@ public class Records {
 
 	public Records() {
 		System.out.println("Creating records ref");
+
+		load(FileManagement.get("records"));
 	}
 
 	public boolean load(Optional<File> recordsFile) {

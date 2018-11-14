@@ -18,9 +18,11 @@ public class Preferences {
 	
 	private File preferences;
 
-	// TODO remove when we are sure we only create 1 after all the injection is said and done.
 	public Preferences() {
+		// TODO remove when we are sure we only create 1 after all the injection is said and done.
 		System.out.println("Creating preferences ref");
+
+		load(FileManagement.get("prefs"));
 	}
 
 	public boolean load(Optional<File> preferenceFile) {

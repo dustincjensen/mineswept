@@ -7,19 +7,6 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class FileManagement {
-
-	public static void init(Preferences preferences, Records records) {
-		File gameDir = getGameDir();
-
-		// TODO I think that they should probably load on their own?
-		if (gameDir != null) {
-			File[] files = gameDir.listFiles();
-			preferences.load(get(files, "prefs"));
-			records.load(get(files, "records"));
-			// statistics.load(get(files, "statistics"));
-		}
-	}
-
 	/**
 	 * Get the game directory.
 	 * This will create the directory if it does not yet exist.
@@ -71,6 +58,15 @@ public class FileManagement {
 			System.out.println("Error writing " + file.getName() + ".");
 			return false;
 		}
+	}
+
+	public static Optional<File> get(String fileName) {
+		File gameDir = getGameDir();
+		if (gameDir != null) {
+			File[] files = gameDir.listFiles();
+			return get(files, fileName);
+		}
+		return Optional.empty();
 	}
 
 	private static Optional<File> get(File[] files, String fileName) {

@@ -13,7 +13,6 @@ public class Logic {
 	 */
 	public static void init(Preferences prefs, Records records) {
 		// TODO once we have dependency injection, this will all go away.
-		FileManagement.init(prefs, records);
 		GameFeatures.init();
 		ClockTimer.init();
 		RandomGen.init();
