@@ -335,7 +335,6 @@ public class MineField {
 		}
 		else {
 			setCurrentPuzzle(0);
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  Difficulty is not set to easy, medium, hard or custom.");
 			return;
 		}
 	}

@@ -87,13 +87,13 @@ public class RecordWindow {
 		var reset = new JButton("Reset");
 		reset.addActionListener(evt -> {
 			if (tabs.getSelectedIndex() == 0) {
-				Records.resetRecords("beginner");
+				// Records.resetRecords("beginner");
 				beginner.refreshRecords();
 			} else if (tabs.getSelectedIndex() == 1) {
-				Records.resetRecords("intermediate");
+				// Records.resetRecords("intermediate");
 				intermediate.refreshRecords();
 			} else if (tabs.getSelectedIndex() == 2) {
-				Records.resetRecords("advanced");
+				// Records.resetRecords("advanced");
 				advanced.refreshRecords();
 			}
 		});

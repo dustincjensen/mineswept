@@ -1,60 +1,20 @@
 package logic.files;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class FileManagement {
 	private static File gameDir;
 
 	public static void init() {
 		if (gameDirectory()) {
-			File[] files = gameDir.listFiles();
-			boolean preferences = false,
-					records = false;
-					//statistics = false;
-			
-			for (File file : files) {
-				String fileName = file.getName();
-				
-				if (fileName.matches("prefs")) {
-					preferences = true;
-					Preferences.setPreferencesFile(file);
-				} 
-				else if (fileName.matches("records")) {
-					records = true;
-					Records.setRecordsFile(file);
-				}
-				// else if (fileName.matches("stats")) {
-				// 	statistics = true;
-				// 	Statistics.setStatisticsFile(file);
-				// }
-			}
-			
-			// Create new files if necessary
-			if (!preferences) {
-				preferences = Preferences.createFile();
-			}
-
-			if (!records) {
-				records = Records.createFile();
-			}
-
-			// if (!statistics) {
-			// 	statistics = Statistics.createFile();
-			// }
-
-			// If new file creation was successful or the file
-			// already exists then load the information
-			if (preferences) {
-				preferences = Preferences.load();
-			}
-			
-			if (records) { 
-				records = Records.load();
-			}
-
-			// if (statistics) {
-			// 	statistics = Statistics.load();
-			// }
+			var files = gameDir.listFiles();
+			Preferences.load(get(files, "prefs"));
+			Records.load(get(files, "records"));
+			// Statistics.load(get(files, "statistics"));
 		}
 	}
 
@@ -67,6 +27,40 @@ public class FileManagement {
 		System.out.println("TODO save files to system.");
 	}
 	
+	public static Optional<File> createFile(String fileName) {
+		var fileToCreate = new File(getGameDir().toString() + "/" + fileName);
+		try {
+			if (!fileToCreate.createNewFile()) {
+				System.out.println("Unable to create new " + fileName + " file.");
+				return Optional.empty();
+			}
+		} catch (Exception ex) {
+			System.out.println("I/O exception: Preferences File");
+			return Optional.empty();
+		}
+		return Optional.of(fileToCreate);
+	}
+
+	public static boolean writeFile(File file, String[] lines) {
+		try {
+			FileWriter writer = new FileWriter(file);
+			for (String line : lines) {
+				writer.write(line);
+			}
+			writer.close();
+			return true;
+		} catch (Exception ex) {
+			System.out.println("Error writing " + file.getName() + ".");
+			return false;
+		}
+	}
+
+	private static Optional<File> get(File[] files, String fileName) {
+		return Arrays.stream(files)
+			.filter(f -> f.getName().matches(fileName))
+			.findAny();
+	}
+
 	private static boolean gameDirectory() {
 		String userDir = System.getProperty("user.home");
 		gameDir = new File(userDir + "/.MineSwept/");

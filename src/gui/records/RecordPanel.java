@@ -8,7 +8,7 @@ import java.awt.*;
 public class RecordPanel extends JPanel {
 	private JTable bodyTable;
 	private DefaultTableModel tableModel;
-	private String[] records;
+	private String[] records = {};
 
 	public RecordPanel(String level) {
 		setupPane(level);

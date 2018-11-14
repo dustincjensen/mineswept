@@ -1,7 +1,6 @@
 package logic.files;
 
 public class Statistics {
-
 	// Long term stats
 	private static int oneHitKills, ohkBeginner, ohkIntermediate, ohkExpert;
 	private static int gamesPlayed, gpBeginner, gpIntermediate, gpExpert;
@@ -10,9 +9,4 @@ public class Statistics {
 
 	// Short term stats
 	private static int numberOfHintsUsed;
-
-	public static void init() {
-
-	}
-
 }

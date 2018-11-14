@@ -190,19 +190,16 @@ public class MineButton extends JLabel implements MouseListener {
 			red = who;
 		else if (pic == 1 && red != -1) {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Reds defined.");
 			return;
 		} else if (pic == 2 && green == -1)
 			green = who;
 		else if (pic == 2 && green != -1) {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Greens defined.");
 			return;
 		} else if (pic == 3 && blue == -1)
 			blue = who;
 		else if (pic == 3 && blue != -1) {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Blues defined.");
 			return;
 		}
 
@@ -212,19 +209,16 @@ public class MineButton extends JLabel implements MouseListener {
 			red = who;
 		else if (pic == 1 && red != -1) {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Reds defined.");
 			return;
 		} else if (pic == 2 && green == -1)
 			green = who;
 		else if (pic == 2 && green != -1) {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Greens defined.");
 			return;
 		} else if (pic == 3 && blue == -1)
 			blue = who;
 		else if (pic == 3 && blue != -1) {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Blues defined.");
 			return;
 		}
 
@@ -243,8 +237,6 @@ public class MineButton extends JLabel implements MouseListener {
 			return 3;
 		else {
 			useDefaultBackgroundColor();
-			Preferences.writeWarning(
-					"Possible Corrupted Preferences File:\n  MineButton Color does not follow RGB color pattern");
 			return -1;
 		}
 	}
