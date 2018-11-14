@@ -11,6 +11,7 @@ import gui.panel.header.HeaderModule;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.PausePanel;
 import logic.files.*;
+import logic.game.*;
 
 public class InjectionModule extends AbstractModule {
     @Override
@@ -28,14 +29,14 @@ public class InjectionModule extends AbstractModule {
 
     // TODO move this into it's own module?
     @Provides
-    public MineSwept provideMineSwept(Menus menus, IEventPublisher publisher, Preferences prefs, Records records) {
-        return new MineSwept(menus, publisher, prefs, records);
+    public MineSwept provideMineSwept(Menus menus, IEventPublisher publisher, Preferences prefs, Records records, GameState gameState) {
+        return new MineSwept(menus, publisher, prefs, records, gameState);
     }
 
     // TODO move this into it's own module?
     @Provides
-    public MineButton provideMineButton(Preferences prefs) {
-        return new MineButton(prefs);
+    public MineButton provideMineButton(Preferences prefs, GameState gameState) {
+        return new MineButton(prefs, gameState);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
@@ -43,5 +44,12 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public Preferences providePreferences() {
         return new Preferences();
+    }
+
+    // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
+    @Singleton
+    @Provides
+    public GameState provideGameState() {
+        return new GameState();
     }
 }

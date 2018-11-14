@@ -16,8 +16,11 @@ public class MineField {
 	private static final int[] h = {9, 16, 16};
 	private static final int[] numMines = {10, 40, 99};
 
-	public static void init(Preferences prefs) {
-		parseDifficulty(prefs.difficulty());		
+	private static GameState gameState;
+	public static void init(Preferences prefs, GameState state) {
+		gameState = state;
+
+		parseDifficulty(prefs.difficulty());
 
 		nextPuzzle = -1;
 		// Initial size is the capacity, which will never have to be increased,
@@ -211,7 +214,7 @@ public class MineField {
 			}
 		}
 
-		GameFeatures.setGameOver(true);
+		gameState.setGameOver(true);
 		ClockTimer.stop();
 		ResetButton.setSmileyIcon(SmileyEnum.sad);
 	}
@@ -254,7 +257,7 @@ public class MineField {
 		if(uncoveredPieces == (w[currentPuzzle]*h[currentPuzzle])-numMines[currentPuzzle]
 			&& !bombBlew)
 		{
-			GameFeatures.setGameOver(true);
+			gameState.setGameOver(true);
 			ClockTimer.stop();
 			ResetButton.setSmileyIcon(SmileyEnum.cool);
 		}

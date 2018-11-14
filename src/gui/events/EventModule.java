@@ -9,6 +9,8 @@ import gui.events.handlers.*;
 import gui.options.OptionWindow;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
+import logic.game.GameState;
+
 import java.util.List;
 
 public class EventModule extends AbstractModule {
@@ -28,6 +30,21 @@ public class EventModule extends AbstractModule {
             ShowOptionsEventHandler showOptions, ShowRecordsEventHandler showRecords,
             ShowStatisticsEventHandler showStatistics) {
         return List.of(about, getHint, pauseGame, quitGame, resetGame, showOptions, showRecords, showStatistics);
+    }
+
+    @Provides
+    public GetHintEventHandler provideGetHintEventHandler(GameState gameState) {
+        return new GetHintEventHandler(gameState);
+    }
+
+    @Provides
+    public PauseGameEventHandler providePauseGameEventHandler(GameState gameState) {
+        return new PauseGameEventHandler(gameState);
+    }
+
+    @Provides
+    public ResetGameEventHandler provideResetGameEventHandler(GameState gameState) {
+        return new ResetGameEventHandler(gameState);
     }
 
     @Provides

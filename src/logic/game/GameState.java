@@ -3,15 +3,20 @@ package logic.game;
 /**
  * The state of the game.
  */
-public class GameFeatures {
-	private static boolean gameStarted;
-	private static boolean gameOver;
-	private static boolean gamePaused;
+public class GameState {
+	private boolean gameStarted;
+	private boolean gameOver;
+	private boolean gamePaused;
+
+	public GameState() {
+		System.out.println("Creating new game state");
+		init();
+	}
 
 	/**
 	 * Initialize the game state.
 	 */
-	public static void init() {
+	public void init() {
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
@@ -20,7 +25,7 @@ public class GameFeatures {
 	/**
 	 * Reset the game state.
 	 */
-	public static void reset() {
+	public void reset() {
 		init();
 	}
 
@@ -29,7 +34,7 @@ public class GameFeatures {
 	 * 
 	 * @return true if the game has started, false otherwise.
 	 */
-	public static boolean isGameStarted() {
+	public boolean isGameStarted() {
 		return gameStarted;
 	}
 
@@ -38,7 +43,7 @@ public class GameFeatures {
 	 * 
 	 * @return true if the game has ended, false otherwise.
 	 */
-	public static boolean isGameOver() {
+	public boolean isGameOver() {
 		return gameOver;
 	}
 
@@ -47,7 +52,7 @@ public class GameFeatures {
 	 * 
 	 * @return true if the game is paused, false otherwise;
 	 */
-	public static boolean isGamePaused() {
+	public boolean isGamePaused() {
 		return gamePaused;
 	}
 
@@ -56,7 +61,7 @@ public class GameFeatures {
 	 * 
 	 * @param started true if the game has started.
 	 */
-	public static void setGameStarted(boolean started) {
+	public void setGameStarted(boolean started) {
 		gameStarted = started;
 	}
 
@@ -65,7 +70,7 @@ public class GameFeatures {
 	 * 
 	 * @param over true if the player received game over.
 	 */
-	public static void setGameOver(boolean over) {
+	public void setGameOver(boolean over) {
 		gameOver = over;
 	}
 
@@ -74,7 +79,7 @@ public class GameFeatures {
 	 * 
 	 * @param paused true if the game should be paused.
 	 */
-	public static void setGamePaused(boolean paused) {
+	public void setGamePaused(boolean paused) {
 		gamePaused = paused;
 	}
 }

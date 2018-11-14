@@ -7,9 +7,15 @@ import gui.panel.header.SmileyEnum;
 import logic.game.*;
 
 public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
+    private GameState gameState;
+
+    public PauseGameEventHandler(GameState state) {
+        gameState = state;
+    }
+
     @Override
     public void execute(PauseGameEvent event) {
-        if (GameFeatures.isGameStarted() && !GameFeatures.isGameOver()) {
+        if (gameState.isGameStarted() && !gameState.isGameOver()) {
             if (event.pause) {
                 ClockTimer.stop();
                 ResetButton.setSmileyIcon(SmileyEnum.paused);
@@ -18,7 +24,7 @@ public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
                 ResetButton.setSmileyIcon(SmileyEnum.happy);
             }
 
-            GameFeatures.setGamePaused(event.pause);
+            gameState.setGamePaused(event.pause);
             MineSwept.getMainPanel().pausePanel(event.pause);
         }
     }

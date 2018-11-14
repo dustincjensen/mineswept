@@ -48,7 +48,10 @@ public class MineButton extends JLabel implements MouseListener {
 	private static Color backgroundColor;
 	private static Color defaultColor = new Color(50, 125, 240);
 
-	public MineButton(Preferences prefs) {
+	private static GameState gameState;
+	public MineButton(Preferences prefs, GameState state) {
+		gameState = state;
+
 		// TODO the colors from the preferences should be pre-parsed... so for now, just parse if the backgroundColor is null...
 		if (backgroundColor == null) {
 			parseColor(prefs.r(), prefs.g(), prefs.b());
@@ -132,7 +135,7 @@ public class MineButton extends JLabel implements MouseListener {
 			setBackground(backgroundColor);
 
 			// check for hint (empty space)
-			if (!GameFeatures.isGameOver() && t.isHint()) {
+			if (!gameState.isGameOver() && t.isHint()) {
 				if (t.isSpecialProtected())
 					setIcon(flagHint);
 				else
@@ -142,7 +145,7 @@ public class MineButton extends JLabel implements MouseListener {
 			}
 
 			// allows the changing of color if the options changes it
-			if (GameFeatures.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
+			if (gameState.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
 				setIcon(mine);
 				setText("");
 			}
@@ -251,7 +254,7 @@ public class MineButton extends JLabel implements MouseListener {
 	// MOUSE LISTENER
 	// ==============================================
 	public void mouseEntered(MouseEvent e) {
-		if (!GameFeatures.isGameOver() && startedHere) {
+		if (!gameState.isGameOver() && startedHere) {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
@@ -271,7 +274,7 @@ public class MineButton extends JLabel implements MouseListener {
 	}
 
 	public void mouseExited(MouseEvent e) {
-		if (!GameFeatures.isGameOver() && startedHere) {
+		if (!gameState.isGameOver() && startedHere) {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
@@ -288,11 +291,11 @@ public class MineButton extends JLabel implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		// Left Mouse Button
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (!GameFeatures.isGameStarted()) {
-				GameFeatures.setGameStarted(true);
+			if (!gameState.isGameStarted()) {
+				gameState.setGameStarted(true);
 				ClockTimer.start();
 			}
-			if (!GameFeatures.isGameOver()) {
+			if (!gameState.isGameOver()) {
 				startedHere = true;
 				insideSquares = true;
 				Mine get = MineField.getMine(x, y);
@@ -306,11 +309,11 @@ public class MineButton extends JLabel implements MouseListener {
 
 		// Right mouse button
 		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (!GameFeatures.isGameStarted()) {
-				GameFeatures.setGameStarted(true);
+			if (!gameState.isGameStarted()) {
+				gameState.setGameStarted(true);
 				ClockTimer.start();
 			}
-			if (GameFeatures.isGameOver())
+			if (gameState.isGameOver())
 				return;
 
 			Mine mineSpot = MineField.rightClicked(x, y);
@@ -344,7 +347,7 @@ public class MineButton extends JLabel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		// Left Mouse Button
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (!GameFeatures.isGameOver()) {
+			if (!gameState.isGameOver()) {
 				ResetButton.setSmileyIcon(SmileyEnum.happy);
 				if (insideSquares == true) {
 					if (dragX == -1 && dragY == -1) {

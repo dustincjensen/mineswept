@@ -1,8 +1,9 @@
 package gui.panel.header;
 
-import gui.events.IEventPublisher;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import gui.events.IEventPublisher;
+import logic.game.GameState;
 
 public class HeaderModule extends AbstractModule {
     @Override
@@ -25,7 +26,7 @@ public class HeaderModule extends AbstractModule {
     }
 
     @Provides
-    public TimeCount provideTimeCount(IEventPublisher publisher) {
-        return new TimeCount(publisher);
+    public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher) {
+        return new TimeCount(gameState, publisher);
     }
 }

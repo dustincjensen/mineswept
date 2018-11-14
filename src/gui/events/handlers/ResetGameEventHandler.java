@@ -7,9 +7,16 @@ import gui.panel.mines.MinePanel;
 import logic.game.*;
 
 public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
+    private GameState gameState;
+
+    public ResetGameEventHandler(GameState state) {
+        gameState = state;
+    }
+
     @Override
     public void execute(ResetGameEvent event) {
-        GameFeatures.reset();
+        gameState.reset();
+
         MineField.reset();
         ClockTimer.reset();
         MinePanel.reset();

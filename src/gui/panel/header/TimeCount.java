@@ -5,19 +5,21 @@ import gui.events.PauseGameEvent;
 import gui.FontChange;
 import java.awt.*;
 import javax.swing.*;
-import logic.game.GameFeatures;
+import logic.game.GameState;
 
 /**
  * Renders the time count in the header.
  */
 public class TimeCount extends JPanel {
+	private GameState gameState;
 	private IEventPublisher eventPublisher;
 	private ImageIcon clockImage;
 	private JButton clockIcon;
 	// TODO make non-static
 	private static JLabel clockCount;
 
-	public TimeCount(IEventPublisher publisher) {
+	public TimeCount(GameState state, IEventPublisher publisher) {
+		gameState = state;
 		eventPublisher = publisher;
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
 		setupPanel();
@@ -38,7 +40,7 @@ public class TimeCount extends JPanel {
 		clockIcon.setBorderPainted(false);
 		clockIcon.setContentAreaFilled(false);
 		clockIcon.addActionListener(evt -> {
-			eventPublisher.publish(new PauseGameEvent(!GameFeatures.isGamePaused()));
+			eventPublisher.publish(new PauseGameEvent(!gameState.isGamePaused()));
 		});
 		add(clockIcon);
 	}
