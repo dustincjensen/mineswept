@@ -9,18 +9,14 @@ public class RandomGen {
 	private static Random randomGenerator;
 
 	/**
-	 * Initialize the random generator.
-	 */
-	public static void init() {
-		randomGenerator = new Random();
-	}
-
-	/**
 	 * Retrieve a random integer.
 	 * @param upperLimit the maximum integer.
 	 * @return A random integer from 0 (inclusive) to upperLimit (exclusive).
 	 */
 	public static int getRandomInt(int upperLimit) {
+		if (randomGenerator == null) {
+			randomGenerator = new Random();
+		}
 		return randomGenerator.nextInt(upperLimit);
 	}
 }

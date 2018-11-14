@@ -14,7 +14,6 @@ public class Logic {
 	public static void init(Preferences prefs, Records records, GameState gameState) {
 		// TODO once we have dependency injection, this will all go away.
 		ClockTimer.init();
-		RandomGen.init();
 		MineField.init(prefs, gameState);
 	}
 }
