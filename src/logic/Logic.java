@@ -11,11 +11,12 @@ public class Logic {
 	/**
 	 * Initialize the logic for the game.
 	 */
-	public static void init() {
-		FileManagement.init();
+	public static void init(Preferences prefs, Records records) {
+		// TODO once we have dependency injection, this will all go away.
+		FileManagement.init(prefs, records);
 		GameFeatures.init();
 		ClockTimer.init();
 		RandomGen.init();
-		MineField.init();
+		MineField.init(prefs);
 	}
 }

@@ -7,18 +7,36 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class FileManagement {
-	private static File gameDir;
 
-	public static void init() {
-		if (gameDirectory()) {
-			var files = gameDir.listFiles();
-			Preferences.load(get(files, "prefs"));
-			Records.load(get(files, "records"));
-			// Statistics.load(get(files, "statistics"));
+	public static void init(Preferences preferences, Records records) {
+		File gameDir = getGameDir();
+
+		// TODO I think that they should probably load on their own?
+		if (gameDir != null) {
+			File[] files = gameDir.listFiles();
+			preferences.load(get(files, "prefs"));
+			records.load(get(files, "records"));
+			// statistics.load(get(files, "statistics"));
 		}
 	}
 
+	/**
+	 * Get the game directory.
+	 * This will create the directory if it does not yet exist.
+	 * 
+	 * @return the game directory where files should be saved.
+	 */
 	public static File getGameDir() {
+		String userDir = System.getProperty("user.home");
+		File gameDir = new File(userDir + "/.MineSwept/");
+		
+		if (!gameDir.exists()) {
+			if (!gameDir.mkdir()) {
+				System.out.println("Directory creation failed...");
+				return null;
+			}
+		}
+
 		return gameDir;
 	}
 	
@@ -59,17 +77,5 @@ public class FileManagement {
 		return Arrays.stream(files)
 			.filter(f -> f.getName().matches(fileName))
 			.findAny();
-	}
-
-	private static boolean gameDirectory() {
-		String userDir = System.getProperty("user.home");
-		gameDir = new File(userDir + "/.MineSwept/");
-		if (!gameDir.exists()) {
-			if (!gameDir.mkdir()) {
-				System.out.println("Directory creation failed...");
-				return false;
-			}
-		}
-		return true;
 	}
 }

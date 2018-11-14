@@ -48,7 +48,13 @@ public class MineButton extends JLabel implements MouseListener {
 	private static Color backgroundColor;
 	private static Color defaultColor = new Color(50, 125, 240);
 
-	public MineButton() {
+	public MineButton(Preferences prefs) {
+		// TODO the colors from the preferences should be pre-parsed... so for now, just parse if the backgroundColor is null...
+		if (backgroundColor == null) {
+			parseColor(prefs.r(), prefs.g(), prefs.b());
+			System.out.println("Only parsing the Mine Button Color preferences one time.");
+		}
+
 		FontChange.setFont(this, 32);
 		w = 48;
 		h = 48;
@@ -168,7 +174,7 @@ public class MineButton extends JLabel implements MouseListener {
 		return y;
 	}
 
-	public static void parseColor(String r, String g, String b) {
+	private static void parseColor(String r, String g, String b) {
 		int red, green, blue;
 		red = green = blue = -1;
 		r = r.toLowerCase();

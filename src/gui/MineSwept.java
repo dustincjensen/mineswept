@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
-import logic.files.FileManagement;
+import logic.files.*;
 import logic.Logic;
 
 /**
@@ -22,11 +22,10 @@ public class MineSwept implements WindowListener {
 	private static JFrame window;
 	private static MainPanel mp;
 
-	public MineSwept(Menus menus, IEventPublisher publisher) {
+	public MineSwept(Menus menus, IEventPublisher publisher, Preferences prefs, Records records) {
 		eventPublisher = publisher;
 
-		// Loaded after gui starts MOSTLY
-		Logic.init();
+		Logic.init(prefs, records);
 		mp = new MainPanel();
 
 		window = new JFrame("MineSwept");

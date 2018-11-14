@@ -16,7 +16,9 @@ public class MineField {
 	private static final int[] h = {9, 16, 16};
 	private static final int[] numMines = {10, 40, 99};
 
-	public static void init() {
+	public static void init(Preferences prefs) {
+		parseDifficulty(prefs.difficulty());		
+
 		nextPuzzle = -1;
 		// Initial size is the capacity, which will never have to be increased,
 		// but calling .size() only gives the ones that are filled in.
@@ -298,10 +300,6 @@ public class MineField {
 		return getNumMines()-count;
 	}
 
-	public static void setCurrentPuzzle(int puzzle) {
-		currentPuzzle = puzzle;
-	}
-
 	public static void setNextPuzzle(int puzzle) {
 		nextPuzzle = puzzle;
 	}
@@ -325,16 +323,16 @@ public class MineField {
 	public static void parseDifficulty(String difficulty) {
 		difficulty = difficulty.toLowerCase();
 		if (difficulty.matches("easy")) {
-			setCurrentPuzzle(0);
+			currentPuzzle = 0;
 		}
 		else if(difficulty.matches("medium")) {
-			setCurrentPuzzle(1);
+			currentPuzzle = 1;
 		}
 		else if(difficulty.matches("hard")) {
-			setCurrentPuzzle(2);
+			currentPuzzle = 2;
 		}
 		else {
-			setCurrentPuzzle(0);
+			currentPuzzle = 0;
 			return;
 		}
 	}

@@ -1,5 +1,6 @@
 package gui.panel.mines;
 
+import gui.ClassFactory;
 import gui.panel.MainPanel;
 import logic.game.MineField;
 import java.awt.*;
@@ -58,7 +59,8 @@ public class MinePanel extends JPanel {
 		mineButtons.clear();
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
-				MineButton mb = new MineButton();
+				// TODO this is temporary for now... Need to figure out how to create mines. Perhaps this IS the best way.
+				MineButton mb = ClassFactory.create(MineButton.class);
 				mb.setPosition(x, y);
 				mineButtons.add(mb);
 				interiorMinePanel.add(mb);

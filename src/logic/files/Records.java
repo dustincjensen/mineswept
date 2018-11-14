@@ -13,9 +13,13 @@ public class Records {
 		"[Advanced]\n"
 	};
 
-	private static File records;
+	private File records;
 
-	public static boolean load(Optional<File> recordsFile) {
+	public Records() {
+		System.out.println("Creating records ref");
+	}
+
+	public boolean load(Optional<File> recordsFile) {
 		if (recordsFile.isPresent()) {
 			records = recordsFile.get();
 		} else {
