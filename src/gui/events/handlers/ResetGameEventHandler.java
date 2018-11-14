@@ -8,9 +8,11 @@ import logic.game.*;
 
 public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
     private GameState gameState;
+    private ClockTimer clockTimer;
 
-    public ResetGameEventHandler(GameState state) {
+    public ResetGameEventHandler(GameState state, ClockTimer timer) {
         gameState = state;
+        clockTimer = timer;
     }
 
     @Override
@@ -18,7 +20,9 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         gameState.reset();
 
         MineField.reset();
-        ClockTimer.reset();
+        
+        clockTimer.reset();
+        
         MinePanel.reset();
         ResetButton.reset();
         MineCount.reset();

@@ -8,19 +8,21 @@ import logic.game.*;
 
 public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
     private GameState gameState;
+    private ClockTimer clockTimer;
 
-    public PauseGameEventHandler(GameState state) {
+    public PauseGameEventHandler(GameState state, ClockTimer timer) {
         gameState = state;
+        clockTimer = timer;
     }
 
     @Override
     public void execute(PauseGameEvent event) {
         if (gameState.isGameStarted() && !gameState.isGameOver()) {
             if (event.pause) {
-                ClockTimer.stop();
+                clockTimer.stop();
                 ResetButton.setSmileyIcon(SmileyEnum.paused);
             } else {
-                ClockTimer.start();
+                clockTimer.start();
                 ResetButton.setSmileyIcon(SmileyEnum.happy);
             }
 

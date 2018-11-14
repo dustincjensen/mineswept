@@ -9,9 +9,10 @@ import gui.events.handlers.*;
 import gui.options.OptionWindow;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
+import java.util.List;
+import logic.game.ClockTimer;
 import logic.game.GameState;
 
-import java.util.List;
 
 public class EventModule extends AbstractModule {
     @Override
@@ -38,13 +39,13 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public PauseGameEventHandler providePauseGameEventHandler(GameState gameState) {
-        return new PauseGameEventHandler(gameState);
+    public PauseGameEventHandler providePauseGameEventHandler(GameState gameState, ClockTimer clockTimer) {
+        return new PauseGameEventHandler(gameState, clockTimer);
     }
 
     @Provides
-    public ResetGameEventHandler provideResetGameEventHandler(GameState gameState) {
-        return new ResetGameEventHandler(gameState);
+    public ResetGameEventHandler provideResetGameEventHandler(GameState gameState, ClockTimer clockTimer) {
+        return new ResetGameEventHandler(gameState, clockTimer);
     }
 
     @Provides

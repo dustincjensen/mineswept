@@ -10,7 +10,7 @@ import java.awt.event.WindowListener;
 import javax.swing.*;
 import logic.files.*;
 import logic.Logic;
-import logic.game.GameState;
+import logic.game.*;
 
 /**
  * Runs the JFrame for the game.
@@ -23,10 +23,17 @@ public class MineSwept implements WindowListener {
 	private static JFrame window;
 	private static MainPanel mp;
 
-	public MineSwept(Menus menus, IEventPublisher publisher, Preferences prefs, Records records, GameState gameState) {
+	public MineSwept(
+		Menus menus,
+		IEventPublisher publisher,
+		Preferences prefs,
+		Records records,
+		GameState gameState,
+		ClockTimer clockTimer
+	) {
 		eventPublisher = publisher;
 
-		Logic.init(prefs, records, gameState);
+		Logic.init(prefs, records, gameState, clockTimer);
 		mp = new MainPanel();
 
 		window = new JFrame("MineSwept");

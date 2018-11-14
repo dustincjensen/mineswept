@@ -29,14 +29,21 @@ public class InjectionModule extends AbstractModule {
 
     // TODO move this into it's own module?
     @Provides
-    public MineSwept provideMineSwept(Menus menus, IEventPublisher publisher, Preferences prefs, Records records, GameState gameState) {
-        return new MineSwept(menus, publisher, prefs, records, gameState);
+    public MineSwept provideMineSwept(
+        Menus menus,
+        IEventPublisher publisher,
+        Preferences prefs,
+        Records records,
+        GameState gameState,
+        ClockTimer clockTimer
+    ) {
+        return new MineSwept(menus, publisher, prefs, records, gameState, clockTimer);
     }
 
     // TODO move this into it's own module?
     @Provides
-    public MineButton provideMineButton(Preferences prefs, GameState gameState) {
-        return new MineButton(prefs, gameState);
+    public MineButton provideMineButton(Preferences prefs, GameState gameState, ClockTimer clockTimer) {
+        return new MineButton(prefs, gameState, clockTimer);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
@@ -51,5 +58,12 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public GameState provideGameState() {
         return new GameState();
+    }
+
+    // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
+    @Singleton
+    @Provides
+    public ClockTimer provideClockTimer() {
+        return new ClockTimer();
     }
 }

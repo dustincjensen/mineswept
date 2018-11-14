@@ -11,9 +11,8 @@ public class Logic {
 	/**
 	 * Initialize the logic for the game.
 	 */
-	public static void init(Preferences prefs, Records records, GameState gameState) {
+	public static void init(Preferences prefs, Records records, GameState gameState, ClockTimer clockTimer) {
 		// TODO once we have dependency injection, this will all go away.
-		ClockTimer.init();
-		MineField.init(prefs, gameState);
+		MineField.init(prefs, gameState, clockTimer);
 	}
 }

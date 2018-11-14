@@ -17,8 +17,10 @@ public class MineField {
 	private static final int[] numMines = {10, 40, 99};
 
 	private static GameState gameState;
-	public static void init(Preferences prefs, GameState state) {
+	private static ClockTimer clockTimer;
+	public static void init(Preferences prefs, GameState state, ClockTimer timer) {
 		gameState = state;
+		clockTimer = timer;
 
 		parseDifficulty(prefs.difficulty());
 
@@ -215,7 +217,7 @@ public class MineField {
 		}
 
 		gameState.setGameOver(true);
-		ClockTimer.stop();
+		clockTimer.stop();
 		ResetButton.setSmileyIcon(SmileyEnum.sad);
 	}
 
@@ -258,7 +260,7 @@ public class MineField {
 			&& !bombBlew)
 		{
 			gameState.setGameOver(true);
-			ClockTimer.stop();
+			clockTimer.stop();
 			ResetButton.setSmileyIcon(SmileyEnum.cool);
 		}
 	}

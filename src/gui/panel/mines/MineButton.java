@@ -49,8 +49,10 @@ public class MineButton extends JLabel implements MouseListener {
 	private static Color defaultColor = new Color(50, 125, 240);
 
 	private static GameState gameState;
-	public MineButton(Preferences prefs, GameState state) {
+	private static ClockTimer clockTimer;
+	public MineButton(Preferences prefs, GameState state, ClockTimer timer) {
 		gameState = state;
+		clockTimer = timer;
 
 		// TODO the colors from the preferences should be pre-parsed... so for now, just parse if the backgroundColor is null...
 		if (backgroundColor == null) {
@@ -293,7 +295,7 @@ public class MineButton extends JLabel implements MouseListener {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			if (!gameState.isGameStarted()) {
 				gameState.setGameStarted(true);
-				ClockTimer.start();
+				clockTimer.start();
 			}
 			if (!gameState.isGameOver()) {
 				startedHere = true;
@@ -311,7 +313,7 @@ public class MineButton extends JLabel implements MouseListener {
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			if (!gameState.isGameStarted()) {
 				gameState.setGameStarted(true);
-				ClockTimer.start();
+				clockTimer.start();
 			}
 			if (gameState.isGameOver())
 				return;
