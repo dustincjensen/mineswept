@@ -10,7 +10,7 @@ public class MineField {
 
 	private static int currentPuzzle;
 	private static int nextPuzzle;
-	private static MineVector mines;
+	private static Mines mines;
 
 	private static final int[] w = {9, 16, 30};
 	private static final int[] h = {9, 16, 16};
@@ -22,7 +22,7 @@ public class MineField {
 		nextPuzzle = -1;
 		// Initial size is the capacity, which will never have to be increased,
 		// but calling .size() only gives the ones that are filled in.
-		mines = new MineVector(w[2]*h[2]);
+		mines = new Mines(w[2]*h[2]);
 		setupField();
 	}
 

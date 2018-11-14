@@ -1,10 +1,9 @@
 package logic.game;
 
 import java.util.Vector;
-import logic.game.Mine;
 
-public class MineVector extends Vector<Mine> {
-	public MineVector(int size) {
+public class Mines extends Vector<Mine> {
+	public Mines(int size) {
 		super(size);
 	}
 
