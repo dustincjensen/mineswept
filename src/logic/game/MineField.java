@@ -18,6 +18,14 @@ public class MineField {
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
+
+	// TODO this will be the next non-static class.
+	// Seems like most of the logic classes are singletons and their state is only initialized
+	// when they are first requested.
+	// I think this class should not be a physical entity, but the mines should be part of GameState.
+	// This class would contain methods to get a list of mines, run methods like uncover, on a list of mines,
+	// but the mines would be part of the game state... then the mine field is not being injected into other places.
+	// It is likely that the clock timer time, should also be part of game state.
 	public static void init(Preferences prefs, GameState state, ClockTimer timer) {
 		gameState = state;
 		clockTimer = timer;
