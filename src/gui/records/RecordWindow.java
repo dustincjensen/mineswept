@@ -13,25 +13,27 @@ public class RecordWindow {
 	// TODO make non-static
 	private static RecordPanel beginner, intermediate, advanced;
 
-	public RecordWindow() {
+	public RecordWindow(Records records) {
+		System.out.println("Creating: RECORD WINDOW");
 		setupWindow();
+		beginner.setRecords(records.getAllRecords().beginner);
 	}
 
 	public void show(boolean t) {
 		recordWindow.setVisible(t);
 	}
 
-	public static void setBeginnerRecords(String[] arr) {
-		beginner.setRecords(arr);
-	}
+	// public static void setBeginnerRecords(String[] arr) {
+	// 	beginner.setRecords(arr);
+	// }
 
-	public static void setIntermediateRecords(String[] arr) {
-		intermediate.setRecords(arr);
-	}
+	// public static void setIntermediateRecords(String[] arr) {
+	// 	intermediate.setRecords(arr);
+	// }
 
-	public static void setAdvancedRecords(String[] arr) {
-		advanced.setRecords(arr);
-	}
+	// public static void setAdvancedRecords(String[] arr) {
+	// 	advanced.setRecords(arr);
+	// }
 
 	private void setupWindow() {
 		recordWindow = new JFrame("Records");

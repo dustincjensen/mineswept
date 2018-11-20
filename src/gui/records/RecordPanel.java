@@ -1,14 +1,17 @@
 package gui.records;
 
-import logic.files.Records;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import logic.files.Records;
+import logic.files.records.Record;
 
 public class RecordPanel extends JPanel {
 	private JTable bodyTable;
 	private DefaultTableModel tableModel;
-	private String[] records = {};
+	private Record[] records = {};
 
 	public RecordPanel(String level) {
 		setupPane(level);
@@ -52,22 +55,26 @@ public class RecordPanel extends JPanel {
 		bodyTable.getColumnModel().getColumn(3).setPreferredWidth(25);
 	}
 
-	public void setRecords(String[] rec) {
+	public void setRecords(Record[] rec) {
 		records = rec;
 		refreshRecords();
 	}
 
 	public void refreshRecords() {
 		tableModel.setRowCount(0);
-		if (records.length % 3 == 0) {
-			for (int i = 0; i < records.length; i = i + 3) {
-				String[] row = new String[4];
-				row[0] = Integer.toString((i / 3) + 1);
-				row[1] = records[i];
-				row[2] = records[i + 1];
-				row[3] = records[i + 2];
-				tableModel.addRow(row);
-			}
+
+		var sortedRecords = Arrays.stream(records)
+			.sorted(Comparator.comparing(r -> r.time))
+			.toArray(Record[]::new);
+
+		int i = 0;
+		for (var record : sortedRecords) {
+			String[] row = new String[4];
+			row[0] = String.valueOf(++i);
+			row[1] = record.name;
+			row[2] = String.valueOf(record.time);
+			row[3] = record.date;
+			tableModel.addRow(row);
 		}
 	}
 }

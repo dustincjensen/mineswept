@@ -21,6 +21,7 @@
 				<path location="lib/guava-26.0-jre.jar" />
 				<path location="lib/guice-4.2.2.jar" />
 				<path location="lib/javax.inject.jar" />
+				<path location="lib/gson-2.8.5.jar" />
 			</classpath>
 		</javac>
 	</target>

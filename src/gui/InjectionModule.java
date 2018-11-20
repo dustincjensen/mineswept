@@ -10,12 +10,14 @@ import gui.menu.Menus;
 import gui.panel.header.HeaderModule;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.PausePanel;
+import gui.records.RecordWindow;
 import logic.files.*;
 import logic.game.*;
 
 public class InjectionModule extends AbstractModule {
     @Override
     protected void configure() {
+        install(new FileModule());
         install(new EventModule());
         install(new HeaderModule());
         install(new MenuModule());
@@ -49,13 +51,6 @@ public class InjectionModule extends AbstractModule {
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
     @Singleton
     @Provides
-    public Preferences providePreferences() {
-        return new Preferences();
-    }
-
-    // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
-    @Singleton
-    @Provides
     public GameState provideGameState() {
         return new GameState();
     }
@@ -65,5 +60,10 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public ClockTimer provideClockTimer() {
         return new ClockTimer();
+    }
+    
+    @Provides
+    public RecordWindow provideRecordWindow(Records records) {
+        return new RecordWindow(records);
     }
 }
