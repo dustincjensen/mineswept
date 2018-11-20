@@ -2,6 +2,7 @@ package gui.panel.header;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import gui.ResourceLoader;
 import gui.events.IEventPublisher;
 import logic.game.GameState;
 
@@ -16,17 +17,17 @@ public class HeaderModule extends AbstractModule {
     }
 
     @Provides
-    public MineCount provideMineCount(IEventPublisher publisher) {
-        return new MineCount(publisher);
+    public MineCount provideMineCount(IEventPublisher publisher, ResourceLoader loader) {
+        return new MineCount(publisher, loader);
     }
 
     @Provides
-    public ResetButton provideResetButton(IEventPublisher publisher) {
-        return new ResetButton(publisher);
+    public ResetButton provideResetButton(IEventPublisher publisher, ResourceLoader loader) {
+        return new ResetButton(publisher, loader);
     }
 
     @Provides
-    public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher) {
-        return new TimeCount(gameState, publisher);
+    public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, ResourceLoader loader) {
+        return new TimeCount(gameState, publisher, loader);
     }
 }

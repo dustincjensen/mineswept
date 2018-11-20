@@ -3,9 +3,10 @@ package gui.panel.mines;
 import logic.game.*;
 import logic.files.Preferences;
 import gui.FontChange;
+import gui.Resource;
+import gui.ResourceLoader;
 import gui.panel.header.MineCount;
 import gui.panel.header.ResetButton;
-import gui.panel.header.SmileyEnum;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -20,7 +21,6 @@ import java.awt.event.InputEvent;
  */
 public class MineButton extends JLabel implements MouseListener {
 	private static int w, h; // 32, 48 //font size, 22 for 32 and 32 for 48
-	private static ImageIcon flag, mine, mineWrong, hint, flagHint;
 	private int x, y;
 	private int fqe; // empty flag question //state of the button
 
@@ -50,9 +50,11 @@ public class MineButton extends JLabel implements MouseListener {
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
-	public MineButton(Preferences prefs, GameState state, ClockTimer timer) {
+	private static ResourceLoader resourceLoader;
+	public MineButton(Preferences prefs, GameState state, ClockTimer timer, ResourceLoader loader) {
 		gameState = state;
 		clockTimer = timer;
+		resourceLoader = loader;
 
 		// TODO the colors from the preferences should be pre-parsed... so for now, just parse if the backgroundColor is null...
 		if (backgroundColor == null) {
@@ -73,25 +75,12 @@ public class MineButton extends JLabel implements MouseListener {
 	}
 
 	public static void init() {
-		loadImages();
 		reset();
 	}
 
 	public static void reset() {
 		dragX = -1;
 		dragY = -1;
-	}
-
-	private static void loadImages() {
-		try {
-			flag = new ImageIcon((MineButton.class).getResource("/icons/flag-24.png"));
-			flagHint = new ImageIcon((MineButton.class).getResource("/icons/flagHint-24.png"));
-			mine = new ImageIcon((MineButton.class).getResource("/icons/mrBomb.png"));
-			mineWrong = new ImageIcon((MineButton.class).getResource("/icons/mrBombWrong.png"));
-			hint = new ImageIcon((MineButton.class).getResource("/icons/smiley-wink-32.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void decorate() {
@@ -101,12 +90,12 @@ public class MineButton extends JLabel implements MouseListener {
 			// A bomb
 			if (t.isBomb()) {
 				setText("");
-				setIcon(mine);
+				setIcon(resourceLoader.get(Resource.Mine));
 			}
 			// Not a bomb but is has flag, is wrong
 			else if (!t.isBomb() && t.isProtected()) {
 				setText("");
-				setIcon(mineWrong);
+				setIcon(resourceLoader.get(Resource.MineWrong));
 			}
 			// A regular square or empty
 			else {
@@ -139,16 +128,16 @@ public class MineButton extends JLabel implements MouseListener {
 			// check for hint (empty space)
 			if (!gameState.isGameOver() && t.isHint()) {
 				if (t.isSpecialProtected())
-					setIcon(flagHint);
+					setIcon(resourceLoader.get(Resource.FlagHint));
 				else
-					setIcon(hint);
+					setIcon(resourceLoader.get(Resource.MineHint));
 				setText("");
 				t.setHint(false);
 			}
 
 			// allows the changing of color if the options changes it
 			if (gameState.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
-				setIcon(mine);
+				setIcon(resourceLoader.get(Resource.Mine));
 				setText("");
 			}
 		}
@@ -265,11 +254,11 @@ public class MineButton extends JLabel implements MouseListener {
 				dragY = y;
 				insideSquares = true;
 				if (!get.uncovered() && !get.getAnyProtected()) {
-					ResetButton.setSmileyIcon(SmileyEnum.surprised);
+					ResetButton.setSmileyIcon(Resource.SmileySurprised);
 					setBorder(LOWEREDBORDER);
 					setBackground(null);
 				} else {
-					ResetButton.setSmileyIcon(SmileyEnum.happy);
+					ResetButton.setSmileyIcon(Resource.SmileyHappy);
 				}
 			}
 		}
@@ -304,7 +293,7 @@ public class MineButton extends JLabel implements MouseListener {
 				if (!get.uncovered() && !get.getAnyProtected()) {
 					setBorder(LOWEREDBORDER);
 					setBackground(null);
-					ResetButton.setSmileyIcon(SmileyEnum.surprised);
+					ResetButton.setSmileyIcon(Resource.SmileySurprised);
 				}
 			}
 		}
@@ -326,7 +315,7 @@ public class MineButton extends JLabel implements MouseListener {
 					fqe++;
 
 				if (fqe == 1) {
-					setIcon(flag);
+					setIcon(resourceLoader.get(Resource.Flag));
 					setText("");
 					mineSpot.setProtected(true);
 
@@ -350,7 +339,7 @@ public class MineButton extends JLabel implements MouseListener {
 		// Left Mouse Button
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			if (!gameState.isGameOver()) {
-				ResetButton.setSmileyIcon(SmileyEnum.happy);
+				ResetButton.setSmileyIcon(Resource.SmileyHappy);
 				if (insideSquares == true) {
 					if (dragX == -1 && dragY == -1) {
 						Mine get = MineField.getMine(x, y);

@@ -4,6 +4,7 @@ import gui.events.IEventPublisher;
 import gui.events.QuitGameEvent;
 import gui.menu.Menus;
 import gui.panel.MainPanel;
+import gui.Resource;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -26,6 +27,7 @@ public class MineSwept implements WindowListener {
 	public MineSwept(
 		Menus menus,
 		IEventPublisher publisher,
+		ResourceLoader loader,
 		Preferences prefs,
 		Records records,
 		GameState gameState,
@@ -44,14 +46,7 @@ public class MineSwept implements WindowListener {
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.addWindowListener(this);
-
-		try {
-			ImageIcon frameIcon = new ImageIcon((MineSwept.class).getResource("/icons/smiley-cool.png"));
-			window.setIconImage(frameIcon.getImage());
-		} catch (Exception e) {
-			System.out.println("Failed to load JFrame icon");
-			System.exit(1);
-		}
+		window.setIconImage(loader.get(Resource.SmileyCool).getImage());
 	}
 
 	public static JFrame getWindow() {

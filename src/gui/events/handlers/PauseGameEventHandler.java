@@ -2,8 +2,8 @@ package gui.events.handlers;
 
 import gui.events.PauseGameEvent;
 import gui.MineSwept;
+import gui.Resource;
 import gui.panel.header.ResetButton;
-import gui.panel.header.SmileyEnum;
 import logic.game.*;
 
 public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
@@ -20,10 +20,10 @@ public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
         if (gameState.isGameStarted() && !gameState.isGameOver()) {
             if (event.pause) {
                 clockTimer.stop();
-                ResetButton.setSmileyIcon(SmileyEnum.paused);
+                ResetButton.setSmileyIcon(Resource.SmileyPaused);
             } else {
                 clockTimer.start();
-                ResetButton.setSmileyIcon(SmileyEnum.happy);
+                ResetButton.setSmileyIcon(Resource.SmileyHappy);
             }
 
             gameState.setGamePaused(event.pause);

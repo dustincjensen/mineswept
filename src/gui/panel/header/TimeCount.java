@@ -3,6 +3,8 @@ package gui.panel.header;
 import gui.events.IEventPublisher;
 import gui.events.PauseGameEvent;
 import gui.FontChange;
+import gui.Resource;
+import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
 import logic.game.GameState;
@@ -13,14 +15,15 @@ import logic.game.GameState;
 public class TimeCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;
-	private ImageIcon clockImage;
+	private ResourceLoader resourceLoader;
 	private JButton clockIcon;
 	// TODO make non-static
 	private static JLabel clockCount;
 
-	public TimeCount(GameState state, IEventPublisher publisher) {
+	public TimeCount(GameState state, IEventPublisher publisher, ResourceLoader loader) {
 		gameState = state;
 		eventPublisher = publisher;
+		resourceLoader = loader;
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
 		setupPanel();
 	}
@@ -35,7 +38,7 @@ public class TimeCount extends JPanel {
 		FontChange.setFont(clockCount, 24);
 		add(clockCount);
 
-		clockIcon = new JButton(loadImage());
+		clockIcon = new JButton(resourceLoader.get(Resource.Clock));
 		clockIcon.setToolTipText("Pause or Continue");
 		clockIcon.setBorderPainted(false);
 		clockIcon.setContentAreaFilled(false);
@@ -43,14 +46,5 @@ public class TimeCount extends JPanel {
 			eventPublisher.publish(new PauseGameEvent(!gameState.isGamePaused()));
 		});
 		add(clockIcon);
-	}
-
-	private ImageIcon loadImage() {
-		try {
-			return new ImageIcon(getClass().getResource("/icons/clock.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
 	}
 }

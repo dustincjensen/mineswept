@@ -3,6 +3,8 @@ package gui.panel.header;
 import gui.events.GetHintEvent;
 import gui.events.IEventPublisher;
 import gui.FontChange;
+import gui.Resource;
+import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
 import logic.game.MineField;
@@ -12,13 +14,15 @@ import logic.game.MineField;
  */
 public class MineCount extends JPanel {
 	private IEventPublisher eventPublisher;
+	private ResourceLoader resourceLoader;
 	private ImageIcon mineImage;
 	private JButton mineIcon;
 	// TODO make non-static
 	private static JLabel mineCount;
 
-	public MineCount(IEventPublisher publisher) {
+	public MineCount(IEventPublisher publisher, ResourceLoader loader) {
 		eventPublisher = publisher;
+		resourceLoader = loader;
 		setLayout(new FlowLayout(FlowLayout.LEADING));
 		setupPanel();
 	}
@@ -34,7 +38,7 @@ public class MineCount extends JPanel {
 	}
 
 	private void setupPanel() {
-		mineIcon = new JButton(loadImage());
+		mineIcon = new JButton(resourceLoader.get(Resource.BombHint));
 		mineIcon.setToolTipText("Get a hint");
 		mineIcon.setBorderPainted(false);
 		mineIcon.setContentAreaFilled(false);
@@ -47,14 +51,5 @@ public class MineCount extends JPanel {
 		reset();
 		FontChange.setFont(mineCount, 24);
 		add(mineCount);
-	}
-
-	private ImageIcon loadImage() {
-		try {
-			return new ImageIcon(getClass().getResource("/icons/bomb.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
 	}
 }

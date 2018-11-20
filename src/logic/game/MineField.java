@@ -1,7 +1,7 @@
 package logic.game;
 
+import gui.Resource;
 import gui.panel.header.ResetButton;
-import gui.panel.header.SmileyEnum;
 import java.util.ArrayList;
 import logic.util.RandomGen;
 import logic.files.Preferences;
@@ -226,7 +226,7 @@ public class MineField {
 
 		gameState.setGameOver(true);
 		clockTimer.stop();
-		ResetButton.setSmileyIcon(SmileyEnum.sad);
+		ResetButton.setSmileyIcon(Resource.SmileySad);
 	}
 
 	public static void uncover(int i) {
@@ -269,7 +269,7 @@ public class MineField {
 		{
 			gameState.setGameOver(true);
 			clockTimer.stop();
-			ResetButton.setSmileyIcon(SmileyEnum.cool);
+			ResetButton.setSmileyIcon(Resource.SmileyCool);
 		}
 	}
 
