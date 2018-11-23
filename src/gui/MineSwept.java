@@ -28,14 +28,12 @@ public class MineSwept implements WindowListener {
 		Menus menus,
 		IEventPublisher publisher,
 		ResourceLoader loader,
-		Preferences prefs,
-		Records records,
 		GameState gameState,
 		ClockTimer clockTimer
 	) {
 		eventPublisher = publisher;
 
-		Logic.init(prefs, records, gameState, clockTimer);
+		Logic.init(gameState, clockTimer);
 		mp = new MainPanel();
 
 		window = new JFrame("MineSwept");

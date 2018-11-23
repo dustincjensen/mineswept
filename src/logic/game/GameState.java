@@ -1,6 +1,7 @@
 package logic.game;
 
 import java.util.Map;
+import logic.files.Preferences;
 
 /**
  * The state of the game.
@@ -15,12 +16,12 @@ public class GameState {
 	private Map<Difficulty, Integer> puzzleHeights;
 	private Map<Difficulty, Integer> puzzleMines;
 
-	public GameState() {
+	public GameState(Preferences prefs) {
 		System.out.println("Creating new game state");
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
-		currentPuzzleDifficulty = nextPuzzleDifficulty = Difficulty.easy;
+		currentPuzzleDifficulty = nextPuzzleDifficulty = prefs.difficulty();
 		puzzleWidths = Map.of(
 			Difficulty.easy, 9,
 			Difficulty.intermediate, 16,

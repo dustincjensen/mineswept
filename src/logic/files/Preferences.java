@@ -3,8 +3,10 @@ package logic.files;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Map;
 import java.util.Optional;
-import logic.game.MineField;
+import logic.game.Difficulty;
+import logic.game.GameState;
 
 public class Preferences {
 	private final static String[] defaultFileLines = {
@@ -15,6 +17,11 @@ public class Preferences {
 		"[Difficulty]\n",
 		"medium\n", // easy, medium, hard
 	};
+
+	private static Map<String, Difficulty> difficultyMap = Map.of(
+		"easy", Difficulty.easy,
+		"medium", Difficulty.intermediate,
+		"hard", Difficulty.advanced);
 	
 	private File preferences;
 
@@ -64,5 +71,9 @@ public class Preferences {
 	public String b() { return b; }
 	
 	private String difficulty;
-	public String difficulty() { return difficulty; }
+	public Difficulty difficulty() {
+		return difficultyMap.get(
+			difficulty.toLowerCase()
+		);
+	}
 }

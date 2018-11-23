@@ -3,17 +3,10 @@ package logic.game;
 import gui.Resource;
 import gui.panel.header.ResetButton;
 import java.util.ArrayList;
-import java.util.Map;
 import logic.util.RandomGen;
-import logic.files.Preferences;
 
 public class MineField {
 	private static Mines mines;
-
-	private static Map<String, Difficulty> difficultyMap = Map.of(
-		"easy", Difficulty.easy,
-		"medium", Difficulty.intermediate,
-		"hard", Difficulty.advanced);
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
@@ -25,16 +18,9 @@ public class MineField {
 	// This class would contain methods to get a list of mines, run methods like uncover, on a list of mines,
 	// but the mines would be part of the game state... then the mine field is not being injected into other places.
 	// It is likely that the clock timer time, should also be part of game state.
-	public static void init(Preferences prefs, GameState state, ClockTimer timer) {
+	public static void init(GameState state, ClockTimer timer) {
 		gameState = state;
 		clockTimer = timer;
-
-		Difficulty difficulty = difficultyMap.get(
-			prefs.difficulty().toLowerCase()
-		);
-
-		gameState.setCurrentPuzzleDifficulty(difficulty);
-		gameState.setNextPuzzleDifficulty(difficulty);
 
 		// Initial size is the capacity, which will never have to be increased,
 		// but calling .size() only gives the ones that are filled in.
