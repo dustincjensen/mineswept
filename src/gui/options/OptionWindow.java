@@ -1,23 +1,26 @@
 package gui.options;
 
-import logic.game.Difficulty;
-// TODO these static dependencies need to have their information placed into an "Options" dependency and then retrieve the information and set the information to that.
-import logic.game.MineField;
 import gui.panel.header.ResetButton;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import logic.game.Difficulty;
+import logic.game.GameState;
 
 public class OptionWindow {
+	private GameState gameState;
 	private JFrame optionsWindow;
 	private boolean optionsHaveChanged;
 	private ButtonGroup difficultyRadioButtonGroup;
 	private JRadioButton easy, medium, hard;
 	private JButton mineButtonColor;
 
-	public OptionWindow() {
+	public OptionWindow(GameState state) {
+		System.out.println("Creating new option window...");
+		gameState = state;
+
 		optionsWindow = new JFrame("Options");
 		optionsWindow.setContentPane(mainPanel());
 		optionsWindow.setSize(500, 350);
@@ -66,15 +69,15 @@ public class OptionWindow {
 		difficultyPanel.setBorder(BorderFactory.createTitledBorder("Difficulty"));
 
 		easy = new JRadioButton("<html>Beginner<br/>10 mines<br/>9 x 9 tile grid</html>");
-		easy.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != Difficulty.easy);
+		easy.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.easy);
 		difficultyPanel.add(easy);
 
 		medium = new JRadioButton("<html>Intermediate<br/>40 mines<br/>16 x 16 tile grid</html>");
-		medium.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != Difficulty.intermediate);
+		medium.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.intermediate);
 		difficultyPanel.add(medium);
 
 		hard = new JRadioButton("<html>Advanced<br/>99 mines<br/>16 x 30 tile grid</html>");
-		hard.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != Difficulty.advanced);
+		hard.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.advanced);
 		difficultyPanel.add(hard);
 
 		difficultyRadioButtonGroup = new ButtonGroup();
@@ -89,7 +92,7 @@ public class OptionWindow {
 	}
 
 	private void chooseSelectedDifficulty() {
-		Difficulty currentPuzzle = MineField.getCurrentPuzzle();
+		Difficulty currentPuzzle = gameState.getCurrentPuzzleDifficulty();
 		easy.setSelected(currentPuzzle == Difficulty.easy);
 		medium.setSelected(currentPuzzle == Difficulty.intermediate);
 		hard.setSelected(currentPuzzle == Difficulty.advanced);
@@ -152,11 +155,11 @@ public class OptionWindow {
 	private void setNewOptions() {
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
-			MineField.setNextPuzzle(Difficulty.easy);
+			gameState.setNextPuzzleDifficulty(Difficulty.easy);
 		} else if (diff.equals(medium.getModel())) {
-			MineField.setNextPuzzle(Difficulty.intermediate);
+			gameState.setNextPuzzleDifficulty(Difficulty.intermediate);
 		} else if (diff.equals(hard.getModel())) {
-			MineField.setNextPuzzle(Difficulty.advanced);
+			gameState.setNextPuzzleDifficulty(Difficulty.advanced);
 		}
 	}
 

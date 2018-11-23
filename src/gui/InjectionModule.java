@@ -7,6 +7,7 @@ import gui.events.EventModule;
 import gui.events.IEventPublisher;
 import gui.menu.MenuModule;
 import gui.menu.Menus;
+import gui.options.OptionWindow;
 import gui.panel.header.HeaderModule;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.PausePanel;
@@ -71,6 +72,11 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public RecordWindow provideRecordWindow(Records records) {
         return new RecordWindow(records);
+    }
+
+    @Provides
+    public OptionWindow provideOptionWindow(GameState state) {
+        return new OptionWindow(state);
     }
 
     @Singleton

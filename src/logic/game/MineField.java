@@ -8,9 +8,6 @@ import logic.util.RandomGen;
 import logic.files.Preferences;
 
 public class MineField {
-
-	private static Difficulty currentPuzzle;
-	private static Difficulty nextPuzzle;
 	private static Mines mines;
 
 	private static Map<Difficulty, Integer> w = Map.of(
@@ -45,8 +42,12 @@ public class MineField {
 		gameState = state;
 		clockTimer = timer;
 
-		String difficulty = prefs.difficulty().toLowerCase();
-		currentPuzzle = nextPuzzle = difficultyMap.get(difficulty);
+		Difficulty difficulty = difficultyMap.get(
+			prefs.difficulty().toLowerCase()
+		);
+
+		gameState.setCurrentPuzzleDifficulty(difficulty);
+		gameState.setNextPuzzleDifficulty(difficulty);
 
 		// Initial size is the capacity, which will never have to be increased,
 		// but calling .size() only gives the ones that are filled in.
@@ -56,7 +57,7 @@ public class MineField {
 
 	public static void reset() {
 		mines.clear();
-		currentPuzzle = nextPuzzle;
+		gameState.setCurrentPuzzleToNextPuzzle();
 		setupField();
 	}
 
@@ -131,24 +132,16 @@ public class MineField {
 		return getNumMines()-count;
 	}
 
-	public static void setNextPuzzle(Difficulty puzzle) {
-		nextPuzzle = puzzle;
-	}
-
 	public static int getWidth() {
-		return w.get(currentPuzzle);
+		return w.get(gameState.getCurrentPuzzleDifficulty());
 	}
 
 	public static int getHeight() {
-		return h.get(currentPuzzle);
+		return h.get(gameState.getCurrentPuzzleDifficulty());
 	}
 
 	public static int getNumMines() {
-		return numMines.get(currentPuzzle);
-	}
-
-	public static Difficulty getCurrentPuzzle() {
-		return currentPuzzle;
+		return numMines.get(gameState.getCurrentPuzzleDifficulty());
 	}
 
 	private static void setupField() {
@@ -158,6 +151,8 @@ public class MineField {
 	}
 
 	private static void initMines() {
+		Difficulty currentPuzzle = gameState.getCurrentPuzzleDifficulty();
+
 		for (int y = 0; y < h.get(currentPuzzle); y++) {
 			for (int x = 0; x < w.get(currentPuzzle); x++) {
 				mines.add(new Mine(x,y));
@@ -166,7 +161,7 @@ public class MineField {
 	}
 
 	private static void fillMines() {
-		int numberOfMines = numMines.get(currentPuzzle);
+		int numberOfMines = numMines.get(gameState.getCurrentPuzzleDifficulty());
 		for (int i=0; i<numberOfMines; i++) {
 			while (true) {
 				int randomNumber = RandomGen.getRandomInt(mines.size());
@@ -189,7 +184,7 @@ public class MineField {
 				continue;
 			}
 
-			var count = getPositionsToCheck(i, w.get(currentPuzzle), mines.size())
+			var count = getPositionsToCheck(i, w.get(gameState.getCurrentPuzzleDifficulty()), mines.size())
 				.stream()
 				.map(position -> mines.get(position).isBomb())
 				.filter(isBomb -> isBomb)
@@ -239,7 +234,7 @@ public class MineField {
 
 	private static void specialUncover(int i) {
 		// Retrieve the squares around this position on which we should check for flags.
-		ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, w.get(currentPuzzle), mines.size());
+		ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, w.get(gameState.getCurrentPuzzleDifficulty()), mines.size());
 
 		// Count the number of flags in the positions around the current.
 		var flagCount = positionsToCheck
@@ -278,7 +273,7 @@ public class MineField {
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
-			ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, w.get(currentPuzzle), mines.size());
+			ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, w.get(gameState.getCurrentPuzzleDifficulty()), mines.size());
 			for (var position : positionsToCheck) {
 				specialUncoverOne(position);
 			}
@@ -314,7 +309,7 @@ public class MineField {
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
-			ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, w.get(currentPuzzle), mines.size());
+			ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, w.get(gameState.getCurrentPuzzleDifficulty()), mines.size());
 			for (var position : positionsToCheck) {
 				uncover(position);
 			}
@@ -336,6 +331,7 @@ public class MineField {
 		}
 
 		// Winning condition
+		Difficulty currentPuzzle = gameState.getCurrentPuzzleDifficulty();
 		if(uncoveredPieces == (w.get(currentPuzzle) * h.get(currentPuzzle)) - numMines.get(currentPuzzle)
 			&& !bombBlew)
 		{
