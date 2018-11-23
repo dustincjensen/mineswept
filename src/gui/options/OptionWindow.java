@@ -1,5 +1,6 @@
 package gui.options;
 
+import logic.game.Difficulty;
 // TODO these static dependencies need to have their information placed into an "Options" dependency and then retrieve the information and set the information to that.
 import logic.game.MineField;
 import gui.panel.header.ResetButton;
@@ -65,15 +66,15 @@ public class OptionWindow {
 		difficultyPanel.setBorder(BorderFactory.createTitledBorder("Difficulty"));
 
 		easy = new JRadioButton("<html>Beginner<br/>10 mines<br/>9 x 9 tile grid</html>");
-		easy.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != 0);
+		easy.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != Difficulty.easy);
 		difficultyPanel.add(easy);
 
 		medium = new JRadioButton("<html>Intermediate<br/>40 mines<br/>16 x 16 tile grid</html>");
-		medium.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != 1);
+		medium.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != Difficulty.intermediate);
 		difficultyPanel.add(medium);
 
 		hard = new JRadioButton("<html>Advanced<br/>99 mines<br/>16 x 30 tile grid</html>");
-		hard.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != 2);
+		hard.addActionListener(evt -> optionsHaveChanged = MineField.getCurrentPuzzle() != Difficulty.advanced);
 		difficultyPanel.add(hard);
 
 		difficultyRadioButtonGroup = new ButtonGroup();
@@ -88,10 +89,10 @@ public class OptionWindow {
 	}
 
 	private void chooseSelectedDifficulty() {
-		int currentPuzzle = MineField.getCurrentPuzzle();
-		easy.setSelected(currentPuzzle == 0);
-		medium.setSelected(currentPuzzle == 1);
-		hard.setSelected(currentPuzzle == 2);
+		Difficulty currentPuzzle = MineField.getCurrentPuzzle();
+		easy.setSelected(currentPuzzle == Difficulty.easy);
+		medium.setSelected(currentPuzzle == Difficulty.intermediate);
+		hard.setSelected(currentPuzzle == Difficulty.advanced);
 	}
 
 	private JButton confirmButton() {
@@ -151,11 +152,11 @@ public class OptionWindow {
 	private void setNewOptions() {
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
-			MineField.setNextPuzzle(0);
+			MineField.setNextPuzzle(Difficulty.easy);
 		} else if (diff.equals(medium.getModel())) {
-			MineField.setNextPuzzle(1);
+			MineField.setNextPuzzle(Difficulty.intermediate);
 		} else if (diff.equals(hard.getModel())) {
-			MineField.setNextPuzzle(2);
+			MineField.setNextPuzzle(Difficulty.advanced);
 		}
 	}
 
