@@ -1,5 +1,7 @@
 package logic.game;
 
+import java.util.Map;
+
 /**
  * The state of the game.
  */
@@ -9,6 +11,9 @@ public class GameState {
 	private boolean gamePaused;
 	private Difficulty currentPuzzleDifficulty;
 	private Difficulty nextPuzzleDifficulty;
+	private Map<Difficulty, Integer> puzzleWidths;
+	private Map<Difficulty, Integer> puzzleHeights;
+	private Map<Difficulty, Integer> puzzleMines;
 
 	public GameState() {
 		System.out.println("Creating new game state");
@@ -16,6 +21,21 @@ public class GameState {
 		gameOver = false;
 		gamePaused = false;
 		currentPuzzleDifficulty = nextPuzzleDifficulty = Difficulty.easy;
+		puzzleWidths = Map.of(
+			Difficulty.easy, 9,
+			Difficulty.intermediate, 16,
+			Difficulty.advanced, 30
+		);
+		puzzleHeights = Map.of(
+			Difficulty.easy, 9,
+			Difficulty.intermediate, 16,
+			Difficulty.advanced, 16
+		);
+		puzzleMines = Map.of(
+			Difficulty.easy, 10,
+			Difficulty.intermediate, 40,
+			Difficulty.advanced, 99
+		);
 	}
 
 	/**
@@ -122,5 +142,41 @@ public class GameState {
 	 */
 	public void setNextPuzzleDifficulty(Difficulty difficulty) {
 		nextPuzzleDifficulty = difficulty;
+	}
+
+	/**
+	 * Get the current puzzle height.
+	 * 
+	 * @return the height of the current puzzle.
+	 */
+	public int getCurrentPuzzleHeight() {
+		return puzzleHeights.get(getCurrentPuzzleDifficulty());
+	}
+
+	/**
+	 * Get the current puzzle width.
+	 * 
+	 * @return the width of the current puzzle.
+	 */
+	public int getCurrentPuzzleWidth() {
+		return puzzleWidths.get(getCurrentPuzzleDifficulty());
+	}
+
+	/**
+	 * Get the current puzzle mine count.
+	 * 
+	 * @return the number of mines in the current puzzle.
+	 */
+	public int getCurrentPuzzleMineCount() {
+		return puzzleMines.get(getCurrentPuzzleDifficulty());
+	}
+
+	/**
+	 * Get the maximum number of mine field squares.
+	 * 
+	 * @return the maximum number of mine field squares.
+	 */
+	public int getMaxNumberOfMineFieldSquares() {
+		return puzzleWidths.get(Difficulty.advanced) * puzzleHeights.get(Difficulty.advanced);
 	}
 }
