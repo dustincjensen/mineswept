@@ -2,10 +2,10 @@ package gui.panel.mines;
 
 import gui.ClassFactory;
 import gui.panel.MainPanel;
-import logic.game.MineField;
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;
+import logic.game.GameState;
 
 /**
  * Renders the the mine panel that allows the player to play the game.
@@ -15,16 +15,20 @@ public class MinePanel extends JPanel {
 	private static GridLayout glo;
 	private static Vector<MineButton> mineButtons;
 
-	public MinePanel() {
+	private static GameState gameState;
+
+	public MinePanel(GameState state) {
+		gameState = state;
+
 		setLayout(new FlowLayout());
-		mineButtons = new Vector(MineField.getNumMines());
+		mineButtons = new Vector(state.getCurrentPuzzleMineCount());
 		setupInteriorMinePanel();
 		MineButton.init();
 	}
 
 	private void setupInteriorMinePanel() {
-		int w = MineField.getWidth();
-		int h = MineField.getHeight();
+		int w = gameState.getCurrentPuzzleWidth();
+		int h = gameState.getCurrentPuzzleHeight();
 		interiorMinePanel = new JPanel();
 
 		// GridLayout goes by row, column
@@ -44,8 +48,8 @@ public class MinePanel extends JPanel {
 	}
 
 	public static void reset() {
-		int w = MineField.getWidth();
-		int h = MineField.getHeight();
+		int w = gameState.getCurrentPuzzleWidth();
+		int h = gameState.getCurrentPuzzleHeight();
 		glo.setRows(h);
 		glo.setColumns(w);
 		addMines(h, w);

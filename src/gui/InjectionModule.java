@@ -10,6 +10,7 @@ import gui.menu.Menus;
 import gui.options.OptionWindow;
 import gui.panel.header.HeaderModule;
 import gui.panel.mines.MineButton;
+import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
 import gui.records.RecordWindow;
 import logic.files.*;
@@ -28,6 +29,12 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public PausePanel providePausePanel(IEventPublisher publisher) {
         return new PausePanel(publisher);
+    }
+
+    // TODO move this into it's own module...
+    @Provides
+    public MinePanel provideMinePanel(GameState state) {
+        return new MinePanel(state);
     }
 
     // TODO move this into it's own module?

@@ -307,7 +307,7 @@ public class MineButton extends JLabel implements MouseListener {
 			if (gameState.isGameOver())
 				return;
 
-			Mine mineSpot = MineField.rightClicked(x, y);
+			Mine mineSpot = MineField.getMine(x, y);
 			if (!mineSpot.uncovered() && !mineSpot.isSpecialProtected()) {
 				if (fqe == 2)
 					fqe = 0;

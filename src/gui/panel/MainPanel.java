@@ -18,7 +18,8 @@ public class MainPanel extends JPanel {
 	public MainPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		minePanel = new MinePanel();
+		// TODO this should be provided to the main panel...
+		minePanel = ClassFactory.create(MinePanel.class);
 		// TODO this should be provided to the main panel...
 		pausePanel = ClassFactory.create(PausePanel.class);
 

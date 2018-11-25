@@ -61,10 +61,6 @@ public class MineField {
 		checkGameCondition();
 	}
 
-	public static Mine rightClicked(int x, int y) {
-		return mines.get(x,y);
-	}
-
 	public static void getHint() {
 		// Do empty spaces first
 		for (int i=0; i < mines.size(); i++) {
@@ -102,19 +98,7 @@ public class MineField {
 				count++;
 			}
 		}
-		return getNumMines()-count;
-	}
-
-	public static int getWidth() {
-		return gameState.getCurrentPuzzleWidth();
-	}
-
-	public static int getHeight() {
-		return gameState.getCurrentPuzzleHeight();
-	}
-
-	public static int getNumMines() {
-		return gameState.getCurrentPuzzleMineCount();
+		return gameState.getCurrentPuzzleMineCount() - count;
 	}
 
 	private static void setupField() {
