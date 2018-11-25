@@ -30,6 +30,9 @@ public class HeaderModule extends AbstractModule {
         return new ResetButton(publisher, loader);
     }
 
+    // TODO Need to figure out our UI paradigm... otherwise singletons are still "statics".
+    // I think it needs to be an event subscription bus
+    @Singleton
     @Provides
     public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, ResourceLoader loader) {
         return new TimeCount(gameState, publisher, loader);

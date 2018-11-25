@@ -16,20 +16,18 @@ public class TimeCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;
 	private ResourceLoader resourceLoader;
-	private JButton clockIcon;
-	// TODO make non-static
-	private static JLabel clockCount;
+	private JLabel clockCount;
 
 	public TimeCount(GameState state, IEventPublisher publisher, ResourceLoader loader) {
 		gameState = state;
 		eventPublisher = publisher;
 		resourceLoader = loader;
+		
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
 		setupPanel();
 	}
 
-	// TODO make non-static
-	public static void setClockCount(String time) {
+	public void setClockCount(String time) {
 		clockCount.setText(time);
 	}
 
@@ -38,7 +36,7 @@ public class TimeCount extends JPanel {
 		FontChange.setFont(clockCount, 24);
 		add(clockCount);
 
-		clockIcon = new JButton(resourceLoader.get(Resource.Clock));
+		var clockIcon = new JButton(resourceLoader.get(Resource.Clock));
 		clockIcon.setToolTipText("Pause or Continue");
 		clockIcon.setBorderPainted(false);
 		clockIcon.setContentAreaFilled(false);

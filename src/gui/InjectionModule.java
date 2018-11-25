@@ -71,8 +71,8 @@ public class InjectionModule extends AbstractModule {
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
     @Singleton
     @Provides
-    public ClockTimer provideClockTimer() {
-        return new ClockTimer();
+    public ClockTimer provideClockTimer(IEventPublisher publisher) {
+        return new ClockTimer(publisher);
     }
     
     @Provides

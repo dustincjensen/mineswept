@@ -8,6 +8,7 @@ import gui.events.IEventPublisher;
 import gui.events.handlers.*;
 import gui.options.OptionWindow;
 import gui.panel.header.ResetButton;
+import gui.panel.header.TimeCount;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
 import java.util.List;
@@ -34,6 +35,7 @@ public class EventModule extends AbstractModule {
         QuitGameEventHandler quitGame,
         ResetGameEventHandler resetGame,
         SetResetButtonIconEventHandler setResetButtonIcon,
+        SetTimeCountEventHandler setTimeCount,
         ShowOptionsEventHandler showOptions,
         ShowRecordsEventHandler showRecords,
         ShowStatisticsEventHandler showStatistics
@@ -45,6 +47,7 @@ public class EventModule extends AbstractModule {
             quitGame,
             resetGame,
             setResetButtonIcon,
+            setTimeCount,
             showOptions,
             showRecords,
             showStatistics
@@ -77,6 +80,11 @@ public class EventModule extends AbstractModule {
     @Provides
     public SetResetButtonIconEventHandler provideSetResetButtonIconEventHandler(ResetButton resetButton) {
         return new SetResetButtonIconEventHandler(resetButton);
+    }
+
+    @Provides
+    public SetTimeCountEventHandler provideSetTimeCountEventHandler(TimeCount timeCount) {
+        return new SetTimeCountEventHandler(timeCount);
     }
 
     @Provides

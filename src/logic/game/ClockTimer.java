@@ -1,6 +1,7 @@
 package logic.game;
 
-import gui.panel.header.TimeCount;
+import gui.events.IEventPublisher;
+import gui.events.SetTimeCountEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
@@ -9,11 +10,13 @@ public class ClockTimer {
 	private static final int DELAY_IN_MILLISECONDS = 1000;
 	private static final int MAXIMUM_SECONDS_TO_COUNT = 999;
 
+	private IEventPublisher eventPublisher;
 	private int time;
 	private Timer timer;
 
-	public ClockTimer() {
+	public ClockTimer(IEventPublisher publisher) {
 		System.out.println("Creating a new clock timer.");
+		eventPublisher = publisher;
 		time = 0;
 		timer = new Timer(DELAY_IN_MILLISECONDS, tickEvent());
 	}
@@ -25,8 +28,7 @@ public class ClockTimer {
 			} else {
 				time++;
 			}
-			// TODO stop referencing TimeCount component statically.
-			TimeCount.setClockCount(getTime());
+			eventPublisher.publish(new SetTimeCountEvent(getTime()));
 		};
 	}
 
@@ -51,7 +53,6 @@ public class ClockTimer {
 	public void reset() {
 		timer.stop();
 		time = 0;
-		// TODO stop referencing TimeCount component statically.
-		TimeCount.setClockCount(getTime());
+		eventPublisher.publish(new SetTimeCountEvent(getTime()));
 	}
 }
