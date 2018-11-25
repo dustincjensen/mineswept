@@ -9,10 +9,12 @@ import logic.game.*;
 public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
     private GameState gameState;
     private ClockTimer clockTimer;
+    private ResetButton resetButton;
 
-    public PauseGameEventHandler(GameState state, ClockTimer timer) {
+    public PauseGameEventHandler(GameState state, ClockTimer timer, ResetButton reset) {
         gameState = state;
         clockTimer = timer;
+        resetButton = reset;
     }
 
     @Override
@@ -20,10 +22,10 @@ public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
         if (gameState.isGameStarted() && !gameState.isGameOver()) {
             if (event.pause) {
                 clockTimer.stop();
-                ResetButton.setSmileyIcon(Resource.SmileyPaused);
+                resetButton.setSmileyIcon(Resource.SmileyPaused);
             } else {
                 clockTimer.start();
-                ResetButton.setSmileyIcon(Resource.SmileyHappy);
+                resetButton.setSmileyIcon(Resource.SmileyHappy);
             }
 
             gameState.setGamePaused(event.pause);

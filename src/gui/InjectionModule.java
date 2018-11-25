@@ -55,9 +55,10 @@ public class InjectionModule extends AbstractModule {
         Preferences prefs, 
         GameState gameState, 
         ClockTimer clockTimer,
-        ResourceLoader loader
+        ResourceLoader loader,
+        IEventPublisher publisher
     ) {
-        return new MineButton(prefs, gameState, clockTimer, loader);
+        return new MineButton(prefs, gameState, clockTimer, loader, publisher);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
@@ -80,8 +81,8 @@ public class InjectionModule extends AbstractModule {
     }
 
     @Provides
-    public OptionWindow provideOptionWindow(GameState state) {
-        return new OptionWindow(state);
+    public OptionWindow provideOptionWindow(GameState state, ResourceLoader loader) {
+        return new OptionWindow(state, loader);
     }
 
     @Singleton

@@ -5,6 +5,8 @@ import logic.files.Preferences;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;
+import gui.events.SetResetButtonIconEvent;
+import gui.events.IEventPublisher;
 import gui.panel.header.MineCount;
 import gui.panel.header.ResetButton;
 
@@ -51,10 +53,18 @@ public class MineButton extends JLabel implements MouseListener {
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
 	private static ResourceLoader resourceLoader;
-	public MineButton(Preferences prefs, GameState state, ClockTimer timer, ResourceLoader loader) {
+	private static IEventPublisher eventPublisher;
+	public MineButton(
+		Preferences prefs,
+		GameState state,
+		ClockTimer timer,
+		ResourceLoader loader,
+		IEventPublisher publisher
+	) {
 		gameState = state;
 		clockTimer = timer;
 		resourceLoader = loader;
+		eventPublisher = publisher;
 
 		// TODO the colors from the preferences should be pre-parsed... so for now, just parse if the backgroundColor is null...
 		if (backgroundColor == null) {
@@ -254,11 +264,11 @@ public class MineButton extends JLabel implements MouseListener {
 				dragY = y;
 				insideSquares = true;
 				if (!get.uncovered() && !get.getAnyProtected()) {
-					ResetButton.setSmileyIcon(Resource.SmileySurprised);
+					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
 					setBorder(LOWEREDBORDER);
 					setBackground(null);
 				} else {
-					ResetButton.setSmileyIcon(Resource.SmileyHappy);
+					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyHappy));
 				}
 			}
 		}
@@ -293,7 +303,7 @@ public class MineButton extends JLabel implements MouseListener {
 				if (!get.uncovered() && !get.getAnyProtected()) {
 					setBorder(LOWEREDBORDER);
 					setBackground(null);
-					ResetButton.setSmileyIcon(Resource.SmileySurprised);
+					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
 				}
 			}
 		}
@@ -339,7 +349,7 @@ public class MineButton extends JLabel implements MouseListener {
 		// Left Mouse Button
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			if (!gameState.isGameOver()) {
-				ResetButton.setSmileyIcon(Resource.SmileyHappy);
+				eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyHappy));
 				if (insideSquares == true) {
 					if (dragX == -1 && dragY == -1) {
 						Mine get = MineField.getMine(x, y);

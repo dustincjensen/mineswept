@@ -1,6 +1,7 @@
 package gui.options;
 
-import gui.panel.header.ResetButton;
+import gui.Resource;
+import gui.ResourceLoader;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import java.awt.*;
@@ -11,15 +12,18 @@ import logic.game.GameState;
 
 public class OptionWindow {
 	private GameState gameState;
+	private ResourceLoader resourceLoader;
+
 	private JFrame optionsWindow;
 	private boolean optionsHaveChanged;
 	private ButtonGroup difficultyRadioButtonGroup;
 	private JRadioButton easy, medium, hard;
 	private JButton mineButtonColor;
 
-	public OptionWindow(GameState state) {
+	public OptionWindow(GameState state, ResourceLoader loader) {
 		System.out.println("Creating new option window...");
 		gameState = state;
+		resourceLoader = loader;
 
 		optionsWindow = new JFrame("Options");
 		optionsWindow.setContentPane(mainPanel());
@@ -165,6 +169,6 @@ public class OptionWindow {
 
 	private int confirmDialog(String message) {
 		return JOptionPane.showConfirmDialog(null, message, "Confirm?", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, ResetButton.getSmileyHappy());
+				JOptionPane.QUESTION_MESSAGE, resourceLoader.get(Resource.SmileyHappy));
 	}
 }

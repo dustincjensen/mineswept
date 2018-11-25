@@ -33,7 +33,7 @@ public class MineSwept implements WindowListener {
 	) {
 		eventPublisher = publisher;
 
-		Logic.init(gameState, clockTimer);
+		Logic.init(gameState, clockTimer, publisher);
 		mp = new MainPanel();
 
 		window = new JFrame("MineSwept");

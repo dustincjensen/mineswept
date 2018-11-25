@@ -1,7 +1,8 @@
 package logic.game;
 
+import gui.events.IEventPublisher;
+import gui.events.SetResetButtonIconEvent;
 import gui.Resource;
-import gui.panel.header.ResetButton;
 import java.util.ArrayList;
 import logic.util.RandomGen;
 
@@ -10,6 +11,7 @@ public class MineField {
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
+	private static IEventPublisher eventPublisher;
 
 	// TODO this will be the next non-static class.
 	// Seems like most of the logic classes are singletons and their state is only initialized
@@ -18,9 +20,10 @@ public class MineField {
 	// This class would contain methods to get a list of mines, run methods like uncover, on a list of mines,
 	// but the mines would be part of the game state... then the mine field is not being injected into other places.
 	// It is likely that the clock timer time, should also be part of game state.
-	public static void init(GameState state, ClockTimer timer) {
+	public static void init(GameState state, ClockTimer timer, IEventPublisher publisher) {
 		gameState = state;
 		clockTimer = timer;
+		eventPublisher = publisher;
 
 		// Initial size is the capacity, which will never have to be increased,
 		// but calling .size() only gives the ones that are filled in.
@@ -245,7 +248,7 @@ public class MineField {
 
 		gameState.setGameOver(true);
 		clockTimer.stop();
-		ResetButton.setSmileyIcon(Resource.SmileySad);
+		eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySad));
 	}
 
 	private static void uncover(int i) {
@@ -291,7 +294,7 @@ public class MineField {
 		if (uncoveredPieces == maxUncoverablePieces && !bombBlew) {
 			gameState.setGameOver(true);
 			clockTimer.stop();
-			ResetButton.setSmileyIcon(Resource.SmileyCool);
+			eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyCool));
 		}
 	}
 }

@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import gui.events.IEventPublisher;
 import gui.events.handlers.*;
 import gui.options.OptionWindow;
+import gui.panel.header.ResetButton;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
 import java.util.List;
@@ -26,11 +27,28 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public List<IEventHandler> provideEventHandlers(AboutEventHandler about, GetHintEventHandler getHint,
-            PauseGameEventHandler pauseGame, QuitGameEventHandler quitGame, ResetGameEventHandler resetGame,
-            ShowOptionsEventHandler showOptions, ShowRecordsEventHandler showRecords,
-            ShowStatisticsEventHandler showStatistics) {
-        return List.of(about, getHint, pauseGame, quitGame, resetGame, showOptions, showRecords, showStatistics);
+    public List<IEventHandler> provideEventHandlers(
+        AboutEventHandler about, 
+        GetHintEventHandler getHint,
+        PauseGameEventHandler pauseGame,
+        QuitGameEventHandler quitGame,
+        ResetGameEventHandler resetGame,
+        SetResetButtonIconEventHandler setResetButtonIcon,
+        ShowOptionsEventHandler showOptions,
+        ShowRecordsEventHandler showRecords,
+        ShowStatisticsEventHandler showStatistics
+    ) {
+        return List.of(
+            about,
+            getHint,
+            pauseGame,
+            quitGame,
+            resetGame,
+            setResetButtonIcon,
+            showOptions,
+            showRecords,
+            showStatistics
+        );
     }
 
     @Provides
@@ -39,13 +57,26 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public PauseGameEventHandler providePauseGameEventHandler(GameState gameState, ClockTimer clockTimer) {
-        return new PauseGameEventHandler(gameState, clockTimer);
+    public PauseGameEventHandler providePauseGameEventHandler(
+        GameState gameState,
+        ClockTimer clockTimer,
+        ResetButton resetButton
+    ) {
+        return new PauseGameEventHandler(gameState, clockTimer, resetButton);
     }
 
     @Provides
-    public ResetGameEventHandler provideResetGameEventHandler(GameState gameState, ClockTimer clockTimer) {
-        return new ResetGameEventHandler(gameState, clockTimer);
+    public ResetGameEventHandler provideResetGameEventHandler(
+        GameState gameState,
+        ClockTimer clockTimer,
+        ResetButton resetButton
+    ) {
+        return new ResetGameEventHandler(gameState, clockTimer, resetButton);
+    }
+
+    @Provides
+    public SetResetButtonIconEventHandler provideSetResetButtonIconEventHandler(ResetButton resetButton) {
+        return new SetResetButtonIconEventHandler(resetButton);
     }
 
     @Provides
