@@ -16,8 +16,12 @@ public class MinePanel extends JPanel {
 	private static Vector<MineButton> mineButtons;
 
 	private static GameState gameState;
+	// TODO clean this up
+	private static MinePanel _self;
 
 	public MinePanel(GameState state) {
+		_self = this;
+
 		gameState = state;
 
 		setLayout(new FlowLayout());
@@ -43,8 +47,8 @@ public class MinePanel extends JPanel {
 		for (int i = 0; i < mineButtons.size(); i++) {
 			mineButtons.get(i).decorate();
 		}
-		MainPanel.getMinePanel().revalidate();
-		MainPanel.getMinePanel().repaint();
+		_self.revalidate();
+		_self.repaint();
 	}
 
 	public static void reset() {
@@ -53,8 +57,8 @@ public class MinePanel extends JPanel {
 		glo.setRows(h);
 		glo.setColumns(w);
 		addMines(h, w);
-		MainPanel.getMinePanel().revalidate();
-		MainPanel.getMinePanel().repaint();
+		_self.revalidate();
+		_self.repaint();
 		MineButton.reset();
 	}
 

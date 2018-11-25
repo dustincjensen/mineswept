@@ -10,30 +10,21 @@ import javax.swing.table.DefaultTableModel;
 public class RecordWindow {
 	private JFrame recordWindow;
 	private JTabbedPane tabs;
-	// TODO make non-static
-	private static RecordPanel beginner, intermediate, advanced;
+	private RecordPanel beginner, intermediate, advanced;
 
 	public RecordWindow(Records records) {
 		System.out.println("Creating: RECORD WINDOW");
 		setupWindow();
-		beginner.setRecords(records.getAllRecords().beginner);
+
+		var allRecords = records.getAllRecords();
+		beginner.setRecords(allRecords.beginner);
+		intermediate.setRecords(allRecords.intermediate);
+		advanced.setRecords(allRecords.advanced);
 	}
 
 	public void show(boolean t) {
 		recordWindow.setVisible(t);
 	}
-
-	// public static void setBeginnerRecords(String[] arr) {
-	// 	beginner.setRecords(arr);
-	// }
-
-	// public static void setIntermediateRecords(String[] arr) {
-	// 	intermediate.setRecords(arr);
-	// }
-
-	// public static void setAdvancedRecords(String[] arr) {
-	// 	advanced.setRecords(arr);
-	// }
 
 	private void setupWindow() {
 		recordWindow = new JFrame("Records");

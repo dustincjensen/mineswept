@@ -92,13 +92,8 @@ public class MineField {
 	}
 
 	public static int getMineCount() {
-		int count = 0;
-		for (int i=0; i<mines.size(); i++) {
-			if (mines.get(i).getAnyProtected()) {
-				count++;
-			}
-		}
-		return gameState.getCurrentPuzzleMineCount() - count;
+		return gameState.getCurrentPuzzleMineCount() 
+			- (int)mines.stream().filter(mine -> mine.getAnyProtected()).count();
 	}
 
 	private static void setupField() {

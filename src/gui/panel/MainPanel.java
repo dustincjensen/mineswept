@@ -12,7 +12,7 @@ import gui.panel.mines.PausePanel;
  * Sets up the JFrame content pane.
  */
 public class MainPanel extends JPanel {
-	private static MinePanel minePanel;
+	private MinePanel minePanel;
 	private PausePanel pausePanel;
 
 	public MainPanel() {
@@ -20,16 +20,9 @@ public class MainPanel extends JPanel {
 
 		// TODO this should be provided to the main panel...
 		minePanel = ClassFactory.create(MinePanel.class);
-		// TODO this should be provided to the main panel...
 		pausePanel = ClassFactory.create(PausePanel.class);
-
-		// TODO this should be provided to the main panel...
 		add(ClassFactory.create(HeaderPanel.class));
 		add(minePanel);
-	}
-
-	public static MinePanel getMinePanel() {
-		return minePanel;
 	}
 
 	/**
