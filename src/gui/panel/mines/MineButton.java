@@ -48,7 +48,6 @@ public class MineButton extends JLabel implements MouseListener {
 			new Color(0, 0, 0) // Eight
 	};
 	private static Color backgroundColor;
-	private static Color defaultColor = new Color(50, 125, 240);
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
@@ -66,10 +65,10 @@ public class MineButton extends JLabel implements MouseListener {
 		resourceLoader = loader;
 		eventPublisher = publisher;
 
-		// TODO the colors from the preferences should be pre-parsed... so for now, just parse if the backgroundColor is null...
+		// TODO when this is no longer static, you will need to do this for each mine button.
 		if (backgroundColor == null) {
-			parseColor(prefs.r(), prefs.g(), prefs.b());
-			System.out.println("Only parsing the Mine Button Color preferences one time.");
+			setBackgroundColor(new Color(prefs.r(), prefs.g(), prefs.b()));
+			System.out.println("Only setting the Mine Button Color preferences one time.");
 		}
 
 		FontChange.setFont(this, 32);
@@ -158,10 +157,6 @@ public class MineButton extends JLabel implements MouseListener {
 		this.y = y;
 	}
 
-	public static void useDefaultBackgroundColor() {
-		backgroundColor = defaultColor;
-	}
-
 	public static void setBackgroundColor(Color c) {
 		backgroundColor = c;
 	}
@@ -176,79 +171,6 @@ public class MineButton extends JLabel implements MouseListener {
 
 	public int y() {
 		return y;
-	}
-
-	private static void parseColor(String r, String g, String b) {
-		int red, green, blue;
-		red = green = blue = -1;
-		r = r.toLowerCase();
-		g = g.toLowerCase();
-		b = b.toLowerCase();
-
-		int pic = parseIndividualColor(r);
-		int who = Integer.parseInt(r.substring(r.indexOf("=") + 1).trim());
-		if (pic == 1)
-			red = who;
-		else if (pic == 2)
-			green = who;
-		else if (pic == 3)
-			blue = who;
-
-		pic = parseIndividualColor(g);
-		who = Integer.parseInt(g.substring(g.indexOf("=") + 1).trim());
-		if (pic == 1 && red == -1)
-			red = who;
-		else if (pic == 1 && red != -1) {
-			useDefaultBackgroundColor();
-			return;
-		} else if (pic == 2 && green == -1)
-			green = who;
-		else if (pic == 2 && green != -1) {
-			useDefaultBackgroundColor();
-			return;
-		} else if (pic == 3 && blue == -1)
-			blue = who;
-		else if (pic == 3 && blue != -1) {
-			useDefaultBackgroundColor();
-			return;
-		}
-
-		pic = parseIndividualColor(b);
-		who = Integer.parseInt(b.substring(b.indexOf("=") + 1).trim());
-		if (pic == 1 && red == -1)
-			red = who;
-		else if (pic == 1 && red != -1) {
-			useDefaultBackgroundColor();
-			return;
-		} else if (pic == 2 && green == -1)
-			green = who;
-		else if (pic == 2 && green != -1) {
-			useDefaultBackgroundColor();
-			return;
-		} else if (pic == 3 && blue == -1)
-			blue = who;
-		else if (pic == 3 && blue != -1) {
-			useDefaultBackgroundColor();
-			return;
-		}
-
-		if (red > 255 || green > 255 || blue > 255)
-			useDefaultBackgroundColor();
-		else
-			setBackgroundColor(new Color(red, green, blue));
-	}
-
-	private static int parseIndividualColor(String c) {
-		if (c.indexOf("r") != -1)
-			return 1;
-		else if (c.indexOf("g") != -1)
-			return 2;
-		else if (c.indexOf("b") != -1)
-			return 3;
-		else {
-			useDefaultBackgroundColor();
-			return -1;
-		}
 	}
 
 	// ==============================================
