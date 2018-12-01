@@ -25,7 +25,9 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         
         MinePanel.reset();
         resetButton.reset();
-        MineCount.reset();
+
+        MineCount.update();
+
         MineSwept.getMainPanel().pausePanel(false);
         MineSwept.refresh();
     }

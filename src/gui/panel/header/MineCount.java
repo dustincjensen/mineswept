@@ -30,13 +30,12 @@ public class MineCount extends JPanel {
 		setupPanel();
 	}
 
-	// TODO make non-static
-	public static void setMineCount(int minesLeft) {
+	private static void setMineCount(int minesLeft) {
 		mineCount.setText("" + minesLeft);
 	}
 
 	// TODO make non-static
-	public static void reset() {
+	public static void update() {
 		setMineCount(gameState.getMineCount());
 	}
 
@@ -51,7 +50,7 @@ public class MineCount extends JPanel {
 		add(mineIcon);
 
 		mineCount = new JLabel("");
-		reset();
+		update();
 		FontChange.setFont(mineCount, 24);
 		add(mineCount);
 	}

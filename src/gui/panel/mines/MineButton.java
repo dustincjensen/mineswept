@@ -144,7 +144,10 @@ public class MineButton extends JLabel implements MouseListener {
 				else
 					setIcon(resourceLoader.get(Resource.MineHint));
 				setText("");
-				t.setHint(false);
+
+				// TODO this was making it so the state didn't actually know if the square was a hint...
+				// It can stay a hint, even if it get's uncovered...
+				//t.setHint(false);
 			}
 
 			// allows the changing of color if the options changes it
@@ -265,7 +268,7 @@ public class MineButton extends JLabel implements MouseListener {
 					setText("");
 					mineSpot.setProtected(false);
 				}
-				MineCount.setMineCount(gameState.getMineCount());
+				MineCount.update();
 			}
 		}
 	}

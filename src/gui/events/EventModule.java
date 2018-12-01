@@ -14,6 +14,7 @@ import gui.statistics.StatisticsWindow;
 import java.util.List;
 import logic.game.ClockTimer;
 import logic.game.GameState;
+import logic.game.HintService;
 import logic.game.NewMineField;
 
 
@@ -56,8 +57,8 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public GetHintEventHandler provideGetHintEventHandler(GameState gameState, NewMineField mineField) {
-        return new GetHintEventHandler(gameState, mineField);
+    public GetHintEventHandler provideGetHintEventHandler(GameState gameState, HintService hintService) {
+        return new GetHintEventHandler(gameState, hintService);
     }
 
     @Provides

@@ -71,37 +71,7 @@ public class NewMineField {
 		}
     }
     
-    /**
-     * Find a hint and modify the mine to show it.
-     * 
-     * @param mines the field of mines.
-     */
-    public void getHint(Mines mines) {
-        // Do empty spaces first
-		for (int i=0; i < mines.size(); i++) {
-			Mine mine = mines.get(i);
-
-			if (mine.getSpotValue() == 0 && !mine.uncovered()) {
-				mine.setHint(true);
-				mine.setProtected(false);
-				return;
-			}
-		}
-
-		// Find bombs...
-		// Will use a blue flag and make it unchangeable.
-		for (int i=0; i < mines.size(); i++) {
-			Mine mine = mines.get(i);
-
-			if (mine.isBomb() && !mine.getAnyProtected()) {
-				mine.setHint(true);
-				mine.setSpecialProtected(true);
-				return;
-			}
-		}
-    }
-
-	// TODO make this private again, or abstract out into another file once MineField has been replaced.
+    // TODO make this private again, or abstract out into another file once MineField has been replaced.
     public static ArrayList<Integer> getPositionsToCheck(int index, int width, int maxLength) {
 		ArrayList<Integer> positionsToCheck = new ArrayList<Integer>(8);
 		if (index - width >= 0) {

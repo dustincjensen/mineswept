@@ -77,6 +77,11 @@ public class InjectionModule extends AbstractModule {
     }
     
     @Provides
+    public HintService provideHintService(GameState gameState) {
+        return new HintService(gameState);
+    }
+
+    @Provides
     public RecordWindow provideRecordWindow(Records records) {
         return new RecordWindow(records);
     }

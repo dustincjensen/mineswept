@@ -1,24 +1,29 @@
 package gui.events.handlers;
 
 import gui.events.GetHintEvent;
+import gui.panel.header.MineCount;
 import gui.panel.mines.MinePanel;
 import logic.game.MineField;
 import logic.game.NewMineField;
 import logic.game.GameState;
+import logic.game.HintService;
 
 public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
     private GameState gameState;
-    private NewMineField mineField;
+    private HintService hintService;
 
-    public GetHintEventHandler(GameState state, NewMineField newMineField) {
+    public GetHintEventHandler(GameState state, HintService hint) {
         gameState = state;
-        mineField = newMineField;
+        hintService = hint;
     }
 
     @Override
     public void execute(GetHintEvent event) {
         if (!gameState.isGameOver()) {
-            mineField.getHint(gameState.getMines());
+            hintService.useHint();
+            
+            // TODO non-static references...
+            MineCount.update();
             MinePanel.update();
         }
     }
