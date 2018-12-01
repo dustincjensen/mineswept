@@ -51,17 +51,20 @@ public class MineButton extends JLabel implements MouseListener {
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
+	private static NewMineField mineField;
 	private static ResourceLoader resourceLoader;
 	private static IEventPublisher eventPublisher;
 	public MineButton(
 		Preferences prefs,
 		GameState state,
 		ClockTimer timer,
+		NewMineField newMineField,
 		ResourceLoader loader,
 		IEventPublisher publisher
 	) {
 		gameState = state;
 		clockTimer = timer;
+		mineField = newMineField;
 		resourceLoader = loader;
 		eventPublisher = publisher;
 
@@ -93,7 +96,7 @@ public class MineButton extends JLabel implements MouseListener {
 	}
 
 	public void decorate() {
-		Mine t = MineField.getMine(x, y);
+		Mine t = gameState.getMine(x, y);
 		// Uncovered
 		if (t.uncovered()) {
 			// A bomb
@@ -181,7 +184,7 @@ public class MineButton extends JLabel implements MouseListener {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
-				Mine get = MineField.getMine(x, y);
+				Mine get = gameState.getMine(x, y);
 				dragX = x;
 				dragY = y;
 				insideSquares = true;
@@ -202,7 +205,7 @@ public class MineButton extends JLabel implements MouseListener {
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
 				insideSquares = false;
-				Mine get = MineField.getMine(x, y);
+				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered()) {
 					setBorder(RAISEDBORDER);
 					setBackground(backgroundColor);
@@ -221,7 +224,7 @@ public class MineButton extends JLabel implements MouseListener {
 			if (!gameState.isGameOver()) {
 				startedHere = true;
 				insideSquares = true;
-				Mine get = MineField.getMine(x, y);
+				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered() && !get.getAnyProtected()) {
 					setBorder(LOWEREDBORDER);
 					setBackground(null);
@@ -239,7 +242,7 @@ public class MineButton extends JLabel implements MouseListener {
 			if (gameState.isGameOver())
 				return;
 
-			Mine mineSpot = MineField.getMine(x, y);
+			Mine mineSpot = gameState.getMine(x, y);
 			if (!mineSpot.uncovered() && !mineSpot.isSpecialProtected()) {
 				if (fqe == 2)
 					fqe = 0;
@@ -262,7 +265,7 @@ public class MineButton extends JLabel implements MouseListener {
 					setText("");
 					mineSpot.setProtected(false);
 				}
-				MineCount.setMineCount(MineField.getMineCount());
+				MineCount.setMineCount(gameState.getMineCount());
 			}
 		}
 	}
@@ -274,11 +277,11 @@ public class MineButton extends JLabel implements MouseListener {
 				eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyHappy));
 				if (insideSquares == true) {
 					if (dragX == -1 && dragY == -1) {
-						Mine get = MineField.getMine(x, y);
+						Mine get = gameState.getMine(x, y);
 						if (!get.getAnyProtected())
 							MineField.leftClicked(x, y);
 					} else {
-						Mine get = MineField.getMine(dragX, dragY);
+						Mine get = gameState.getMine(dragX, dragY);
 						if (!get.getAnyProtected())
 							MineField.leftClicked(dragX, dragY);
 					}

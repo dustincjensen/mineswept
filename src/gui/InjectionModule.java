@@ -55,17 +55,18 @@ public class InjectionModule extends AbstractModule {
         Preferences prefs, 
         GameState gameState, 
         ClockTimer clockTimer,
+        NewMineField newMineField,
         ResourceLoader loader,
         IEventPublisher publisher
     ) {
-        return new MineButton(prefs, gameState, clockTimer, loader, publisher);
+        return new MineButton(prefs, gameState, clockTimer, newMineField, loader, publisher);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
     @Singleton
     @Provides
-    public GameState provideGameState(Preferences prefs) {
-        return new GameState(prefs);
+    public GameState provideGameState(Preferences prefs, NewMineField mineField) {
+        return new GameState(prefs, mineField);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.

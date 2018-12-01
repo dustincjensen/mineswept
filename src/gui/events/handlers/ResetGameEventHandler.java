@@ -21,8 +21,6 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
     public void execute(ResetGameEvent event) {
         gameState.reset();
 
-        MineField.reset();
-        
         clockTimer.reset();
         
         MinePanel.reset();

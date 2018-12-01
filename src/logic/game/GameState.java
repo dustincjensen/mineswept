@@ -3,10 +3,14 @@ package logic.game;
 import java.util.Map;
 import logic.files.Preferences;
 
+// TODO clock timer's time part of game state?
+
 /**
  * The state of the game.
  */
 public class GameState {
+	private NewMineField mineField;
+
 	private boolean gameStarted;
 	private boolean gameOver;
 	private boolean gamePaused;
@@ -15,8 +19,9 @@ public class GameState {
 	private Map<Difficulty, Integer> puzzleWidths;
 	private Map<Difficulty, Integer> puzzleHeights;
 	private Map<Difficulty, Integer> puzzleMines;
+	private Mines gameMines;
 
-	public GameState(Preferences prefs) {
+	public GameState(Preferences prefs, NewMineField newMineField) {
 		System.out.println("Creating new game state");
 		gameStarted = false;
 		gameOver = false;
@@ -37,6 +42,18 @@ public class GameState {
 			Difficulty.intermediate, 40,
 			Difficulty.advanced, 99
 		);
+
+		// TODO put this in it's own method?
+		mineField = newMineField;
+		gameMines = mineField.createMines(
+			getCurrentPuzzleWidth(),
+			getCurrentPuzzleHeight(),
+			getMaxNumberOfMineFieldSquares()
+		);
+		mineField.fillMines(gameMines, getCurrentPuzzleMineCount());
+		mineField.fillNumbers(gameMines, getCurrentPuzzleWidth());
+
+
 	}
 
 	/**
@@ -46,6 +63,22 @@ public class GameState {
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
+
+		setCurrentPuzzleToNextPuzzle();
+		resetMines();
+	}
+
+	private void resetMines() {
+		gameMines.clear();
+
+		// TODO instead of making a new mines, re-use it.
+		gameMines = mineField.createMines(
+			getCurrentPuzzleWidth(),
+			getCurrentPuzzleHeight(),
+			getMaxNumberOfMineFieldSquares()
+		);
+		mineField.fillMines(gameMines, getCurrentPuzzleMineCount());
+		mineField.fillNumbers(gameMines, getCurrentPuzzleWidth());
 	}
 
 	/**
@@ -179,5 +212,77 @@ public class GameState {
 	 */
 	public int getMaxNumberOfMineFieldSquares() {
 		return puzzleWidths.get(Difficulty.advanced) * puzzleHeights.get(Difficulty.advanced);
+	}
+
+	/**
+	 * Get the field of mines.
+	 * 
+	 * @return the field of mines.
+	 */
+	public Mines getMines() {
+		return gameMines;
+	}
+
+	/**
+	 * Get the mine at x, y.
+	 * 
+	 * @param x the x coordinate of the mine.
+	 * @param y the y coordinate of the mine.
+	 * @return the mine at x, y.
+	 */
+	public Mine getMine(int x, int y) {
+		return gameMines.get(x, y);
+	}
+
+	/**
+	 * Get the number of mines left.
+	 * 
+	 * @return the number of mines in the puzzle subtract the number of protected flags used.
+	 */
+	public int getMineCount() {
+		int puzzleMineCount = getCurrentPuzzleMineCount();
+		long numberOfMinesProtected = gameMines
+			.stream()
+			.filter(mine -> mine.getAnyProtected())
+			.count();
+
+		return puzzleMineCount - (int)numberOfMinesProtected;
+	}
+
+	/**
+	 * Updates the game condition.
+	 * 
+	 * @return true if the game was won, false if the game is still continuing.
+	 */
+	public boolean updateGameCondition() {
+		int uncoveredPieces = 0;
+		boolean bombBlew = false;
+
+		for (int i=0; i < gameMines.size(); i++) {
+			Mine mine = gameMines.get(i);
+
+			if (mine.blewUp()) {
+				bombBlew = true;
+			}
+			
+			if (mine.uncovered()) {
+				uncoveredPieces++;
+			}
+		}
+
+		// Winning condition
+		int width = getCurrentPuzzleWidth();
+		int height = getCurrentPuzzleHeight();
+		int numMines = getCurrentPuzzleMineCount();
+		int maxUncoverablePieces = width * height - numMines;
+
+		if (uncoveredPieces == maxUncoverablePieces && !bombBlew) {
+			setGameOver(true);
+			return true;
+			//clockTimer.stop();
+			//eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyCool));
+		}
+
+		return false;
 	}
 }

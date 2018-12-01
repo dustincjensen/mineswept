@@ -7,12 +7,14 @@ import gui.Resource;
 import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
+import logic.game.GameState;
 import logic.game.MineField;
 
 /**
  * Renders the mine count panel in the header.
  */
 public class MineCount extends JPanel {
+	private static GameState gameState;
 	private IEventPublisher eventPublisher;
 	private ResourceLoader resourceLoader;
 	private ImageIcon mineImage;
@@ -20,7 +22,8 @@ public class MineCount extends JPanel {
 	// TODO make non-static
 	private static JLabel mineCount;
 
-	public MineCount(IEventPublisher publisher, ResourceLoader loader) {
+	public MineCount(GameState state, IEventPublisher publisher, ResourceLoader loader) {
+		gameState = state;
 		eventPublisher = publisher;
 		resourceLoader = loader;
 		setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -34,7 +37,7 @@ public class MineCount extends JPanel {
 
 	// TODO make non-static
 	public static void reset() {
-		setMineCount(MineField.getMineCount());
+		setMineCount(gameState.getMineCount());
 	}
 
 	private void setupPanel() {
