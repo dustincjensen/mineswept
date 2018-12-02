@@ -17,7 +17,6 @@ public class MineCount extends JPanel {
 	private static GameState gameState;
 	private IEventPublisher eventPublisher;
 	private ResourceLoader resourceLoader;
-	private ImageIcon mineImage;
 	private JButton mineIcon;
 	// TODO make non-static
 	private static JLabel mineCount;
@@ -30,13 +29,9 @@ public class MineCount extends JPanel {
 		setupPanel();
 	}
 
-	private static void setMineCount(int minesLeft) {
-		mineCount.setText("" + minesLeft);
-	}
-
 	// TODO make non-static
 	public static void update() {
-		setMineCount(gameState.getMineCount());
+		mineCount.setText("" + gameState.getMineCount());
 	}
 
 	private void setupPanel() {
