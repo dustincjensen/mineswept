@@ -8,7 +8,6 @@ import gui.ResourceLoader;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.IEventPublisher;
 import gui.panel.header.MineCount;
-import gui.panel.header.ResetButton;
 
 import javax.swing.*;
 import javax.swing.border.*;

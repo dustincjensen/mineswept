@@ -7,7 +7,6 @@ import com.google.inject.Singleton;
 import gui.events.IEventPublisher;
 import gui.events.handlers.*;
 import gui.options.OptionWindow;
-import gui.panel.header.ResetButton;
 import gui.panel.header.TimeCount;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
@@ -26,6 +25,12 @@ public class EventModule extends AbstractModule {
     @Provides
     public IEventPublisher provideEventPublisher(List<IEventHandler> eventHandlers) {
         return new EventPublisher(eventHandlers);
+    }
+
+    @Singleton
+    @Provides
+    public IEventSubscriber provideEventSubscriber() {
+        return new EventSubscriber();
     }
 
     @Provides
@@ -64,23 +69,23 @@ public class EventModule extends AbstractModule {
     public PauseGameEventHandler providePauseGameEventHandler(
         GameState gameState,
         ClockTimer clockTimer,
-        ResetButton resetButton
+        IEventSubscriber subscriber
     ) {
-        return new PauseGameEventHandler(gameState, clockTimer, resetButton);
+        return new PauseGameEventHandler(gameState, clockTimer, subscriber);
     }
 
     @Provides
     public ResetGameEventHandler provideResetGameEventHandler(
         GameState gameState,
         ClockTimer clockTimer,
-        ResetButton resetButton
+        IEventSubscriber subscriber
     ) {
-        return new ResetGameEventHandler(gameState, clockTimer, resetButton);
+        return new ResetGameEventHandler(gameState, clockTimer, subscriber);
     }
 
     @Provides
-    public SetResetButtonIconEventHandler provideSetResetButtonIconEventHandler(ResetButton resetButton) {
-        return new SetResetButtonIconEventHandler(resetButton);
+    public SetResetButtonIconEventHandler provideSetResetButtonIconEventHandler(IEventSubscriber subscriber) {
+        return new SetResetButtonIconEventHandler(subscriber);
     }
 
     @Provides

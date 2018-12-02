@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import gui.ResourceLoader;
 import gui.events.IEventPublisher;
+import gui.events.IEventSubscriber;
 import logic.game.GameState;
 
 public class HeaderModule extends AbstractModule {
@@ -26,8 +27,8 @@ public class HeaderModule extends AbstractModule {
     // I think it needs to be an event subscription bus
     @Singleton
     @Provides
-    public ResetButton provideResetButton(IEventPublisher publisher, ResourceLoader loader) {
-        return new ResetButton(publisher, loader);
+    public ResetButton provideResetButton(IEventPublisher publisher, IEventSubscriber subscriber, ResourceLoader loader) {
+        return new ResetButton(publisher, subscriber, loader);
     }
 
     // TODO Need to figure out our UI paradigm... otherwise singletons are still "statics".
