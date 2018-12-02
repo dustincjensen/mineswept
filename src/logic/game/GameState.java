@@ -9,7 +9,7 @@ import logic.files.Preferences;
  * The state of the game.
  */
 public class GameState {
-	private NewMineField mineField;
+	private MinesFactory minesFactory;
 
 	private boolean gameStarted;
 	private boolean gameOver;
@@ -21,7 +21,9 @@ public class GameState {
 	private Map<Difficulty, Integer> puzzleMines;
 	private Mines gameMines;
 
-	public GameState(Preferences prefs, NewMineField newMineField) {
+	public GameState(Preferences prefs, MinesFactory mines) {
+		minesFactory = mines;
+
 		System.out.println("Creating new game state");
 		gameStarted = false;
 		gameOver = false;
@@ -43,17 +45,11 @@ public class GameState {
 			Difficulty.advanced, 99
 		);
 
-		// TODO put this in it's own method?
-		mineField = newMineField;
-		gameMines = mineField.createMines(
+		gameMines = minesFactory.create(
 			getCurrentPuzzleWidth(),
 			getCurrentPuzzleHeight(),
-			getMaxNumberOfMineFieldSquares()
+			getCurrentPuzzleMineCount()
 		);
-		mineField.fillMines(gameMines, getCurrentPuzzleMineCount());
-		mineField.fillNumbers(gameMines, getCurrentPuzzleWidth());
-
-
 	}
 
 	/**
@@ -69,16 +65,11 @@ public class GameState {
 	}
 
 	private void resetMines() {
-		gameMines.clear();
-
-		// TODO instead of making a new mines, re-use it.
-		gameMines = mineField.createMines(
+		gameMines = minesFactory.create(
 			getCurrentPuzzleWidth(),
 			getCurrentPuzzleHeight(),
-			getMaxNumberOfMineFieldSquares()
+			getCurrentPuzzleMineCount()
 		);
-		mineField.fillMines(gameMines, getCurrentPuzzleMineCount());
-		mineField.fillNumbers(gameMines, getCurrentPuzzleWidth());
 	}
 
 	/**

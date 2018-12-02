@@ -55,18 +55,17 @@ public class InjectionModule extends AbstractModule {
         Preferences prefs, 
         GameState gameState, 
         ClockTimer clockTimer,
-        NewMineField newMineField,
         ResourceLoader loader,
         IEventPublisher publisher
     ) {
-        return new MineButton(prefs, gameState, clockTimer, newMineField, loader, publisher);
+        return new MineButton(prefs, gameState, clockTimer, loader, publisher);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
     @Singleton
     @Provides
-    public GameState provideGameState(Preferences prefs, NewMineField mineField) {
-        return new GameState(prefs, mineField);
+    public GameState provideGameState(Preferences prefs, MinesFactory factory) {
+        return new GameState(prefs, factory);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
@@ -95,5 +94,10 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public ResourceLoader provideResourceLoader() {
         return new ResourceLoader();
+    }
+
+    @Provides
+    public MinesFactory provideMinesFactory(OctoCheckService octo) {
+        return new MinesFactory(octo);
     }
 }

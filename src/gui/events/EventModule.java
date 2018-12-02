@@ -15,7 +15,6 @@ import java.util.List;
 import logic.game.ClockTimer;
 import logic.game.GameState;
 import logic.game.HintService;
-import logic.game.NewMineField;
 
 
 public class EventModule extends AbstractModule {

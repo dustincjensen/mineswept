@@ -53,7 +53,7 @@ public class MineField {
 		Mines mines = gameState.getMines();
 
 		// Retrieve the squares around this position on which we should check for flags.
-		ArrayList<Integer> positionsToCheck = NewMineField.getPositionsToCheck(i, gameState.getCurrentPuzzleWidth(), mines.size());
+		ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, gameState.getCurrentPuzzleWidth(), mines.size());
 
 		// Count the number of flags in the positions around the current.
 		var flagCount = positionsToCheck
@@ -93,7 +93,7 @@ public class MineField {
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
-			ArrayList<Integer> positionsToCheck = NewMineField.getPositionsToCheck(i, gameState.getCurrentPuzzleWidth(), mines.size());
+			ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, gameState.getCurrentPuzzleWidth(), mines.size());
 			for (var position : positionsToCheck) {
 				specialUncoverOne(position);
 			}
@@ -131,10 +131,50 @@ public class MineField {
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
-			ArrayList<Integer> positionsToCheck = NewMineField.getPositionsToCheck(i, gameState.getCurrentPuzzleWidth(), mines.size());
+			ArrayList<Integer> positionsToCheck = getPositionsToCheck(i, gameState.getCurrentPuzzleWidth(), mines.size());
 			for (var position : positionsToCheck) {
 				uncover(position);
 			}
 		}
+	}
+
+	// REMOVE
+	// This exists in OctoCheckService
+	public static ArrayList<Integer> getPositionsToCheck(int index, int width, int maxLength) {
+		ArrayList<Integer> positionsToCheck = new ArrayList<Integer>(8);
+		if (index - width >= 0) {
+			positionsToCheck.add(index - width);
+		}
+		if (index + width < maxLength) {
+			positionsToCheck.add(index + width);
+		}
+
+		// You are not on the left side of the puzzle.
+		if (index % width != 0) {
+			if (index - width - 1 >= 0) {
+				positionsToCheck.add(index - width - 1);
+			}
+			if (index - 1 >= 0) {
+				positionsToCheck.add(index - 1);
+			}
+			if (index + width - 1 < maxLength) {
+				positionsToCheck.add(index + width - 1);
+			}
+		}
+
+		// You are not on the right side of the puzzle.
+		if ((index + 1) % width != 0) {
+			if (index - width + 1 >= 0) {
+				positionsToCheck.add(index - width + 1);
+			}
+			if (index + 1 < maxLength) {
+				positionsToCheck.add(index + 1);
+			}
+			if (index + width + 1 < maxLength) {
+				positionsToCheck.add(index + width + 1);
+			}
+		}
+
+		return positionsToCheck;
 	}
 }

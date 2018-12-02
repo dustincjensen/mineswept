@@ -4,7 +4,6 @@ import gui.events.GetHintEvent;
 import gui.panel.header.MineCount;
 import gui.panel.mines.MinePanel;
 import logic.game.MineField;
-import logic.game.NewMineField;
 import logic.game.GameState;
 import logic.game.HintService;
 

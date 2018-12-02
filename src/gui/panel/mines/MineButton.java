@@ -51,20 +51,17 @@ public class MineButton extends JLabel implements MouseListener {
 
 	private static GameState gameState;
 	private static ClockTimer clockTimer;
-	private static NewMineField mineField;
 	private static ResourceLoader resourceLoader;
 	private static IEventPublisher eventPublisher;
 	public MineButton(
 		Preferences prefs,
 		GameState state,
 		ClockTimer timer,
-		NewMineField newMineField,
 		ResourceLoader loader,
 		IEventPublisher publisher
 	) {
 		gameState = state;
 		clockTimer = timer;
-		mineField = newMineField;
 		resourceLoader = loader;
 		eventPublisher = publisher;
 
