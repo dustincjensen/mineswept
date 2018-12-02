@@ -2,36 +2,42 @@ package gui.panel.header;
 
 import gui.events.GetHintEvent;
 import gui.events.IEventPublisher;
+import gui.events.IEventSubscriber;
+import gui.events.UpdateMineCountEvent;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import logic.game.GameState;
-import logic.game.MineField;
 
 /**
  * Renders the mine count panel in the header.
  */
 public class MineCount extends JPanel {
-	private static GameState gameState;
+	private GameState gameState;
 	private IEventPublisher eventPublisher;
+	private IEventSubscriber eventSubscriber;
 	private ResourceLoader resourceLoader;
 	private JButton mineIcon;
-	// TODO make non-static
-	private static JLabel mineCount;
+	private JLabel mineCount;
 
-	public MineCount(GameState state, IEventPublisher publisher, ResourceLoader loader) {
+	public MineCount(
+		GameState state,
+		IEventPublisher publisher,
+		IEventSubscriber subscriber,
+		ResourceLoader loader
+	) {
 		gameState = state;
 		eventPublisher = publisher;
+		eventSubscriber = subscriber;
 		resourceLoader = loader;
+
 		setLayout(new FlowLayout(FlowLayout.LEADING));
 		setupPanel();
-	}
-
-	// TODO make non-static
-	public static void update() {
-		mineCount.setText("" + gameState.getMineCount());
+		setupSubscriptions();
 	}
 
 	private void setupPanel() {
@@ -45,8 +51,14 @@ public class MineCount extends JPanel {
 		add(mineIcon);
 
 		mineCount = new JLabel("");
-		update();
+		mineCount.setText("" + gameState.getMineCount());
 		FontChange.setFont(mineCount, 24);
 		add(mineCount);
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(UpdateMineCountEvent.class, (event) -> {
+			mineCount.setText("" + gameState.getMineCount());
+		});
 	}
 }

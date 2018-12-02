@@ -6,7 +6,9 @@ import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;
 import gui.events.SetResetButtonIconEvent;
+import gui.events.UpdateMineCountEvent;
 import gui.events.IEventPublisher;
+import gui.events.IEventSubscriber;
 import gui.panel.header.MineCount;
 
 import javax.swing.*;
@@ -52,17 +54,20 @@ public class MineButton extends JLabel implements MouseListener {
 	private static ClockTimer clockTimer;
 	private static ResourceLoader resourceLoader;
 	private static IEventPublisher eventPublisher;
+	private static IEventSubscriber eventSubscriber;
 	public MineButton(
 		Preferences prefs,
 		GameState state,
 		ClockTimer timer,
 		ResourceLoader loader,
-		IEventPublisher publisher
+		IEventPublisher publisher,
+		IEventSubscriber subscriber
 	) {
 		gameState = state;
 		clockTimer = timer;
 		resourceLoader = loader;
 		eventPublisher = publisher;
+		eventSubscriber = subscriber;
 
 		// TODO when this is no longer static, you will need to do this for each mine button.
 		if (backgroundColor == null) {
@@ -264,7 +269,12 @@ public class MineButton extends JLabel implements MouseListener {
 					setText("");
 					mineSpot.setProtected(false);
 				}
-				MineCount.update();
+
+				// TODO should MineButton be notifying directly?
+				// instead...
+				// publish mousePressedRightClick
+				// then gets notified on... mineProtectedEvent?
+				eventSubscriber.notify(new UpdateMineCountEvent());
 			}
 		}
 	}

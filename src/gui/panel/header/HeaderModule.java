@@ -19,8 +19,13 @@ public class HeaderModule extends AbstractModule {
     }
 
     @Provides
-    public MineCount provideMineCount(GameState gameState, IEventPublisher publisher, ResourceLoader loader) {
-        return new MineCount(gameState, publisher, loader);
+    public MineCount provideMineCount(
+        GameState gameState,
+        IEventPublisher publisher,
+        IEventSubscriber subscriber,
+        ResourceLoader loader
+    ) {
+        return new MineCount(gameState, publisher, subscriber, loader);
     }
 
     // TODO Need to figure out our UI paradigm... otherwise singletons are still "statics".

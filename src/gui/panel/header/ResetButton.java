@@ -45,13 +45,7 @@ public class ResetButton extends JPanel {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(ResetGameEvent.class, (event) -> {
-			System.out.println("Handling ResetGameEvent in ResetButton.");
-			smileButton.setIcon(resourceLoader.get(Resource.SmileyHappy));
-		});
-
 		eventSubscriber.subscribe(SetResetButtonIconEvent.class, (event) -> {
-			System.out.println("Handling SetResetButtonIconEvent in ResetButton.");
 			smileButton.setIcon(resourceLoader.get(event.resource));
 		});
 	}

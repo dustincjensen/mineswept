@@ -61,8 +61,8 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public GetHintEventHandler provideGetHintEventHandler(GameState gameState, HintService hintService) {
-        return new GetHintEventHandler(gameState, hintService);
+    public GetHintEventHandler provideGetHintEventHandler(GameState gameState, HintService hintService, IEventSubscriber subscriber) {
+        return new GetHintEventHandler(gameState, hintService, subscriber);
     }
 
     @Provides

@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import gui.events.EventModule;
 import gui.events.IEventPublisher;
+import gui.events.IEventSubscriber;
 import gui.menu.MenuModule;
 import gui.menu.Menus;
 import gui.options.OptionWindow;
@@ -56,9 +57,10 @@ public class InjectionModule extends AbstractModule {
         GameState gameState, 
         ClockTimer clockTimer,
         ResourceLoader loader,
-        IEventPublisher publisher
+        IEventPublisher publisher,
+        IEventSubscriber subscriber
     ) {
-        return new MineButton(prefs, gameState, clockTimer, loader, publisher);
+        return new MineButton(prefs, gameState, clockTimer, loader, publisher, subscriber);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
