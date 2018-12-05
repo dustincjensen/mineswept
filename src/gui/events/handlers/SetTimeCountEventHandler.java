@@ -1,17 +1,17 @@
 package gui.events.handlers;
 
-import gui.panel.header.TimeCount;
+import gui.events.IEventSubscriber;
 import gui.events.SetTimeCountEvent;
 
 public class SetTimeCountEventHandler implements IEventHandler<SetTimeCountEvent> {
-    private TimeCount timeCount;
+    private IEventSubscriber eventSubscriber;
 
-    public SetTimeCountEventHandler(TimeCount time) {
-        timeCount = time;
+    public SetTimeCountEventHandler(IEventSubscriber subscriber) {
+        eventSubscriber = subscriber;
     }
 
     @Override
     public void execute(SetTimeCountEvent event) {
-        timeCount.setClockCount(event.time);
+        eventSubscriber.notify(event);
     }
 }

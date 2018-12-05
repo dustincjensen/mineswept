@@ -89,8 +89,8 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public SetTimeCountEventHandler provideSetTimeCountEventHandler(TimeCount timeCount) {
-        return new SetTimeCountEventHandler(timeCount);
+    public SetTimeCountEventHandler provideSetTimeCountEventHandler(IEventSubscriber subscriber) {
+        return new SetTimeCountEventHandler(subscriber);
     }
 
     @Provides

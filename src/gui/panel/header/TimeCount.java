@@ -1,7 +1,9 @@
 package gui.panel.header;
 
 import gui.events.IEventPublisher;
+import gui.events.IEventSubscriber;
 import gui.events.PauseGameEvent;
+import gui.events.SetTimeCountEvent;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;
@@ -15,20 +17,24 @@ import logic.game.GameState;
 public class TimeCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;
+	private IEventSubscriber eventSubscriber;
 	private ResourceLoader resourceLoader;
 	private JLabel clockCount;
 
-	public TimeCount(GameState state, IEventPublisher publisher, ResourceLoader loader) {
+	public TimeCount(
+		GameState state, 
+		IEventPublisher publisher,
+		IEventSubscriber subscriber,
+		ResourceLoader loader
+	) {
 		gameState = state;
 		eventPublisher = publisher;
+		eventSubscriber = subscriber;
 		resourceLoader = loader;
 		
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
 		setupPanel();
-	}
-
-	public void setClockCount(String time) {
-		clockCount.setText(time);
+		setupSubscriptions();
 	}
 
 	private void setupPanel() {
@@ -44,5 +50,11 @@ public class TimeCount extends JPanel {
 			eventPublisher.publish(new PauseGameEvent(!gameState.isGamePaused()));
 		});
 		add(clockIcon);
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(SetTimeCountEvent.class, (event) -> {
+			clockCount.setText(event.time);
+		});
 	}
 }

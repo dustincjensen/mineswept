@@ -40,7 +40,7 @@ public class HeaderModule extends AbstractModule {
     // I think it needs to be an event subscription bus
     @Singleton
     @Provides
-    public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, ResourceLoader loader) {
-        return new TimeCount(gameState, publisher, loader);
+    public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, IEventSubscriber subscriber, ResourceLoader loader) {
+        return new TimeCount(gameState, publisher, subscriber, loader);
     }
 }
