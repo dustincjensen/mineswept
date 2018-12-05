@@ -30,6 +30,7 @@ public class OptionWindow {
 		System.out.println("Creating new option window...");
 		gameState = state;
 		resourceLoader = loader;
+		eventSubscriber = subscriber;
 
 		optionsWindow = new JFrame("Options");
 		optionsWindow.setContentPane(mainPanel());
