@@ -5,6 +5,7 @@ import gui.events.IEventSubscriber;
 import gui.events.ResetGameEvent;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMineCountEvent;
+import gui.events.ResetMinePanelEvent;
 import gui.MineSwept;
 import gui.panel.header.*;
 import gui.panel.mines.MinePanel;
@@ -27,7 +28,6 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
 
         clockTimer.reset();
         
-        MinePanel.reset();
         
         // Once this is hooked up... there should be no...
         // MinePanel.reset();
@@ -36,6 +36,7 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         // MineSwept.refresh();
         // perhaps no clockTimer.reset();
         
+        eventSubscriber.notify(new ResetMinePanelEvent());
         eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
         eventSubscriber.notify(new UpdateMineCountEvent());
 

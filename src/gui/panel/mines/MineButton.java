@@ -7,6 +7,7 @@ import gui.Resource;
 import gui.ResourceLoader;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMineCountEvent;
+import gui.events.UpdateMinePanelEvent;
 import gui.events.IEventPublisher;
 import gui.events.IEventSubscriber;
 import gui.panel.header.MineCount;
@@ -298,7 +299,8 @@ public class MineButton extends JLabel implements MouseListener {
 				dragX = dragY = -1;
 				insideSquares = false;
 				startedHere = false;
-				MinePanel.update();
+
+				eventSubscriber.notify(new UpdateMinePanelEvent());
 			}
 		}
 	}

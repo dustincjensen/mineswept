@@ -34,8 +34,8 @@ public class InjectionModule extends AbstractModule {
 
     // TODO move this into it's own module...
     @Provides
-    public MinePanel provideMinePanel(GameState state) {
-        return new MinePanel(state);
+    public MinePanel provideMinePanel(GameState state, IEventSubscriber subscriber) {
+        return new MinePanel(state, subscriber);
     }
 
     // TODO move this into it's own module?
@@ -88,8 +88,12 @@ public class InjectionModule extends AbstractModule {
     }
 
     @Provides
-    public OptionWindow provideOptionWindow(GameState state, ResourceLoader loader) {
-        return new OptionWindow(state, loader);
+    public OptionWindow provideOptionWindow(
+        GameState state,
+        ResourceLoader loader,
+        IEventSubscriber subscriber
+    ) {
+        return new OptionWindow(state, loader, subscriber);
     }
 
     @Singleton

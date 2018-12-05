@@ -2,8 +2,9 @@ package gui.options;
 
 import gui.Resource;
 import gui.ResourceLoader;
+import gui.events.IEventSubscriber;
+import gui.events.UpdateMinePanelEvent;
 import gui.panel.mines.MineButton;
-import gui.panel.mines.MinePanel;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -13,6 +14,7 @@ import logic.game.GameState;
 public class OptionWindow {
 	private GameState gameState;
 	private ResourceLoader resourceLoader;
+	private IEventSubscriber eventSubscriber;
 
 	private JFrame optionsWindow;
 	private boolean optionsHaveChanged;
@@ -20,7 +22,11 @@ public class OptionWindow {
 	private JRadioButton easy, medium, hard;
 	private JButton mineButtonColor;
 
-	public OptionWindow(GameState state, ResourceLoader loader) {
+	public OptionWindow(
+		GameState state,
+		ResourceLoader loader,
+		IEventSubscriber subscriber
+	) {
 		System.out.println("Creating new option window...");
 		gameState = state;
 		resourceLoader = loader;
@@ -140,7 +146,8 @@ public class OptionWindow {
 			if (newMineColor != null) {
 				MineButton.setBackgroundColor(newMineColor);
 			}
-			MinePanel.update();
+
+			eventSubscriber.notify(new UpdateMinePanelEvent());
 		});
 
 		otherOptions.add(mineButtonColor);

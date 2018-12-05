@@ -1,7 +1,9 @@
 package gui.panel.mines;
 
 import gui.ClassFactory;
-import gui.panel.MainPanel;
+import gui.events.IEventSubscriber;
+import gui.events.UpdateMinePanelEvent;
+import gui.events.ResetMinePanelEvent;
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;
@@ -11,59 +13,44 @@ import logic.game.GameState;
  * Renders the the mine panel that allows the player to play the game.
  */
 public class MinePanel extends JPanel {
-	private static JPanel interiorMinePanel;
-	private static GridLayout glo;
-	private static Vector<MineButton> mineButtons;
-
-	private static GameState gameState;
-	// TODO clean this up
-	private static MinePanel _self;
-
-	public MinePanel(GameState state) {
-		_self = this;
-
+	private GameState gameState;
+	private IEventSubscriber eventSubscriber;
+	private JPanel minePanel;
+	private GridLayout minePanelLayout;
+	private Vector<MineButton> mineButtons;
+	
+	public MinePanel(
+		// TODO could we remove game state by providing width and height to constructor?
+		// Could we also provide it on the reset event?
+		GameState state,
+		IEventSubscriber subscriber
+	) {
 		gameState = state;
+		eventSubscriber = subscriber;
 
 		setLayout(new FlowLayout());
 		mineButtons = new Vector(state.getCurrentPuzzleMineCount());
 		setupInteriorMinePanel();
 		MineButton.init();
+
+		setupSubscriptions();
 	}
 
 	private void setupInteriorMinePanel() {
 		int w = gameState.getCurrentPuzzleWidth();
 		int h = gameState.getCurrentPuzzleHeight();
-		interiorMinePanel = new JPanel();
+		minePanel = new JPanel();
 
 		// GridLayout goes by row, column
-		glo = new GridLayout(h, w);
-		interiorMinePanel.setLayout(glo);
+		minePanelLayout = new GridLayout(h, w);
+		minePanel.setLayout(minePanelLayout);
 
 		addMines(h, w);
-		add(interiorMinePanel);
+		add(minePanel);
 	}
 
-	public static void update() {
-		for (int i = 0; i < mineButtons.size(); i++) {
-			mineButtons.get(i).decorate();
-		}
-		_self.revalidate();
-		_self.repaint();
-	}
-
-	public static void reset() {
-		int w = gameState.getCurrentPuzzleWidth();
-		int h = gameState.getCurrentPuzzleHeight();
-		glo.setRows(h);
-		glo.setColumns(w);
-		addMines(h, w);
-		_self.revalidate();
-		_self.repaint();
-		MineButton.reset();
-	}
-
-	private static void addMines(int h, int w) {
-		interiorMinePanel.removeAll();
+	private void addMines(int h, int w) {
+		minePanel.removeAll();
 		mineButtons.clear();
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
@@ -71,8 +58,33 @@ public class MinePanel extends JPanel {
 				MineButton mb = ClassFactory.create(MineButton.class);
 				mb.setPosition(x, y);
 				mineButtons.add(mb);
-				interiorMinePanel.add(mb);
+				minePanel.add(mb);
 			}
 		}
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(UpdateMinePanelEvent.class, (event) -> {
+			for (int i = 0; i < mineButtons.size(); i++) {
+				mineButtons.get(i).decorate();
+			}
+			revalidate();
+			repaint();
+		});
+
+		eventSubscriber.subscribe(ResetMinePanelEvent.class, (event) -> {
+			int w = gameState.getCurrentPuzzleWidth();
+			int h = gameState.getCurrentPuzzleHeight();
+
+			minePanelLayout.setRows(h);
+			minePanelLayout.setColumns(w);
+			addMines(h, w);
+			
+			revalidate();
+			repaint();
+
+			// TODO should this be moved?
+			MineButton.reset();
+		});
 	}
 }

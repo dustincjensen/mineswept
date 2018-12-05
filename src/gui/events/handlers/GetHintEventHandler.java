@@ -3,7 +3,7 @@ package gui.events.handlers;
 import gui.events.GetHintEvent;
 import gui.events.IEventSubscriber;
 import gui.events.UpdateMineCountEvent;
-import gui.panel.mines.MinePanel;
+import gui.events.UpdateMinePanelEvent;
 import logic.game.GameState;
 import logic.game.HintService;
 
@@ -22,11 +22,8 @@ public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
     public void execute(GetHintEvent event) {
         if (!gameState.isGameOver()) {
             hintService.useHint();
-            
             eventSubscriber.notify(new UpdateMineCountEvent());
-            
-            // TODO non-static references...
-            MinePanel.update();
+            eventSubscriber.notify(new UpdateMinePanelEvent());
         }
     }
 }
