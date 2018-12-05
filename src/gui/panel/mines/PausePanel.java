@@ -19,8 +19,8 @@ public class PausePanel extends JPanel {
 		add(continueButton());
 	}
 
-	public JButton continueButton() {
-		var button = new JButton("Continue Playing");
+	private JButton continueButton() {
+		JButton button = new JButton("Continue Playing");
 		button.addActionListener(evt -> eventPublisher.publish(new PauseGameEvent(false)));
 		return button;
 	}
