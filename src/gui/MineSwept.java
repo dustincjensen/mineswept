@@ -2,7 +2,7 @@ package gui;
 
 import gui.events.IEventPublisher;
 import gui.events.IEventSubscriber;
-import gui.events.QuitGameEvent;
+import gui.events.RefreshMainWindowEvent;
 import gui.menu.Menus;
 import gui.panel.MainPanel;
 import gui.Resource;
@@ -16,10 +16,10 @@ import logic.game.*;
  * Runs the JFrame for the game.
  */
 public class MineSwept {
-	// TODO make non-static
-	private static JFrame window;
-	private static MainPanel mp;
-
+	private IEventSubscriber eventSubscriber;
+	// TODO should the window be provided in it's own component?
+	private JFrame window;
+	
 	public MineSwept(
 		Menus menus,
 		IEventPublisher publisher,
@@ -29,8 +29,10 @@ public class MineSwept {
 		GameState gameState,
 		ClockTimer clockTimer
 	) {
+		eventSubscriber = subscriber;
+
 		Logic.init(gameState, clockTimer, publisher);
-		mp = new MainPanel(subscriber);
+		MainPanel mp = new MainPanel(subscriber);
 
 		window = new JFrame("MineSwept");
 		window.setContentPane(mp);
@@ -41,15 +43,19 @@ public class MineSwept {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.addWindowListener(mainWindowHandler);
 		window.setIconImage(loader.get(Resource.SmileyCool).getImage());
+
+		setupSubscription();
 	}
 
 	public void showWindow() {
 		window.setVisible(true);
 	}
 
-	public static void refresh() {
-		window.pack();
-		window.getContentPane().repaint();
+	private void setupSubscription() {
+		eventSubscriber.subscribe(RefreshMainWindowEvent.class, (event) -> {
+			window.pack();
+			window.getContentPane().repaint();
+		});
 	}
 
 	/**

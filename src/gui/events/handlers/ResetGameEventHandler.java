@@ -3,6 +3,7 @@ package gui.events.handlers;
 import gui.Resource;
 import gui.events.IEventSubscriber;
 import gui.events.PauseGameEvent;
+import gui.events.RefreshMainWindowEvent;
 import gui.events.ResetGameEvent;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMineCountEvent;
@@ -24,7 +25,6 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
     @Override
     public void execute(ResetGameEvent event) {
         gameState.reset();
-
         clockTimer.reset();
                 
         // Once this is hooked up... there should be no...
@@ -38,7 +38,6 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
         eventSubscriber.notify(new UpdateMineCountEvent());
         eventSubscriber.notify(new PauseGameEvent(false));
-
-        MineSwept.refresh();
+        eventSubscriber.notify(new RefreshMainWindowEvent());
     }
 }
