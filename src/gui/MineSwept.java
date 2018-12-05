@@ -1,13 +1,12 @@
 package gui;
 
 import gui.events.IEventPublisher;
+import gui.events.IEventSubscriber;
 import gui.events.QuitGameEvent;
 import gui.menu.Menus;
 import gui.panel.MainPanel;
 import gui.Resource;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import javax.swing.*;
 import logic.files.*;
 import logic.Logic;
@@ -16,10 +15,7 @@ import logic.game.*;
 /**
  * Runs the JFrame for the game.
  */
-public class MineSwept implements WindowListener {
-	private IEventPublisher eventPublisher;
-	private Menus menus;
-
+public class MineSwept {
 	// TODO make non-static
 	private static JFrame window;
 	private static MainPanel mp;
@@ -27,14 +23,14 @@ public class MineSwept implements WindowListener {
 	public MineSwept(
 		Menus menus,
 		IEventPublisher publisher,
+		IEventSubscriber subscriber,
+		MainWindowHandler mainWindowHandler,
 		ResourceLoader loader,
 		GameState gameState,
 		ClockTimer clockTimer
 	) {
-		eventPublisher = publisher;
-
 		Logic.init(gameState, clockTimer, publisher);
-		mp = new MainPanel();
+		mp = new MainPanel(subscriber);
 
 		window = new JFrame("MineSwept");
 		window.setContentPane(mp);
@@ -43,43 +39,17 @@ public class MineSwept implements WindowListener {
 		window.setResizable(false);
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.addWindowListener(this);
+		window.addWindowListener(mainWindowHandler);
 		window.setIconImage(loader.get(Resource.SmileyCool).getImage());
 	}
 
-	public static JFrame getWindow() {
-		return window;
-	}
-
-	public static MainPanel getMainPanel() {
-		return mp;
+	public void showWindow() {
+		window.setVisible(true);
 	}
 
 	public static void refresh() {
 		window.pack();
 		window.getContentPane().repaint();
-	}
-
-	public void windowActivated(WindowEvent e) {
-	}
-
-	public void windowClosed(WindowEvent e) {
-	}
-
-	public void windowClosing(WindowEvent e) {
-		eventPublisher.publish(new QuitGameEvent());
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-	}
-
-	public void windowIconified(WindowEvent e) {
-	}
-
-	public void windowOpened(WindowEvent e) {
 	}
 
 	/**
@@ -88,7 +58,7 @@ public class MineSwept implements WindowListener {
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		MineSwept ms = ClassFactory.create(MineSwept.class);
-		ms.getWindow().setVisible(true);
+		MineSwept mineSwept = ClassFactory.create(MineSwept.class);
+		mineSwept.showWindow();
 	}
 }

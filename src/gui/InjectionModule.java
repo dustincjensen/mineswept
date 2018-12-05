@@ -43,11 +43,18 @@ public class InjectionModule extends AbstractModule {
     public MineSwept provideMineSwept(
         Menus menus,
         IEventPublisher publisher,
+        IEventSubscriber subscriber,
+        MainWindowHandler handler,
         ResourceLoader loader,
         GameState gameState,
         ClockTimer clockTimer
     ) {
-        return new MineSwept(menus, publisher, loader, gameState, clockTimer);
+        return new MineSwept(menus, publisher, subscriber, handler, loader, gameState, clockTimer);
+    }
+
+    @Provides
+    public MainWindowHandler provideMainWindowHandler(IEventPublisher publisher) {
+        return new MainWindowHandler(publisher);
     }
 
     // TODO move this into it's own module?

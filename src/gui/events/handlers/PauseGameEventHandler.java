@@ -3,7 +3,6 @@ package gui.events.handlers;
 import gui.events.IEventSubscriber;
 import gui.events.PauseGameEvent;
 import gui.events.SetResetButtonIconEvent;
-import gui.MineSwept;
 import gui.Resource;
 import logic.game.*;
 
@@ -30,7 +29,7 @@ public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
             }
 
             gameState.setGamePaused(event.pause);
-            MineSwept.getMainPanel().pausePanel(event.pause);
+            eventSubscriber.notify(event);
         }
     }
 }

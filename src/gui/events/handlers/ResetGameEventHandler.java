@@ -2,13 +2,12 @@ package gui.events.handlers;
 
 import gui.Resource;
 import gui.events.IEventSubscriber;
+import gui.events.PauseGameEvent;
 import gui.events.ResetGameEvent;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMineCountEvent;
 import gui.events.ResetMinePanelEvent;
 import gui.MineSwept;
-import gui.panel.header.*;
-import gui.panel.mines.MinePanel;
 import logic.game.*;
 
 public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
@@ -27,8 +26,7 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         gameState.reset();
 
         clockTimer.reset();
-        
-        
+                
         // Once this is hooked up... there should be no...
         // MinePanel.reset();
         // MineCount.update();
@@ -39,8 +37,8 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         eventSubscriber.notify(new ResetMinePanelEvent());
         eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
         eventSubscriber.notify(new UpdateMineCountEvent());
+        eventSubscriber.notify(new PauseGameEvent(false));
 
-        MineSwept.getMainPanel().pausePanel(false);
         MineSwept.refresh();
     }
 }
