@@ -24,9 +24,15 @@ import java.awt.event.InputEvent;
  * Setup a mine button.
  */
 public class MineButton extends JLabel implements MouseListener {
-	private static int w, h; // 32, 48 //font size, 22 for 32 and 32 for 48
 	private int x, y;
-	private int fqe; // empty flag question //state of the button
+
+	/**
+	 * 0 = empty
+	 * 1 = flag
+	 * 2 = question mark
+	 * This is the state of the button when not clicked.
+	 */
+	private int nonClickedState;
 
 	private static int dragX, dragY;
 	private static boolean insideSquares, startedHere;
@@ -38,17 +44,6 @@ public class MineButton extends JLabel implements MouseListener {
 	 * event.
 	 */
 
-	private static final BevelBorder RAISEDBORDER = new BevelBorder(BevelBorder.RAISED, Color.WHITE, Color.GRAY);
-	private static final BevelBorder LOWEREDBORDER = new BevelBorder(BevelBorder.LOWERED, Color.WHITE, Color.GRAY);
-	private static final Color[] colors = { Color.BLUE, // One
-			new Color(67, 150, 67), // Two
-			Color.RED, // Three
-			new Color(75, 0, 75), // Four
-			new Color(128, 0, 0), // Five
-			new Color(64, 224, 208), // Six
-			new Color(160, 92, 240), // Seven
-			new Color(0, 0, 0) // Eight
-	};
 	private static Color backgroundColor;
 
 	private static GameState gameState;
@@ -75,16 +70,20 @@ public class MineButton extends JLabel implements MouseListener {
 			setBackgroundColor(new Color(prefs.r(), prefs.g(), prefs.b()));
 			System.out.println("Only setting the Mine Button Color preferences one time.");
 		}
+		
+		nonClickedState = 0;
 
+		// TODO allow resizing?
+		// Font size 32 when w,h = 48
+		// Font size 22 when w,h = 32
 		FontChange.setFont(this, 32);
-		w = 48;
-		h = 48;
-		fqe = 0;
+		int w = 48, h = 48;
 		setPreferredSize(new Dimension(w, h));
+		
 		setHorizontalAlignment(JLabel.CENTER);
 		setOpaque(true);
 		setBackground(backgroundColor);
-		setBorder(RAISEDBORDER);
+		setBorder(Styles.RAISED_BORDER);
 		addMouseListener(this);
 	}
 
@@ -99,6 +98,7 @@ public class MineButton extends JLabel implements MouseListener {
 
 	public void decorate() {
 		Mine t = gameState.getMine(x, y);
+		
 		// Uncovered
 		if (t.uncovered()) {
 			// A bomb
@@ -114,25 +114,14 @@ public class MineButton extends JLabel implements MouseListener {
 			// A regular square or empty
 			else {
 				int val = t.getSpotValue();
-				if (val > 0) {
-					setText("" + val);
-					setIcon(null);
-					setForeground(colors[val - 1]);
-				} else {
-					setText("");
-					setIcon(null);
-					setForeground(null);
-				}
+				setText(val > 0 ? "" + val : "");
+				setForeground(val > 0 ? Styles.MINE_NUMBER_COLORS[val - 1] : null);
+				setIcon(null);
 			}
 
-			// if its uncovered, its LOWEREDBORDER
-			setBorder(LOWEREDBORDER);
-
-			// background is always NULL unless BLEWUP is true
-			if (t.blewUp())
-				setBackground(Color.RED);
-			else
-				setBackground(null);
+			// If the mine is uncovered we lower the border.
+			setBorder(Styles.LOWERED_BORDER);
+			setBackground(t.blewUp() ? Styles.FAILED_MINE_CLICKED_BACKGROUND_COLOR : null);
 		}
 
 		// Still covered
@@ -141,15 +130,10 @@ public class MineButton extends JLabel implements MouseListener {
 
 			// check for hint (empty space)
 			if (!gameState.isGameOver() && t.isHint()) {
-				if (t.isSpecialProtected())
-					setIcon(resourceLoader.get(Resource.FlagHint));
-				else
-					setIcon(resourceLoader.get(Resource.MineHint));
+				setIcon(t.isSpecialProtected() 
+					? resourceLoader.get(Resource.FlagHint) 
+					: resourceLoader.get(Resource.MineHint));
 				setText("");
-
-				// TODO this was making it so the state didn't actually know if the square was a hint...
-				// It can stay a hint, even if it get's uncovered...
-				//t.setHint(false);
 			}
 
 			// allows the changing of color if the options changes it
@@ -173,14 +157,6 @@ public class MineButton extends JLabel implements MouseListener {
 		return backgroundColor;
 	}
 
-	public int x() {
-		return x;
-	}
-
-	public int y() {
-		return y;
-	}
-
 	// ==============================================
 	// MOUSE LISTENER
 	// ==============================================
@@ -195,7 +171,7 @@ public class MineButton extends JLabel implements MouseListener {
 				insideSquares = true;
 				if (!get.uncovered() && !get.getAnyProtected()) {
 					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
-					setBorder(LOWEREDBORDER);
+					setBorder(Styles.LOWERED_BORDER);
 					setBackground(null);
 				} else {
 					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyHappy));
@@ -212,7 +188,7 @@ public class MineButton extends JLabel implements MouseListener {
 				insideSquares = false;
 				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered()) {
-					setBorder(RAISEDBORDER);
+					setBorder(Styles.RAISED_BORDER);
 					setBackground(backgroundColor);
 				}
 			}
@@ -231,7 +207,7 @@ public class MineButton extends JLabel implements MouseListener {
 				insideSquares = true;
 				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered() && !get.getAnyProtected()) {
-					setBorder(LOWEREDBORDER);
+					setBorder(Styles.LOWERED_BORDER);
 					setBackground(null);
 					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
 				}
@@ -249,23 +225,23 @@ public class MineButton extends JLabel implements MouseListener {
 
 			Mine mineSpot = gameState.getMine(x, y);
 			if (!mineSpot.uncovered() && !mineSpot.isSpecialProtected()) {
-				if (fqe == 2)
-					fqe = 0;
-				else
-					fqe++;
+				if (nonClickedState == 2) {
+					nonClickedState = 0;
+				}
+				else {
+					nonClickedState++;
+				}
 
-				if (fqe == 1) {
+				if (nonClickedState == 1) {
 					setIcon(resourceLoader.get(Resource.Flag));
 					setText("");
 					mineSpot.setProtected(true);
-
-				} else if (fqe == 2) {
+				} else if (nonClickedState == 2) {
 					setIcon(null);
 					setText("?");
 					setForeground(Color.WHITE);
 					mineSpot.setProtected(false);
-
-				} else if (fqe == 0) {
+				} else if (nonClickedState == 0) {
 					setIcon(null);
 					setText("");
 					mineSpot.setProtected(false);
