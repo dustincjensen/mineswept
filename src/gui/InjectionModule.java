@@ -13,7 +13,7 @@ import gui.panel.header.HeaderModule;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
-import gui.records.RecordWindow;
+import gui.records.RecordModule;
 import logic.files.*;
 import logic.game.*;
 
@@ -24,6 +24,7 @@ public class InjectionModule extends AbstractModule {
         install(new EventModule());
         install(new HeaderModule());
         install(new MenuModule());
+        install(new RecordModule());
     }
 
     // TODO move this into it's own module...
@@ -87,11 +88,6 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public HintService provideHintService(GameState gameState) {
         return new HintService(gameState);
-    }
-
-    @Provides
-    public RecordWindow provideRecordWindow(Records records) {
-        return new RecordWindow(records);
     }
 
     @Provides

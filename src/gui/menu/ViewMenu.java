@@ -29,7 +29,7 @@ public class ViewMenu extends JMenu {
 	private JMenuItem showRecords() {
 		var records = new JMenuItem("Records");
 		records.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 2));
-		records.addActionListener(evt -> eventPublisher.publish(new ShowRecordsEvent(true)));
+		records.addActionListener(evt -> eventPublisher.publish(new ShowRecordsEvent()));
 		return records;
 	}
 

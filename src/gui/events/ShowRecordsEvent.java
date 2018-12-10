@@ -1,9 +1,10 @@
 package gui.events;
 
-public class ShowRecordsEvent {
-	public boolean show;
+import logic.files.records.All;
 
-	public ShowRecordsEvent(boolean showRecordsWindow) {
-		show = showRecordsWindow;
+public class ShowRecordsEvent {
+	public All records;
+
+	public ShowRecordsEvent() {
 	}
 }

@@ -1,29 +1,28 @@
 package gui.records;
 
-import logic.files.Records;
+import gui.events.IEventSubscriber;
+import gui.events.ShowRecordsEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import logic.files.records.All;
+import logic.files.Records;
 
 public class RecordWindow {
+	private IEventSubscriber eventSubscriber;
+
 	private JFrame recordWindow;
 	private JTabbedPane tabs;
 	private RecordPanel beginner, intermediate, advanced;
 
-	public RecordWindow(Records records) {
+	public RecordWindow(IEventSubscriber subscriber) {
+		eventSubscriber = subscriber;
+
 		System.out.println("Creating: RECORD WINDOW");
 		setupWindow();
-
-		var allRecords = records.getAllRecords();
-		beginner.setRecords(allRecords.beginner);
-		intermediate.setRecords(allRecords.intermediate);
-		advanced.setRecords(allRecords.advanced);
-	}
-
-	public void show(boolean t) {
-		recordWindow.setVisible(t);
+		setupSubscriptions();
 	}
 
 	private void setupWindow() {
@@ -71,7 +70,7 @@ public class RecordWindow {
 	private JButton ok() {
 		var okButton = new JButton("OK");
 		okButton.addActionListener(evt -> {
-			show(false);
+			recordWindow.setVisible(false);
 		});
 		return okButton;
 	}
@@ -91,5 +90,16 @@ public class RecordWindow {
 			}
 		});
 		return reset;
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(ShowRecordsEvent.class, event -> {
+			recordWindow.setVisible(true);
+
+			All allRecords = event.records;
+			beginner.setRecords(allRecords.beginner);
+			intermediate.setRecords(allRecords.intermediate);
+			advanced.setRecords(allRecords.advanced);
+		});
 	}
 }
