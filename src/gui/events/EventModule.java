@@ -105,7 +105,7 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public ShowStatisticsEventHandler provideShowStatisticsEventHandler(StatisticsWindow statisticsWindow) {
-        return new ShowStatisticsEventHandler(statisticsWindow);
+    public ShowStatisticsEventHandler provideShowStatisticsEventHandler(IEventSubscriber subscriber) {
+        return new ShowStatisticsEventHandler(subscriber);
     }
 }

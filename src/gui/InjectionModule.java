@@ -14,6 +14,7 @@ import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
 import gui.records.RecordModule;
+import gui.statistics.StatisticsModule;
 import logic.files.*;
 import logic.game.*;
 
@@ -25,6 +26,7 @@ public class InjectionModule extends AbstractModule {
         install(new HeaderModule());
         install(new MenuModule());
         install(new RecordModule());
+        install(new StatisticsModule());
     }
 
     // TODO move this into it's own module...

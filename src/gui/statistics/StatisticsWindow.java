@@ -1,12 +1,18 @@
 package gui.statistics;
 
+import gui.events.IEventSubscriber;
+import gui.events.ShowStatisticsEvent;
 import java.awt.*;
 import javax.swing.*;
 
 public class StatisticsWindow {
+	private IEventSubscriber eventSubscriber;
 	private JFrame statisticWindow;
 
-	public StatisticsWindow() {
+	public StatisticsWindow(IEventSubscriber subscriber) {
+		eventSubscriber = subscriber;
+		System.out.println("Creating: STATISTICS WINDOW");
+
 		statisticWindow = new JFrame("Statistics");
 		statisticWindow.setContentPane(setupPanel());
 
@@ -15,10 +21,8 @@ public class StatisticsWindow {
 		statisticWindow.setLocationRelativeTo(null);
 		statisticWindow.setResizable(false);
 		statisticWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-	}
 
-	public void show(boolean t) {
-		statisticWindow.setVisible(t);
+		setupSubscriptions();
 	}
 
 	private JPanel setupPanel() {
@@ -26,5 +30,11 @@ public class StatisticsWindow {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(new JButton("Statistics"));
 		return panel;
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(ShowStatisticsEvent.class, event -> {
+			statisticWindow.setVisible(true);
+		});
 	}
 }
