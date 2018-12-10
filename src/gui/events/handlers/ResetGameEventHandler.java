@@ -34,7 +34,10 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         // MineSwept.refresh();
         // perhaps no clockTimer.reset();
         
-        eventSubscriber.notify(new ResetMinePanelEvent());
+        eventSubscriber.notify(new ResetMinePanelEvent(
+            gameState.getCurrentPuzzleHeight(),
+            gameState.getCurrentPuzzleWidth()
+        ));
         eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
         eventSubscriber.notify(new UpdateMineCountEvent());
         eventSubscriber.notify(new PauseGameEvent(false));

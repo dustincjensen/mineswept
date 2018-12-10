@@ -41,7 +41,11 @@ public class InjectionModule extends AbstractModule {
     // TODO move this into it's own module...
     @Provides
     public MinePanel provideMinePanel(GameState state, IEventSubscriber subscriber) {
-        return new MinePanel(state, subscriber);
+        return new MinePanel(
+            state.getCurrentPuzzleHeight(),
+            state.getCurrentPuzzleWidth(),
+            state.getCurrentPuzzleMineCount(),
+            subscriber);
     }
 
     // TODO move this into it's own module?

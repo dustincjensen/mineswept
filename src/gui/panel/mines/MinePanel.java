@@ -7,38 +7,37 @@ import gui.events.ResetMinePanelEvent;
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;
-import logic.game.GameState;
 
 /**
  * Renders the the mine panel that allows the player to play the game.
  */
 public class MinePanel extends JPanel {
-	private GameState gameState;
 	private IEventSubscriber eventSubscriber;
 	private JPanel minePanel;
 	private GridLayout minePanelLayout;
 	private Vector<MineButton> mineButtons;
 	
 	public MinePanel(
-		// TODO could we remove game state by providing width and height to constructor?
-		// Could we also provide it on the reset event?
-		GameState state,
+		int initialHeight,
+		int initialWidth,
+		int maximumPuzzleMineCount,
 		IEventSubscriber subscriber
 	) {
-		gameState = state;
 		eventSubscriber = subscriber;
 
 		setLayout(new FlowLayout());
-		mineButtons = new Vector(state.getCurrentPuzzleMineCount());
-		setupInteriorMinePanel();
+		mineButtons = new Vector(maximumPuzzleMineCount);
+		setupInteriorMinePanel(initialHeight, initialWidth);
+
+		System.out.println("Initial h:w " + initialHeight +":" + initialWidth);
+
+		// TODO this should be removed/moved elsewhere.
 		MineButton.init();
 
 		setupSubscriptions();
 	}
 
-	private void setupInteriorMinePanel() {
-		int w = gameState.getCurrentPuzzleWidth();
-		int h = gameState.getCurrentPuzzleHeight();
+	private void setupInteriorMinePanel(int h, int w) {
 		minePanel = new JPanel();
 
 		// GridLayout goes by row, column
@@ -73,12 +72,11 @@ public class MinePanel extends JPanel {
 		});
 
 		eventSubscriber.subscribe(ResetMinePanelEvent.class, (event) -> {
-			int w = gameState.getCurrentPuzzleWidth();
-			int h = gameState.getCurrentPuzzleHeight();
+			System.out.println("Event h:w " + event.h +":" + event.w);
 
-			minePanelLayout.setRows(h);
-			minePanelLayout.setColumns(w);
-			addMines(h, w);
+			minePanelLayout.setRows(event.h);
+			minePanelLayout.setColumns(event.w);
+			addMines(event.h, event.w);
 			
 			revalidate();
 			repaint();
