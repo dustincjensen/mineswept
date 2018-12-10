@@ -29,8 +29,6 @@ public class MinePanel extends JPanel {
 		mineButtons = new Vector(maximumPuzzleMineCount);
 		setupInteriorMinePanel(initialHeight, initialWidth);
 
-		System.out.println("Initial h:w " + initialHeight +":" + initialWidth);
-
 		// TODO this should be removed/moved elsewhere.
 		MineButton.init();
 
@@ -72,8 +70,6 @@ public class MinePanel extends JPanel {
 		});
 
 		eventSubscriber.subscribe(ResetMinePanelEvent.class, (event) -> {
-			System.out.println("Event h:w " + event.h +":" + event.w);
-
 			minePanelLayout.setRows(event.h);
 			minePanelLayout.setColumns(event.w);
 			addMines(event.h, event.w);
