@@ -41,7 +41,7 @@ public class ViewMenu extends JMenu {
 	private JMenuItem showStatistics() {
 		var statistics = new JMenuItem("Statistics");
 		statistics.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
-		statistics.addActionListener(evt -> eventPublisher.publish(new ShowStatisticsEvent(true)));
+		statistics.addActionListener(evt -> eventPublisher.publish(new ShowStatisticsEvent()));
 		return statistics;
 	}
 }

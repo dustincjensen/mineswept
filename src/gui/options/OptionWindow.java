@@ -3,6 +3,7 @@ package gui.options;
 import gui.Resource;
 import gui.ResourceLoader;
 import gui.events.IEventSubscriber;
+import gui.events.ShowOptionsEvent;
 import gui.events.UpdateMinePanelEvent;
 import gui.panel.mines.MineButton;
 import java.awt.*;
@@ -40,13 +41,14 @@ public class OptionWindow {
 		optionsWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		optionsHaveChanged = false;
+
+		setupSubscriptions();
 	}
 
-	public void show(boolean showOptionsWindow) {
-		if (!showOptionsWindow) {
-			saveCurrentOptions();
-		}
-		optionsWindow.setVisible(showOptionsWindow);
+	private void hide() {
+		// TODO save options...
+		// saveCurrentOptions();
+		optionsWindow.setVisible(false);
 	}
 
 	private JPanel mainPanel() {
@@ -117,10 +119,10 @@ public class OptionWindow {
 				if (yes_no == JOptionPane.YES_OPTION) {
 					setNewOptions();
 					optionsHaveChanged = false;
-					show(false);
+					hide();
 				}
 			} else {
-				show(false);
+				hide();
 			}
 		});
 		return confirm;
@@ -129,7 +131,7 @@ public class OptionWindow {
 	private JButton cancelButton() {
 		var cancel = new JButton("Cancel");
 		cancel.addActionListener(evt -> {
-			show(false);
+			hide();
 			resetOptions();
 		});
 		return cancel;
@@ -178,5 +180,11 @@ public class OptionWindow {
 	private int confirmDialog(String message) {
 		return JOptionPane.showConfirmDialog(null, message, "Confirm?", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, resourceLoader.get(Resource.SmileyHappy));
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(ShowOptionsEvent.class, event -> {
+			optionsWindow.setVisible(true);
+		});
 	}
 }

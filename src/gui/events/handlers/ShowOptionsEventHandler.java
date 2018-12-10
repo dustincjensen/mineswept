@@ -1,17 +1,17 @@
 package gui.events.handlers;
 
+import gui.events.IEventSubscriber;
 import gui.events.ShowOptionsEvent;
-import gui.options.OptionWindow;
 
 public class ShowOptionsEventHandler implements IEventHandler<ShowOptionsEvent> {
-    private OptionWindow optionWindow;
+    private IEventSubscriber eventSubscriber;
 
-    public ShowOptionsEventHandler(OptionWindow window) {
-        optionWindow = window;
+    public ShowOptionsEventHandler(IEventSubscriber subscriber) {
+        eventSubscriber = subscriber;
     }
 
     @Override
     public void execute(ShowOptionsEvent event) {
-        optionWindow.show(event.show);
+        eventSubscriber.notify(event);
     }
 }

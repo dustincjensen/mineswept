@@ -8,6 +8,7 @@ import gui.events.IEventPublisher;
 import gui.events.IEventSubscriber;
 import gui.menu.MenuModule;
 import gui.menu.Menus;
+import gui.options.OptionModule;
 import gui.options.OptionWindow;
 import gui.panel.header.HeaderModule;
 import gui.panel.mines.MineButton;
@@ -25,6 +26,8 @@ public class InjectionModule extends AbstractModule {
         install(new EventModule());
         install(new HeaderModule());
         install(new MenuModule());
+
+        install(new OptionModule());
         install(new RecordModule());
         install(new StatisticsModule());
     }
@@ -90,15 +93,6 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public HintService provideHintService(GameState gameState) {
         return new HintService(gameState);
-    }
-
-    @Provides
-    public OptionWindow provideOptionWindow(
-        GameState state,
-        ResourceLoader loader,
-        IEventSubscriber subscriber
-    ) {
-        return new OptionWindow(state, loader, subscriber);
     }
 
     @Singleton

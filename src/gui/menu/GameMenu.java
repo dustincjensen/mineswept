@@ -45,7 +45,7 @@ public class GameMenu extends JMenu {
 	private JMenuItem options() {
 		var gameOptions = new JMenuItem("Options");
 		gameOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
-		gameOptions.addActionListener(evt -> eventPublisher.publish(new ShowOptionsEvent(true)));
+		gameOptions.addActionListener(evt -> eventPublisher.publish(new ShowOptionsEvent()));
 		return gameOptions;
 	}
 

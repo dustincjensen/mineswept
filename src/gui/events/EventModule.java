@@ -95,8 +95,8 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public ShowOptionsEventHandler provideShowOptionsEventHandler(OptionWindow optionWindow) {
-        return new ShowOptionsEventHandler(optionWindow);
+    public ShowOptionsEventHandler provideShowOptionsEventHandler(IEventSubscriber subscriber) {
+        return new ShowOptionsEventHandler(subscriber);
     }
 
     @Provides
