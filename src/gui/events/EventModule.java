@@ -38,6 +38,7 @@ public class EventModule extends AbstractModule {
     public List<IEventHandler> provideEventHandlers(
         AboutEventHandler about, 
         GetHintEventHandler getHint,
+        MineClickedEventHandler mineClicked,
         PauseGameEventHandler pauseGame,
         QuitGameEventHandler quitGame,
         ResetGameEventHandler resetGame,
@@ -50,6 +51,7 @@ public class EventModule extends AbstractModule {
         return List.of(
             about,
             getHint,
+            mineClicked,
             pauseGame,
             quitGame,
             resetGame,
@@ -64,6 +66,11 @@ public class EventModule extends AbstractModule {
     @Provides
     public GetHintEventHandler provideGetHintEventHandler(GameState gameState, HintService hintService, IEventSubscriber subscriber) {
         return new GetHintEventHandler(gameState, hintService, subscriber);
+    }
+
+    @Provides
+    public MineClickedEventHandler provideMineClickedEventHandler(GameState gameState, IEventSubscriber subscriber) {
+        return new MineClickedEventHandler(gameState, subscriber);
     }
 
     @Provides

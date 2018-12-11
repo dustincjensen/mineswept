@@ -5,6 +5,7 @@ import logic.files.Preferences;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;
+import gui.events.MineClickedEvent;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMineCountEvent;
 import gui.events.UpdateMinePanelEvent;
@@ -35,14 +36,19 @@ public class MineButton extends JLabel implements MouseListener {
 	private int nonClickedState;
 
 	private static int dragX, dragY;
-	private static boolean insideSquares, startedHere;
-	/*
-	 * inside squares fixes the cursor leaving the buttons and still clicking the
-	 * last answered but I need a listener on the panel to know when it leaves to
-	 * change the face and to know when the mouse was released from a press that
-	 * starts outside of the buttons or else MineButtons don't get the release
-	 * event.
+
+	/**
+	 * This is used to fix the cursor leaving the buttons and still clicking the
+	 * last highlighted mine.
 	 */
+	private static boolean insideSquares;
+
+	/**
+	 * We don't want a click that starts at the top of the screen to start the game
+	 * if dragged into the mine field. They need to originate their click inside
+	 * the mine field.
+	 */
+	private static boolean mousePressStartedInsideSquare;
 
 	private static Color backgroundColor;
 
@@ -85,15 +91,9 @@ public class MineButton extends JLabel implements MouseListener {
 		setBackground(backgroundColor);
 		setBorder(Styles.RAISED_BORDER);
 		addMouseListener(this);
-	}
 
-	public static void init() {
-		reset();
-	}
-
-	public static void reset() {
-		dragX = -1;
-		dragY = -1;
+		dragX = dragY = -1;
+		insideSquares = mousePressStartedInsideSquare = false;
 	}
 
 	public void decorate() {
@@ -136,7 +136,6 @@ public class MineButton extends JLabel implements MouseListener {
 				setText("");
 			}
 
-			// allows the changing of color if the options changes it
 			if (gameState.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
 				setIcon(resourceLoader.get(Resource.Mine));
 				setText("");
@@ -161,7 +160,7 @@ public class MineButton extends JLabel implements MouseListener {
 	// MOUSE LISTENER
 	// ==============================================
 	public void mouseEntered(MouseEvent e) {
-		if (!gameState.isGameOver() && startedHere) {
+		if (!gameState.isGameOver() && mousePressStartedInsideSquare) {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
@@ -181,7 +180,7 @@ public class MineButton extends JLabel implements MouseListener {
 	}
 
 	public void mouseExited(MouseEvent e) {
-		if (!gameState.isGameOver() && startedHere) {
+		if (!gameState.isGameOver() && mousePressStartedInsideSquare) {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
@@ -203,7 +202,7 @@ public class MineButton extends JLabel implements MouseListener {
 				clockTimer.start();
 			}
 			if (!gameState.isGameOver()) {
-				startedHere = true;
+				mousePressStartedInsideSquare = true;
 				insideSquares = true;
 				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered() && !get.getAnyProtected()) {
@@ -216,12 +215,12 @@ public class MineButton extends JLabel implements MouseListener {
 
 		// Right mouse button
 		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (gameState.isGameOver()) return;
+			
 			if (!gameState.isGameStarted()) {
 				gameState.setGameStarted(true);
 				clockTimer.start();
 			}
-			if (gameState.isGameOver())
-				return;
 
 			Mine mineSpot = gameState.getMine(x, y);
 			if (!mineSpot.uncovered() && !mineSpot.isSpecialProtected()) {
@@ -232,20 +231,10 @@ public class MineButton extends JLabel implements MouseListener {
 					nonClickedState++;
 				}
 
-				if (nonClickedState == 1) {
-					setIcon(resourceLoader.get(Resource.Flag));
-					setText("");
-					mineSpot.setProtected(true);
-				} else if (nonClickedState == 2) {
-					setIcon(null);
-					setText("?");
-					setForeground(Color.WHITE);
-					mineSpot.setProtected(false);
-				} else if (nonClickedState == 0) {
-					setIcon(null);
-					setText("");
-					mineSpot.setProtected(false);
-				}
+				mineSpot.setProtected(nonClickedState == 1);
+				setIcon(nonClickedState == 1 ? resourceLoader.get(Resource.Flag) : null);
+				setForeground(nonClickedState == 2 ? Color.WHITE : null);
+				setText(nonClickedState == 2 ? "?" : "");
 
 				// TODO should MineButton be notifying directly?
 				// instead...
@@ -257,28 +246,11 @@ public class MineButton extends JLabel implements MouseListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		// Left Mouse Button
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (!gameState.isGameOver()) {
-				eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyHappy));
-				if (insideSquares == true) {
-					if (dragX == -1 && dragY == -1) {
-						Mine get = gameState.getMine(x, y);
-						if (!get.getAnyProtected())
-							MineField.leftClicked(x, y);
-					} else {
-						Mine get = gameState.getMine(dragX, dragY);
-						if (!get.getAnyProtected())
-							MineField.leftClicked(dragX, dragY);
-					}
-				}
-				dragX = dragY = -1;
-				insideSquares = false;
-				startedHere = false;
+		eventPublisher.publish(new MineClickedEvent(e.getButton() == MouseEvent.BUTTON1, insideSquares, x, y, dragX, dragY));
 
-				eventSubscriber.notify(new UpdateMinePanelEvent());
-			}
-		}
+		dragX = dragY = -1;
+		insideSquares = false;
+		mousePressStartedInsideSquare = false;
 	}
 
 	public void mouseClicked(MouseEvent e) {

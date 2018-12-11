@@ -28,10 +28,6 @@ public class MinePanel extends JPanel {
 		setLayout(new FlowLayout());
 		mineButtons = new Vector(maximumPuzzleMineCount);
 		setupInteriorMinePanel(initialHeight, initialWidth);
-
-		// TODO this should be removed/moved elsewhere.
-		MineButton.init();
-
 		setupSubscriptions();
 	}
 
@@ -76,9 +72,6 @@ public class MinePanel extends JPanel {
 			
 			revalidate();
 			repaint();
-
-			// TODO should this be moved?
-			MineButton.reset();
 		});
 	}
 }
