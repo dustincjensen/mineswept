@@ -31,18 +31,18 @@ public class GameState {
 		currentPuzzleDifficulty = nextPuzzleDifficulty = prefs.difficulty();
 		puzzleWidths = Map.of(
 			Difficulty.easy, 9,
-			Difficulty.intermediate, 16,
-			Difficulty.advanced, 30
+			Difficulty.medium, 16,
+			Difficulty.hard, 30
 		);
 		puzzleHeights = Map.of(
 			Difficulty.easy, 9,
-			Difficulty.intermediate, 16,
-			Difficulty.advanced, 16
+			Difficulty.medium, 16,
+			Difficulty.hard, 16
 		);
 		puzzleMines = Map.of(
 			Difficulty.easy, 10,
-			Difficulty.intermediate, 40,
-			Difficulty.advanced, 99
+			Difficulty.medium, 40,
+			Difficulty.hard, 99
 		);
 
 		gameMines = minesFactory.create(
@@ -202,7 +202,7 @@ public class GameState {
 	 * @return the maximum number of mine field squares.
 	 */
 	public int getMaxNumberOfMineFieldSquares() {
-		return puzzleWidths.get(Difficulty.advanced) * puzzleHeights.get(Difficulty.advanced);
+		return puzzleWidths.get(Difficulty.hard) * puzzleHeights.get(Difficulty.hard);
 	}
 
 	/**

@@ -86,11 +86,11 @@ public class OptionWindow {
 		difficultyPanel.add(easy);
 
 		medium = new JRadioButton("<html>Intermediate<br/>40 mines<br/>16 x 16 tile grid</html>");
-		medium.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.intermediate);
+		medium.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.medium);
 		difficultyPanel.add(medium);
 
 		hard = new JRadioButton("<html>Advanced<br/>99 mines<br/>16 x 30 tile grid</html>");
-		hard.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.advanced);
+		hard.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.hard);
 		difficultyPanel.add(hard);
 
 		difficultyRadioButtonGroup = new ButtonGroup();
@@ -107,8 +107,8 @@ public class OptionWindow {
 	private void chooseSelectedDifficulty() {
 		Difficulty currentPuzzle = gameState.getCurrentPuzzleDifficulty();
 		easy.setSelected(currentPuzzle == Difficulty.easy);
-		medium.setSelected(currentPuzzle == Difficulty.intermediate);
-		hard.setSelected(currentPuzzle == Difficulty.advanced);
+		medium.setSelected(currentPuzzle == Difficulty.medium);
+		hard.setSelected(currentPuzzle == Difficulty.hard);
 	}
 
 	private JButton confirmButton() {
@@ -171,9 +171,9 @@ public class OptionWindow {
 		if (diff.equals(easy.getModel())) {
 			gameState.setNextPuzzleDifficulty(Difficulty.easy);
 		} else if (diff.equals(medium.getModel())) {
-			gameState.setNextPuzzleDifficulty(Difficulty.intermediate);
+			gameState.setNextPuzzleDifficulty(Difficulty.medium);
 		} else if (diff.equals(hard.getModel())) {
-			gameState.setNextPuzzleDifficulty(Difficulty.advanced);
+			gameState.setNextPuzzleDifficulty(Difficulty.hard);
 		}
 	}
 

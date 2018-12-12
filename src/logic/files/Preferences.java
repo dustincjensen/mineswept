@@ -17,8 +17,8 @@ import logic.game.GameState;
 public class Preferences {
 	private static Map<String, Difficulty> difficultyMap = Map.of(
 		"easy", Difficulty.easy,
-		"medium", Difficulty.intermediate,
-		"hard", Difficulty.advanced);
+		"medium", Difficulty.medium,
+		"hard", Difficulty.hard);
 	private File preferences;
 	private Preference preference;
 
