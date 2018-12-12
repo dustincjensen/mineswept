@@ -15,7 +15,7 @@ import logic.files.Records;
 import logic.game.ClockTimer;
 import logic.game.GameState;
 import logic.game.HintService;
-
+import logic.game.MineRevealService;
 
 public class EventModule extends AbstractModule {
     @Override
@@ -69,8 +69,13 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public MineClickedEventHandler provideMineClickedEventHandler(GameState gameState, IEventSubscriber subscriber) {
-        return new MineClickedEventHandler(gameState, subscriber);
+    public MineClickedEventHandler provideMineClickedEventHandler(
+        GameState state,
+        MineRevealService service,
+        ClockTimer timer,
+        IEventSubscriber subscriber
+    ) {
+        return new MineClickedEventHandler(state, service, timer, subscriber);
     }
 
     @Provides

@@ -52,14 +52,11 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public MineSwept provideMineSwept(
         Menus menus,
-        IEventPublisher publisher,
         IEventSubscriber subscriber,
         MainWindowHandler handler,
-        ResourceLoader loader,
-        GameState gameState,
-        ClockTimer clockTimer
+        ResourceLoader loader
     ) {
-        return new MineSwept(menus, publisher, subscriber, handler, loader, gameState, clockTimer);
+        return new MineSwept(menus, subscriber, handler, loader);
     }
 
     @Provides
@@ -108,5 +105,10 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public MinesFactory provideMinesFactory(OctoCheckService octo) {
         return new MinesFactory(octo);
+    }
+
+    @Provides
+    public MineRevealService provideMineRevealService(OctoCheckService octo) {
+        return new MineRevealService(octo);
     }
 }

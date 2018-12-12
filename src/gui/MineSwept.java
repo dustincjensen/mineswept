@@ -1,6 +1,5 @@
 package gui;
 
-import gui.events.IEventPublisher;
 import gui.events.IEventSubscriber;
 import gui.events.RefreshMainWindowEvent;
 import gui.menu.Menus;
@@ -8,9 +7,6 @@ import gui.panel.MainPanel;
 import gui.Resource;
 import java.awt.*;
 import javax.swing.*;
-import logic.files.*;
-import logic.Logic;
-import logic.game.*;
 
 /**
  * Runs the JFrame for the game.
@@ -22,16 +18,12 @@ public class MineSwept {
 	
 	public MineSwept(
 		Menus menus,
-		IEventPublisher publisher,
 		IEventSubscriber subscriber,
 		MainWindowHandler mainWindowHandler,
-		ResourceLoader loader,
-		GameState gameState,
-		ClockTimer clockTimer
+		ResourceLoader loader
 	) {
 		eventSubscriber = subscriber;
 
-		Logic.init(gameState, clockTimer, publisher);
 		MainPanel mp = new MainPanel(subscriber);
 
 		window = new JFrame("MineSwept");
