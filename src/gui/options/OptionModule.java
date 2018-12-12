@@ -6,7 +6,7 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import gui.events.IEventSubscriber;
 import gui.ResourceLoader;
-import logic.game.GameState;
+import state.GameState;
 
 public class OptionModule extends AbstractModule {
     @Override

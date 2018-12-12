@@ -12,7 +12,7 @@ import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
 import java.util.List;
 import gui.ClockTimer;
-import logic.game.GameState;
+import state.GameState;
 import services.HintService;
 import services.MineRevealService;
 import services.RecordsService;

@@ -9,7 +9,7 @@ import gui.Resource;
 import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
-import logic.game.GameState;
+import state.GameState;
 
 /**
  * Renders the time count in the header.

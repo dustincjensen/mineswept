@@ -7,7 +7,7 @@ import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMinePanelEvent;
 import gui.ClockTimer;
 import exceptions.GameOverException;
-import logic.game.GameState;
+import state.GameState;
 import models.Mine;
 import models.Mines;
 import services.MineRevealService;

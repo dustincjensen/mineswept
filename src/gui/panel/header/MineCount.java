@@ -11,7 +11,7 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import logic.game.GameState;
+import state.GameState;
 
 /**
  * Renders the mine count panel in the header.

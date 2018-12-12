@@ -1,4 +1,4 @@
-package logic.game;
+package state;
 
 import factories.MinesFactory;
 import models.Difficulty;

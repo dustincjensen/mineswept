@@ -18,7 +18,6 @@ import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
 import gui.records.RecordModule;
 import gui.statistics.StatisticsModule;
-import logic.game.*;
 import factories.FactoriesModule;
 import factories.MinesFactory;
 import services.HintService;
@@ -26,6 +25,7 @@ import services.MineRevealService;
 import services.OctoCheckService;
 import services.PreferencesService;
 import services.ServicesModule;
+import state.GameState;
 
 public class InjectionModule extends AbstractModule {
     @Override

@@ -1,7 +1,7 @@
 package services;
 
 import utils.RandomGen;
-import logic.game.GameState;
+import state.GameState;
 import models.Mine;
 import models.Mines;
 

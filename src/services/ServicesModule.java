@@ -4,7 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import logic.game.GameState;
+import state.GameState;
 
 public class ServicesModule extends AbstractModule {
     @Override

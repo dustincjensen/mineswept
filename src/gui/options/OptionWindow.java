@@ -10,7 +10,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import models.Difficulty;
-import logic.game.GameState;
+import state.GameState;
 
 public class OptionWindow {
 	private GameState gameState;

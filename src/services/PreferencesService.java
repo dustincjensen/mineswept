@@ -12,7 +12,7 @@ import java.util.Optional;
 import models.Difficulty;
 import models.preferences.Color;
 import models.preferences.Preference;
-import logic.game.GameState;
+import state.GameState;
 
 public class PreferencesService {
 	private FileService fileService;

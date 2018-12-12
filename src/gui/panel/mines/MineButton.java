@@ -2,7 +2,7 @@ package gui.panel.mines;
 
 import services.PreferencesService;
 import gui.ClockTimer;
-import logic.game.GameState;
+import state.GameState;
 import models.Mine;
 import models.Mines;
 import gui.FontChange;

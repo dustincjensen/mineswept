@@ -6,7 +6,7 @@ import com.google.inject.Singleton;
 import gui.ResourceLoader;
 import gui.events.IEventPublisher;
 import gui.events.IEventSubscriber;
-import logic.game.GameState;
+import state.GameState;
 
 public class HeaderModule extends AbstractModule {
     @Override
