@@ -5,6 +5,9 @@ import models.Mine;
 import models.Mines;
 import services.OctoCheckService;
 
+/**
+ * Factory to create an instance of the models.Mines class.
+ */
 public class MinesFactory {
     private OctoCheckService octoCheckService;
 
