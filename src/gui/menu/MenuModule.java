@@ -2,7 +2,7 @@ package gui.menu;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import gui.events.IEventPublisher;
+import events.IEventPublisher;
 
 public class MenuModule extends AbstractModule {
     @Override

@@ -2,8 +2,8 @@
 
 package gui;
 
-import gui.events.IEventPublisher;
-import gui.events.QuitGameEvent;
+import events.IEventPublisher;
+import events.QuitGameEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 

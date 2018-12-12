@@ -1,7 +1,7 @@
 package gui.panel;
 
-import gui.events.IEventSubscriber;
-import gui.events.PauseGameEvent;
+import events.IEventSubscriber;
+import events.PauseGameEvent;
 import gui.panel.header.HeaderPanel;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;

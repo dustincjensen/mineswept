@@ -4,7 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
-import gui.events.IEventSubscriber;
+import events.IEventSubscriber;
 import gui.ResourceLoader;
 import state.GameState;
 

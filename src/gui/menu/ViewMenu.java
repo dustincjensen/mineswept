@@ -1,8 +1,8 @@
 package gui.menu;
 
-import gui.events.IEventPublisher;
-import gui.events.ShowRecordsEvent;
-import gui.events.ShowStatisticsEvent;
+import events.IEventPublisher;
+import events.ShowRecordsEvent;
+import events.ShowStatisticsEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;

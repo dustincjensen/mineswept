@@ -1,7 +1,7 @@
 package gui.statistics;
 
-import gui.events.IEventSubscriber;
-import gui.events.ShowStatisticsEvent;
+import events.IEventSubscriber;
+import events.ShowStatisticsEvent;
 import java.awt.*;
 import javax.swing.*;
 

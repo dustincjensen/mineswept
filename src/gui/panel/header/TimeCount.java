@@ -1,9 +1,9 @@
 package gui.panel.header;
 
-import gui.events.IEventPublisher;
-import gui.events.IEventSubscriber;
-import gui.events.PauseGameEvent;
-import gui.events.SetTimeCountEvent;
+import events.IEventPublisher;
+import events.IEventSubscriber;
+import events.PauseGameEvent;
+import events.SetTimeCountEvent;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;

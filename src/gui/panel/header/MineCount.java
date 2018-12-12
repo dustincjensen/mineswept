@@ -1,9 +1,9 @@
 package gui.panel.header;
 
-import gui.events.GetHintEvent;
-import gui.events.IEventPublisher;
-import gui.events.IEventSubscriber;
-import gui.events.UpdateMineCountEvent;
+import events.GetHintEvent;
+import events.IEventPublisher;
+import events.IEventSubscriber;
+import events.UpdateMineCountEvent;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;

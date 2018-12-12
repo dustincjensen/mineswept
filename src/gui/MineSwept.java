@@ -1,7 +1,7 @@
 package gui;
 
-import gui.events.IEventSubscriber;
-import gui.events.RefreshMainWindowEvent;
+import events.IEventSubscriber;
+import events.RefreshMainWindowEvent;
 import gui.menu.Menus;
 import gui.panel.MainPanel;
 import gui.Resource;

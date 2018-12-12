@@ -8,12 +8,12 @@ import models.Mines;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;
-import gui.events.MineClickedEvent;
-import gui.events.SetResetButtonIconEvent;
-import gui.events.UpdateMineCountEvent;
-import gui.events.UpdateMinePanelEvent;
-import gui.events.IEventPublisher;
-import gui.events.IEventSubscriber;
+import events.MineClickedEvent;
+import events.SetResetButtonIconEvent;
+import events.UpdateMineCountEvent;
+import events.UpdateMinePanelEvent;
+import events.IEventPublisher;
+import events.IEventSubscriber;
 import gui.panel.header.MineCount;
 
 import javax.swing.*;

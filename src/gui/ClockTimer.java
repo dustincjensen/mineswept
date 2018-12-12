@@ -1,7 +1,7 @@
 package gui;
 
-import gui.events.IEventPublisher;
-import gui.events.SetTimeCountEvent;
+import events.IEventPublisher;
+import events.SetTimeCountEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 

@@ -1,7 +1,7 @@
 package gui.menu;
 
-import gui.events.AboutEvent;
-import gui.events.IEventPublisher;
+import events.AboutEvent;
+import events.IEventPublisher;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 

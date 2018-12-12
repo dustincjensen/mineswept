@@ -1,7 +1,7 @@
 package gui.panel.mines;
 
-import gui.events.IEventPublisher;
-import gui.events.PauseGameEvent;
+import events.IEventPublisher;
+import events.PauseGameEvent;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;

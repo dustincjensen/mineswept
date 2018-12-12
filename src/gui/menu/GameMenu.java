@@ -1,9 +1,9 @@
 package gui.menu;
 
-import gui.events.IEventPublisher;
-import gui.events.QuitGameEvent;
-import gui.events.ResetGameEvent;
-import gui.events.ShowOptionsEvent;
+import events.IEventPublisher;
+import events.QuitGameEvent;
+import events.ResetGameEvent;
+import events.ShowOptionsEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;

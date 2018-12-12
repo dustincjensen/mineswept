@@ -1,9 +1,9 @@
 package gui.panel.mines;
 
 import gui.ClassFactory;
-import gui.events.IEventSubscriber;
-import gui.events.UpdateMinePanelEvent;
-import gui.events.ResetMinePanelEvent;
+import events.IEventSubscriber;
+import events.UpdateMinePanelEvent;
+import events.ResetMinePanelEvent;
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;

@@ -2,9 +2,9 @@ package gui.options;
 
 import gui.Resource;
 import gui.ResourceLoader;
-import gui.events.IEventSubscriber;
-import gui.events.ShowOptionsEvent;
-import gui.events.UpdateMinePanelEvent;
+import events.IEventSubscriber;
+import events.ShowOptionsEvent;
+import events.UpdateMinePanelEvent;
 import gui.panel.mines.MineButton;
 import java.awt.*;
 import javax.swing.*;

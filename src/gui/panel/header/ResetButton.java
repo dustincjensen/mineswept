@@ -2,10 +2,10 @@ package gui.panel.header;
 
 import gui.ResourceLoader;
 import gui.Resource;
-import gui.events.IEventPublisher;
-import gui.events.IEventSubscriber;
-import gui.events.ResetGameEvent;
-import gui.events.SetResetButtonIconEvent;
+import events.IEventPublisher;
+import events.IEventSubscriber;
+import events.ResetGameEvent;
+import events.SetResetButtonIconEvent;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
