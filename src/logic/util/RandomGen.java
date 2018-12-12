@@ -10,6 +10,7 @@ public class RandomGen {
 
 	/**
 	 * Retrieve a random integer.
+	 * 
 	 * @param upperLimit the maximum integer.
 	 * @return A random integer from 0 (inclusive) to upperLimit (exclusive).
 	 */
