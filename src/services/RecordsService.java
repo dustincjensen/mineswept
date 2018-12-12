@@ -13,11 +13,15 @@ import models.records.Record;
 public class RecordsService {
 	public static final int RECORD_LIMIT = 10;
 
+	private FileService fileService;
+
 	private File records;
 	private All allRecords;
 
-	public RecordsService() {
-		load(FileService.get("records.json"));
+	public RecordsService(FileService file) {
+		fileService = file;
+
+		load(fileService.get("records.json"));
 	}
 
 	// TODO is this the best place for this?
@@ -29,7 +33,7 @@ public class RecordsService {
 		if (recordsFile.isPresent()) {
 			records = recordsFile.get();
 		} else {
-			var newFile = FileService.createFile("records.json");
+			var newFile = fileService.createFile("records.json");
 			if (newFile.isPresent()) {
 				records = newFile.get();
 			}
@@ -69,6 +73,6 @@ public class RecordsService {
 			.setPrettyPrinting()
 			.create();
 
-		FileService.writeFile(recordsFile, new String[] {gson.toJson(all)});
+		fileService.writeFile(recordsFile, new String[] {gson.toJson(all)});
 	}
 }

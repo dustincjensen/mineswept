@@ -15,15 +15,19 @@ import models.preferences.Preference;
 import logic.game.GameState;
 
 public class PreferencesService {
-	private static Map<String, Difficulty> difficultyMap = Map.of(
+	private FileService fileService;
+
+	private final Map<String, Difficulty> difficultyMap = Map.of(
 		"easy", Difficulty.easy,
 		"medium", Difficulty.medium,
 		"hard", Difficulty.hard);
 	private File preferences;
 	private Preference preference;
 
-	public PreferencesService() {
-		load(FileService.get("preferences.json"));
+	public PreferencesService(FileService file) {
+		fileService = file;
+
+		load(fileService.get("preferences.json"));
 	}
 
 	// TODO what happens if preferences are corrupted?
@@ -40,7 +44,7 @@ public class PreferencesService {
 		if (preferenceFile.isPresent()) {
 			preferences = preferenceFile.get();
 		} else {
-			var newFile = FileService.createFile("preferences.json");
+			var newFile = fileService.createFile("preferences.json");
 			if (newFile.isPresent()) {
 				preferences = newFile.get();
 			}
@@ -82,6 +86,6 @@ public class PreferencesService {
 			.setPrettyPrinting()
 			.create();
 
-		FileService.writeFile(preferencesFile, new String[] {gson.toJson(pref)});
+		fileService.writeFile(preferencesFile, new String[] {gson.toJson(pref)});
 	}
 }

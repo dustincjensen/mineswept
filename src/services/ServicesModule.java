@@ -23,13 +23,13 @@ public class ServicesModule extends AbstractModule {
 
     @Singleton
     @Provides
-    public PreferencesService providePreferences() {
-        return new PreferencesService();
+    public PreferencesService providePreferences(FileService fileService) {
+        return new PreferencesService(fileService);
     }
 
     @Singleton
     @Provides
-    public RecordsService provideRecordsService() {
-        return new RecordsService();
+    public RecordsService provideRecordsService(FileService fileService) {
+        return new RecordsService(fileService);
     }
 }

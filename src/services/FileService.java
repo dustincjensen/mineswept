@@ -7,13 +7,17 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class FileService {
+	public FileService() {
+		System.out.println("Creating File Service");
+	}
+
 	/**
 	 * Get the game directory.
 	 * This will create the directory if it does not yet exist.
 	 * 
 	 * @return the game directory where files should be saved.
 	 */
-	public static File getGameDir() {
+	public File getGameDir() {
 		String userDir = System.getProperty("user.home");
 		File gameDir = new File(userDir + "/.MineSwept/");
 		
@@ -27,12 +31,12 @@ public class FileService {
 		return gameDir;
 	}
 	
-	public static void saveFiles() {
+	public void saveFiles() {
 		// TODO save to the file system.
 		System.out.println("TODO save files to system.");
 	}
 	
-	public static Optional<File> createFile(String fileName) {
+	public Optional<File> createFile(String fileName) {
 		var fileToCreate = new File(getGameDir().toString() + "/" + fileName);
 		try {
 			if (!fileToCreate.createNewFile()) {
@@ -46,7 +50,7 @@ public class FileService {
 		return Optional.of(fileToCreate);
 	}
 
-	public static boolean writeFile(File file, String[] lines) {
+	public boolean writeFile(File file, String[] lines) {
 		try {
 			FileWriter writer = new FileWriter(file);
 			for (String line : lines) {
@@ -60,7 +64,7 @@ public class FileService {
 		}
 	}
 
-	public static Optional<File> get(String fileName) {
+	public Optional<File> get(String fileName) {
 		File gameDir = getGameDir();
 		if (gameDir != null) {
 			File[] files = gameDir.listFiles();
@@ -69,7 +73,7 @@ public class FileService {
 		return Optional.empty();
 	}
 
-	private static Optional<File> get(File[] files, String fileName) {
+	private Optional<File> get(File[] files, String fileName) {
 		return Arrays.stream(files)
 			.filter(f -> f.getName().matches(fileName))
 			.findAny();
