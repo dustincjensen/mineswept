@@ -1,4 +1,4 @@
-package logic.game;
+package models;
 
 public enum Difficulty {
     easy,

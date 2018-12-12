@@ -1,7 +1,10 @@
 package gui.panel.mines;
 
-import logic.game.*;
 import logic.files.Preferences;
+import logic.game.ClockTimer;
+import logic.game.GameState;
+import models.Mine;
+import models.Mines;
 import gui.FontChange;
 import gui.Resource;
 import gui.ResourceLoader;

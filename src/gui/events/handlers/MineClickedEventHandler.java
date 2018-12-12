@@ -6,11 +6,11 @@ import gui.events.MineClickedEvent;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMinePanelEvent;
 import logic.game.ClockTimer;
-import logic.game.GameOverException;
+import exceptions.GameOverException;
 import logic.game.GameState;
-import logic.game.Mine;
-import logic.game.Mines;
-import logic.game.MineRevealService;
+import models.Mine;
+import models.Mines;
+import services.MineRevealService;
 
 public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> {
     private GameState gameState;

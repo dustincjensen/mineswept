@@ -9,7 +9,7 @@ import gui.panel.mines.MineButton;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import logic.game.Difficulty;
+import models.Difficulty;
 import logic.game.GameState;
 
 public class OptionWindow {

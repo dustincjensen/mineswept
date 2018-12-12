@@ -14,8 +14,8 @@ import java.util.List;
 import logic.files.Records;
 import logic.game.ClockTimer;
 import logic.game.GameState;
-import logic.game.HintService;
-import logic.game.MineRevealService;
+import services.HintService;
+import services.MineRevealService;
 
 public class EventModule extends AbstractModule {
     @Override

@@ -1,4 +1,4 @@
-package logic.game;
+package services;
 
 import java.util.ArrayList;
 

@@ -1,5 +1,9 @@
 package logic.game;
 
+import factories.MinesFactory;
+import models.Difficulty;
+import models.Mine;
+import models.Mines;
 import java.util.Map;
 import logic.files.Preferences;
 

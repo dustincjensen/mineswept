@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import logic.files.preferences.Color;
 import logic.files.preferences.Preference;
-import logic.game.Difficulty;
+import models.Difficulty;
 import logic.game.GameState;
 
 public class Preferences {

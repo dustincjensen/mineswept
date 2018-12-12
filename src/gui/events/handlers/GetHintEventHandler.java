@@ -5,7 +5,7 @@ import gui.events.IEventSubscriber;
 import gui.events.UpdateMineCountEvent;
 import gui.events.UpdateMinePanelEvent;
 import logic.game.GameState;
-import logic.game.HintService;
+import services.HintService;
 
 public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
     private GameState gameState;

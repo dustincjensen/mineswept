@@ -1,6 +1,9 @@
-package logic.game;
+package services;
 
-import logic.util.RandomGen;
+import utils.RandomGen;
+import logic.game.GameState;
+import models.Mine;
+import models.Mines;
 
 public class HintService {
 	private GameState gameState;

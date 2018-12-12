@@ -20,6 +20,10 @@ import gui.records.RecordModule;
 import gui.statistics.StatisticsModule;
 import logic.files.*;
 import logic.game.*;
+import factories.MinesFactory;
+import services.HintService;
+import services.MineRevealService;
+import services.OctoCheckService;
 
 public class InjectionModule extends AbstractModule {
     @Override

@@ -1,6 +1,9 @@
-package logic.game;
+package factories;
 
-import logic.util.RandomGen;
+import utils.RandomGen;
+import models.Mine;
+import models.Mines;
+import services.OctoCheckService;
 
 public class MinesFactory {
     private OctoCheckService octoCheckService;
