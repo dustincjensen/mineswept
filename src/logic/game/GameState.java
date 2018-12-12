@@ -270,8 +270,6 @@ public class GameState {
 		if (uncoveredPieces == maxUncoverablePieces && !bombBlew) {
 			setGameOver(true);
 			return true;
-			//clockTimer.stop();
-			//eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyCool));
 		}
 
 		return false;

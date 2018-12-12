@@ -85,15 +85,7 @@ public class Mine {
 		return x;
 	}
 
-	public void x(int value) {
-		x = value;
-	}
-
 	public int y() {
 		return y;
-	}
-
-	public void y(int value) {
-		y = value;
 	}
 }

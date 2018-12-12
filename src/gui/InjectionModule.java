@@ -10,7 +10,9 @@ import gui.menu.MenuModule;
 import gui.menu.Menus;
 import gui.options.OptionModule;
 import gui.options.OptionWindow;
+import gui.panel.MainPanel;
 import gui.panel.header.HeaderModule;
+import gui.panel.header.HeaderPanel;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
@@ -52,11 +54,22 @@ public class InjectionModule extends AbstractModule {
     @Provides
     public MineSwept provideMineSwept(
         Menus menus,
+        MainPanel mainPanel,
         IEventSubscriber subscriber,
         MainWindowHandler handler,
         ResourceLoader loader
     ) {
-        return new MineSwept(menus, subscriber, handler, loader);
+        return new MineSwept(menus, mainPanel, subscriber, handler, loader);
+    }
+
+    @Provides
+    public MainPanel provideMainPanel(
+        HeaderPanel header,
+        MinePanel mine,
+        PausePanel pause,
+        IEventSubscriber subscriber
+    ) {
+        return new MainPanel(header, mine, pause, subscriber);
     }
 
     @Provides

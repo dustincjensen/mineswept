@@ -5,8 +5,7 @@ import gui.events.RefreshMainWindowEvent;
 import gui.menu.Menus;
 import gui.panel.MainPanel;
 import gui.Resource;
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JFrame;
 
 /**
  * Runs the JFrame for the game.
@@ -18,16 +17,15 @@ public class MineSwept {
 	
 	public MineSwept(
 		Menus menus,
+		MainPanel mainPanel,
 		IEventSubscriber subscriber,
 		MainWindowHandler mainWindowHandler,
 		ResourceLoader loader
 	) {
 		eventSubscriber = subscriber;
 
-		MainPanel mp = new MainPanel(subscriber);
-
 		window = new JFrame("MineSwept");
-		window.setContentPane(mp);
+		window.setContentPane(mainPanel);
 		window.setJMenuBar(menus);
 		window.pack();
 		window.setResizable(false);
