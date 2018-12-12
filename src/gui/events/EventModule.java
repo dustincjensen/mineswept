@@ -11,7 +11,7 @@ import gui.panel.header.TimeCount;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
 import java.util.List;
-import logic.game.ClockTimer;
+import gui.ClockTimer;
 import logic.game.GameState;
 import services.HintService;
 import services.MineRevealService;

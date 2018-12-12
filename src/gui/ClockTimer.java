@@ -1,4 +1,4 @@
-package logic.game;
+package gui;
 
 import gui.events.IEventPublisher;
 import gui.events.SetTimeCountEvent;

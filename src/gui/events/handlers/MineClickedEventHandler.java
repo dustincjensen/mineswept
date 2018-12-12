@@ -5,7 +5,7 @@ import gui.events.IEventSubscriber;
 import gui.events.MineClickedEvent;
 import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMinePanelEvent;
-import logic.game.ClockTimer;
+import gui.ClockTimer;
 import exceptions.GameOverException;
 import logic.game.GameState;
 import models.Mine;

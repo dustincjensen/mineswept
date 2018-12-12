@@ -1,7 +1,7 @@
 package gui.panel.mines;
 
 import services.PreferencesService;
-import logic.game.ClockTimer;
+import gui.ClockTimer;
 import logic.game.GameState;
 import models.Mine;
 import models.Mines;

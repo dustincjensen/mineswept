@@ -9,6 +9,7 @@ import gui.events.SetResetButtonIconEvent;
 import gui.events.UpdateMineCountEvent;
 import gui.events.ResetMinePanelEvent;
 import gui.MineSwept;
+import gui.ClockTimer;
 import logic.game.*;
 
 public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
