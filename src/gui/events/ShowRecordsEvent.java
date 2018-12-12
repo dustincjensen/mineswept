@@ -1,6 +1,6 @@
 package gui.events;
 
-import logic.files.records.All;
+import models.records.All;
 
 public class ShowRecordsEvent {
 	public All records;

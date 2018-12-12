@@ -1,4 +1,4 @@
-package logic.files;
+package services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,12 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
-import logic.files.preferences.Color;
-import logic.files.preferences.Preference;
 import models.Difficulty;
+import models.preferences.Color;
+import models.preferences.Preference;
 import logic.game.GameState;
 
-public class Preferences {
+public class PreferencesService {
 	private static Map<String, Difficulty> difficultyMap = Map.of(
 		"easy", Difficulty.easy,
 		"medium", Difficulty.medium,
@@ -22,8 +22,8 @@ public class Preferences {
 	private File preferences;
 	private Preference preference;
 
-	public Preferences() {
-		load(FileManagement.get("preferences.json"));
+	public PreferencesService() {
+		load(FileService.get("preferences.json"));
 	}
 
 	// TODO what happens if preferences are corrupted?
@@ -40,7 +40,7 @@ public class Preferences {
 		if (preferenceFile.isPresent()) {
 			preferences = preferenceFile.get();
 		} else {
-			var newFile = FileManagement.createFile("preferences.json");
+			var newFile = FileService.createFile("preferences.json");
 			if (newFile.isPresent()) {
 				preferences = newFile.get();
 			}
@@ -82,6 +82,6 @@ public class Preferences {
 			.setPrettyPrinting()
 			.create();
 
-		FileManagement.writeFile(preferencesFile, new String[] {gson.toJson(pref)});
+		FileService.writeFile(preferencesFile, new String[] {gson.toJson(pref)});
 	}
 }

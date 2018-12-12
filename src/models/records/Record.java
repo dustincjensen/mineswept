@@ -1,4 +1,4 @@
-package logic.files.records;
+package models.records;
 
 public class Record {
     public String name;

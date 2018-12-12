@@ -1,4 +1,4 @@
-package logic.files;
+package services;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class FileManagement {
+public class FileService {
 	/**
 	 * Get the game directory.
 	 * This will create the directory if it does not yet exist.

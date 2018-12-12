@@ -1,4 +1,4 @@
-package logic.files.preferences;
+package models.preferences;
 
 public class Color {
     public int r;

@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import logic.files.records.All;
-import logic.files.Records;
+import models.records.All;
+import services.RecordsService;
 
 public class RecordWindow {
 	private IEventSubscriber eventSubscriber;
@@ -29,7 +29,7 @@ public class RecordWindow {
 		recordWindow = new JFrame("Records");
 		recordWindow.setContentPane(recordPanel());
 
-		recordWindow.setSize(300, 175 + Records.RECORD_LIMIT * 15);
+		recordWindow.setSize(300, 175 + RecordsService.RECORD_LIMIT * 15);
 		recordWindow.setLocationRelativeTo(null);
 		recordWindow.setResizable(false);
 		recordWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

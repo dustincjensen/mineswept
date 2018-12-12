@@ -5,8 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
-import logic.files.Records;
-import logic.files.records.Record;
+import models.records.Record;
+import services.RecordsService;
 
 public class RecordPanel extends JPanel {
 	private JTable bodyTable;
@@ -27,7 +27,7 @@ public class RecordPanel extends JPanel {
 		headerPane.add(header);
 
 		JPanel bodyPane = new JPanel();
-		bodyPane.setPreferredSize(new Dimension(300, Records.RECORD_LIMIT * 10));
+		bodyPane.setPreferredSize(new Dimension(300, RecordsService.RECORD_LIMIT * 10));
 		bodyPane.setLayout(new BorderLayout());
 		createTable();
 		bodyPane.add(bodyTable, BorderLayout.CENTER);

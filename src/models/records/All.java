@@ -1,4 +1,4 @@
-package logic.files.records;
+package models.records;
 
 public class All {
     public Record[] beginner;

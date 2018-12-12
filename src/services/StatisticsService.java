@@ -1,6 +1,6 @@
-package logic.files;
+package services;
 
-public class Statistics {
+public class StatisticsService {
 	// Long term stats
 	private static int oneHitKills, ohkBeginner, ohkIntermediate, ohkExpert;
 	private static int gamesPlayed, gpBeginner, gpIntermediate, gpExpert;

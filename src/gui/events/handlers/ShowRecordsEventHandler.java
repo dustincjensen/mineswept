@@ -2,21 +2,20 @@ package gui.events.handlers;
 
 import gui.events.IEventSubscriber;
 import gui.events.ShowRecordsEvent;
-import gui.records.RecordWindow;
-import logic.files.Records;
+import services.RecordsService;
 
 public class ShowRecordsEventHandler implements IEventHandler<ShowRecordsEvent> {
-    private Records records;
+    private RecordsService recordsService;
     private IEventSubscriber eventSubscriber;
     
-    public ShowRecordsEventHandler(Records recordsRef, IEventSubscriber subscriber) {
-        records = recordsRef;
+    public ShowRecordsEventHandler(RecordsService service, IEventSubscriber subscriber) {
+        recordsService = service;
         eventSubscriber = subscriber;
     }
 
     @Override
     public void execute(ShowRecordsEvent event) {
-        event.records = records.getAllRecords();
+        event.records = recordsService.getAllRecords();
         eventSubscriber.notify(event);
     }
 }

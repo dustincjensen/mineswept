@@ -5,7 +5,7 @@ import models.Difficulty;
 import models.Mine;
 import models.Mines;
 import java.util.Map;
-import logic.files.Preferences;
+import services.PreferencesService;
 
 // TODO clock timer's time part of game state?
 
@@ -25,7 +25,7 @@ public class GameState {
 	private Map<Difficulty, Integer> puzzleMines;
 	private Mines gameMines;
 
-	public GameState(Preferences prefs, MinesFactory mines) {
+	public GameState(PreferencesService prefs, MinesFactory mines) {
 		minesFactory = mines;
 
 		System.out.println("Creating new game state");

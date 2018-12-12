@@ -1,6 +1,6 @@
 package gui.panel.mines;
 
-import logic.files.Preferences;
+import services.PreferencesService;
 import logic.game.ClockTimer;
 import logic.game.GameState;
 import models.Mine;
@@ -61,7 +61,7 @@ public class MineButton extends JLabel implements MouseListener {
 	private static IEventPublisher eventPublisher;
 	private static IEventSubscriber eventSubscriber;
 	public MineButton(
-		Preferences prefs,
+		PreferencesService prefs,
 		GameState state,
 		ClockTimer timer,
 		ResourceLoader loader,

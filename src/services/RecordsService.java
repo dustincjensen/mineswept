@@ -1,4 +1,4 @@
-package logic.files;
+package services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,17 +7,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
-import logic.files.records.All;
-import logic.files.records.Record;
+import models.records.All;
+import models.records.Record;
 
-public class Records {
+public class RecordsService {
 	public static final int RECORD_LIMIT = 10;
 
 	private File records;
 	private All allRecords;
 
-	public Records() {
-		load(FileManagement.get("records.json"));
+	public RecordsService() {
+		load(FileService.get("records.json"));
 	}
 
 	// TODO is this the best place for this?
@@ -29,7 +29,7 @@ public class Records {
 		if (recordsFile.isPresent()) {
 			records = recordsFile.get();
 		} else {
-			var newFile = FileManagement.createFile("records.json");
+			var newFile = FileService.createFile("records.json");
 			if (newFile.isPresent()) {
 				records = newFile.get();
 			}
@@ -69,6 +69,6 @@ public class Records {
 			.setPrettyPrinting()
 			.create();
 
-		FileManagement.writeFile(recordsFile, new String[] {gson.toJson(all)});
+		FileService.writeFile(recordsFile, new String[] {gson.toJson(all)});
 	}
 }

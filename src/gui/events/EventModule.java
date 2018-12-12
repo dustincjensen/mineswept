@@ -11,11 +11,11 @@ import gui.panel.header.TimeCount;
 import gui.records.RecordWindow;
 import gui.statistics.StatisticsWindow;
 import java.util.List;
-import logic.files.Records;
 import logic.game.ClockTimer;
 import logic.game.GameState;
 import services.HintService;
 import services.MineRevealService;
+import services.RecordsService;
 
 public class EventModule extends AbstractModule {
     @Override
@@ -112,7 +112,7 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public ShowRecordsEventHandler provideShowRecordsEventHandler(Records records, IEventSubscriber subscriber) {
+    public ShowRecordsEventHandler provideShowRecordsEventHandler(RecordsService records, IEventSubscriber subscriber) {
         return new ShowRecordsEventHandler(records, subscriber);
     }
 

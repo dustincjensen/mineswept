@@ -18,17 +18,18 @@ import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
 import gui.records.RecordModule;
 import gui.statistics.StatisticsModule;
-import logic.files.*;
 import logic.game.*;
+import factories.FactoriesModule;
 import factories.MinesFactory;
 import services.HintService;
 import services.MineRevealService;
 import services.OctoCheckService;
+import services.PreferencesService;
+import services.ServicesModule;
 
 public class InjectionModule extends AbstractModule {
     @Override
     protected void configure() {
-        install(new FileModule());
         install(new EventModule());
         install(new HeaderModule());
         install(new MenuModule());
@@ -36,6 +37,9 @@ public class InjectionModule extends AbstractModule {
         install(new OptionModule());
         install(new RecordModule());
         install(new StatisticsModule());
+
+        install(new FactoriesModule());
+        install(new ServicesModule());
     }
 
     // TODO move this into it's own module...
@@ -84,7 +88,7 @@ public class InjectionModule extends AbstractModule {
     // TODO move this into it's own module?
     @Provides
     public MineButton provideMineButton(
-        Preferences prefs, 
+        PreferencesService prefs, 
         GameState gameState, 
         ClockTimer clockTimer,
         ResourceLoader loader,
@@ -97,7 +101,7 @@ public class InjectionModule extends AbstractModule {
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
     @Singleton
     @Provides
-    public GameState provideGameState(Preferences prefs, MinesFactory factory) {
+    public GameState provideGameState(PreferencesService prefs, MinesFactory factory) {
         return new GameState(prefs, factory);
     }
 
@@ -107,25 +111,10 @@ public class InjectionModule extends AbstractModule {
     public ClockTimer provideClockTimer(IEventPublisher publisher) {
         return new ClockTimer(publisher);
     }
-    
-    @Provides
-    public HintService provideHintService(GameState gameState) {
-        return new HintService(gameState);
-    }
 
     @Singleton
     @Provides
     public ResourceLoader provideResourceLoader() {
         return new ResourceLoader();
-    }
-
-    @Provides
-    public MinesFactory provideMinesFactory(OctoCheckService octo) {
-        return new MinesFactory(octo);
-    }
-
-    @Provides
-    public MineRevealService provideMineRevealService(OctoCheckService octo) {
-        return new MineRevealService(octo);
     }
 }
