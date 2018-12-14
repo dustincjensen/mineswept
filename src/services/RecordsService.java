@@ -54,6 +54,22 @@ public class RecordsService {
 		return result != null ? result.wasNewRecord : false;
 	}
 
+	public Record[] resetRecords(Difficulty level) {
+		// We can decide if resetting restores some computer default records...
+		Record[] newRecords = new Record[0];
+
+		if (level == Difficulty.easy) {
+			allRecords.easy = newRecords;
+		} else if (level == Difficulty.medium) {
+			allRecords.medium = newRecords;
+		} else if (level == Difficulty.hard) {
+			allRecords.hard = newRecords;
+		}
+
+		writeFile(records, allRecords);
+		return newRecords;
+	}
+
 	private AddRecord addNewRecord(Record[] records, int time) {
 		ArrayList<Record> newRecords = new ArrayList<Record>(Arrays.asList(records));
 		var newRecord =  new Record();

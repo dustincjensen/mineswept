@@ -1,23 +1,32 @@
 package gui.records;
 
+import events.IEventPublisher;
 import events.IEventSubscriber;
+import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import models.Difficulty;
 import models.records.All;
 import services.RecordsService;
 
 public class RecordWindow {
+	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
 
 	private JFrame recordWindow;
 	private JTabbedPane tabs;
 	private RecordPanel easy, medium, hard;
 
-	public RecordWindow(IEventSubscriber subscriber) {
+	public RecordWindow(
+		IEventPublisher publisher,
+		IEventSubscriber subscriber
+	) {
+		eventPublisher = publisher;
 		eventSubscriber = subscriber;
 
 		System.out.println("Creating: RECORD WINDOW");
@@ -78,7 +87,14 @@ public class RecordWindow {
 	private JButton reset() {
 		var reset = new JButton("Reset");
 		reset.addActionListener(evt -> {
-			// TODO publish an event...
+			var tabIndexToDifficulty = Map.of(
+				0, Difficulty.easy,
+				1, Difficulty.medium,
+				2, Difficulty.hard
+			);
+
+			Difficulty difficulty = tabIndexToDifficulty.get(tabs.getSelectedIndex());
+			eventPublisher.publish(new ResetRecordsEvent(difficulty));
 		});
 		return reset;
 	}
@@ -91,6 +107,16 @@ public class RecordWindow {
 			easy.setRecords(allRecords.easy);
 			medium.setRecords(allRecords.medium);
 			hard.setRecords(allRecords.hard);
+		});
+
+		eventSubscriber.subscribe(ResetRecordsEvent.class, event -> {
+			if (event.difficulty == Difficulty.easy) {
+				easy.setRecords(event.records);
+			} else if (event.difficulty == Difficulty.medium) {
+				medium.setRecords(event.records);
+			} else if (event.difficulty == Difficulty.hard) {
+				hard.setRecords(event.records);
+			}
 		});
 	}
 }
