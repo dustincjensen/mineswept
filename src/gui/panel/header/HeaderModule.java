@@ -28,16 +28,15 @@ public class HeaderModule extends AbstractModule {
         return new MineCount(gameState, publisher, subscriber, loader);
     }
 
-    // TODO Need to figure out our UI paradigm... otherwise singletons are still "statics".
-    // I think it needs to be an event subscription bus
+    // TODO remove singleton when event subscribers are fully fleshed out
+    // These would probably work now, but what if there were a second requirement of ResetButton!?
     @Singleton
     @Provides
     public ResetButton provideResetButton(IEventPublisher publisher, IEventSubscriber subscriber, ResourceLoader loader) {
         return new ResetButton(publisher, subscriber, loader);
     }
 
-    // TODO Need to figure out our UI paradigm... otherwise singletons are still "statics".
-    // I think it needs to be an event subscription bus
+    // TODO remove singleton when event subscribers are fully fleshed out
     @Singleton
     @Provides
     public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, IEventSubscriber subscriber, ResourceLoader loader) {

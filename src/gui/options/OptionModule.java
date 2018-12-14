@@ -6,6 +6,7 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import events.IEventSubscriber;
 import gui.ResourceLoader;
+import services.PreferencesService;
 import state.GameState;
 
 public class OptionModule extends AbstractModule {
@@ -25,16 +26,19 @@ public class OptionModule extends AbstractModule {
 class OptionWindowProvider implements Provider<OptionWindow> {
     private GameState gameState;
     private ResourceLoader resourceLoader;
+    private PreferencesService preferencesService;
     private IEventSubscriber eventSubscriber;
 
     @Inject
     public OptionWindowProvider(
         GameState state,
-		ResourceLoader loader,
+        ResourceLoader loader,
+        PreferencesService prefs,
 		IEventSubscriber subscriber
     ) {
         gameState = state;
         resourceLoader = loader;
+        preferencesService = prefs;
         eventSubscriber = subscriber;
     }
 
@@ -43,6 +47,7 @@ class OptionWindowProvider implements Provider<OptionWindow> {
         return new OptionWindow(
             gameState,
             resourceLoader,
+            preferencesService,
             eventSubscriber);
     }
 }

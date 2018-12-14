@@ -1,35 +1,41 @@
 package gui.panel.mines;
 
-import services.PreferencesService;
-import gui.ClockTimer;
-import state.GameState;
-import models.Mine;
-import models.Mines;
-import gui.FontChange;
-import gui.Resource;
-import gui.ResourceLoader;
+import events.IEventPublisher;
+import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
 import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
-import events.IEventPublisher;
-import events.IEventSubscriber;
-import gui.panel.header.MineCount;
-
+import gui.ClockTimer;
+import gui.FontChange;
+import gui.Resource;
+import gui.ResourceLoader;
+import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.awt.*;
-
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.InputEvent;
+import models.Mine;
+import models.Mines;
+import services.PreferencesService;
+import state.GameState;
 
 /**
  * Setup a mine button.
  */
 public class MineButton extends JLabel implements MouseListener {
-	private int x, y;
+	private GameState gameState;
+	private ClockTimer clockTimer;
+	private PreferencesService preferencesService;
+	private ResourceLoader resourceLoader;
+	private IEventPublisher eventPublisher;
+	private IEventSubscriber eventSubscriber;
 
+	private int x, y;
+	private Color backgroundColor;
+
+	// TODO this should not be an int, it should be an enum.
 	/**
 	 * 0 = empty
 	 * 1 = flag
@@ -38,6 +44,7 @@ public class MineButton extends JLabel implements MouseListener {
 	 */
 	private int nonClickedState;
 
+	// TODO address these statics....
 	private static int dragX, dragY;
 
 	/**
@@ -53,13 +60,6 @@ public class MineButton extends JLabel implements MouseListener {
 	 */
 	private static boolean mousePressStartedInsideSquare;
 
-	private static Color backgroundColor;
-
-	private static GameState gameState;
-	private static ClockTimer clockTimer;
-	private static ResourceLoader resourceLoader;
-	private static IEventPublisher eventPublisher;
-	private static IEventSubscriber eventSubscriber;
 	public MineButton(
 		PreferencesService prefs,
 		GameState state,
@@ -70,17 +70,15 @@ public class MineButton extends JLabel implements MouseListener {
 	) {
 		gameState = state;
 		clockTimer = timer;
+		preferencesService = prefs;
 		resourceLoader = loader;
 		eventPublisher = publisher;
 		eventSubscriber = subscriber;
 
-		// TODO when this is no longer static, you will need to do this for each mine button.
-		if (backgroundColor == null) {
-			setBackgroundColor(new Color(prefs.r(), prefs.g(), prefs.b()));
-			System.out.println("Only setting the Mine Button Color preferences one time.");
-		}
-		
 		nonClickedState = 0;
+
+		// TODO move this to some shared state?
+		backgroundColor = new Color(prefs.r(), prefs.g(), prefs.b());
 
 		// TODO allow resizing?
 		// Font size 32 when w,h = 48
@@ -129,6 +127,12 @@ public class MineButton extends JLabel implements MouseListener {
 
 		// Still covered
 		else {
+			// TODO This is probably pretty heavy. Any time a mine is clicked, MinePanel handles the UpdateMinePanelEvent
+			// which redecorates each mine, and we are creating the color for 16x30 mines on each render.
+			backgroundColor = new Color(
+				preferencesService.r(),
+				preferencesService.g(),
+				preferencesService.b());
 			setBackground(backgroundColor);
 
 			// check for hint (empty space)
@@ -149,14 +153,6 @@ public class MineButton extends JLabel implements MouseListener {
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
-	}
-
-	public static void setBackgroundColor(Color c) {
-		backgroundColor = c;
-	}
-
-	public static Color getBackgroundColor() {
-		return backgroundColor;
 	}
 
 	// ==============================================

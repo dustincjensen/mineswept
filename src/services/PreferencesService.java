@@ -40,6 +40,12 @@ public class PreferencesService {
 		);
 	}
 
+	public void setBackgroundColor(int r, int g, int b) {
+		preference.squareColor.r = r;
+		preference.squareColor.g = g;
+		preference.squareColor.b = b;
+	}
+
 	public boolean load(Optional<File> preferenceFile) {
 		if (preferenceFile.isPresent()) {
 			preferences = preferenceFile.get();

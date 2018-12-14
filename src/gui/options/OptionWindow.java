@@ -10,11 +10,13 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import models.Difficulty;
+import services.PreferencesService;
 import state.GameState;
 
 public class OptionWindow {
 	private GameState gameState;
 	private ResourceLoader resourceLoader;
+	private PreferencesService preferencesService;
 	private IEventSubscriber eventSubscriber;
 
 	private JFrame optionsWindow;
@@ -26,11 +28,13 @@ public class OptionWindow {
 	public OptionWindow(
 		GameState state,
 		ResourceLoader loader,
+		PreferencesService prefs,
 		IEventSubscriber subscriber
 	) {
 		System.out.println("Creating new option window...");
 		gameState = state;
 		resourceLoader = loader;
+		preferencesService = prefs;
 		eventSubscriber = subscriber;
 
 		optionsWindow = new JFrame("Options");
@@ -144,10 +148,11 @@ public class OptionWindow {
 
 		mineButtonColor = new JButton("Minefield Colour");
 		mineButtonColor.addActionListener(evt -> {
-			Color newMineColor = JColorChooser.showDialog(null, "Choose Minefield Colour",
-					MineButton.getBackgroundColor());
+			Color current = new Color(preferencesService.r(), preferencesService.g(), preferencesService.b());
+			Color newMineColor = JColorChooser.showDialog(null, "Choose Minefield Colour", current);
+
 			if (newMineColor != null) {
-				MineButton.setBackgroundColor(newMineColor);
+				preferencesService.setBackgroundColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
 			}
 
 			eventSubscriber.notify(new UpdateMinePanelEvent());

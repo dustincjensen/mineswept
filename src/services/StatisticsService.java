@@ -1,5 +1,7 @@
 package services;
 
+// TODO implement service...
+// TODO make non-static.
 public class StatisticsService {
 	// Long term stats
 	private static int oneHitKills, ohkBeginner, ohkIntermediate, ohkExpert;
