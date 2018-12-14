@@ -1,8 +1,8 @@
 package gui.menu;
 
-import gui.events.EventPublisher;
-import gui.events.ShowRecordsEvent;
-import gui.events.ShowStatisticsEvent;
+import events.IEventPublisher;
+import events.ShowRecordsEvent;
+import events.ShowStatisticsEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -12,15 +12,11 @@ import javax.swing.KeyStroke;
  * Sets up the view menu
  */
 public class ViewMenu extends JMenu {
-	private EventPublisher service;
+	private IEventPublisher eventPublisher;
 
-	public ViewMenu() {
+	public ViewMenu(IEventPublisher publisher) {
 		super("View");
-
-		// TODO replace with dependency injection.
-		// Create an event publisher for the menu items to use.
-		service = new EventPublisher();
-
+		eventPublisher = publisher;
 		add(showRecords());
 		add(showStatistics());
 	}
@@ -30,10 +26,10 @@ public class ViewMenu extends JMenu {
 	 * 
 	 * @return the records menu item.
 	 */
-	public JMenuItem showRecords() {
+	private JMenuItem showRecords() {
 		var records = new JMenuItem("Records");
 		records.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 2));
-		records.addActionListener(evt -> service.publish(new ShowRecordsEvent(true)));
+		records.addActionListener(evt -> eventPublisher.publish(new ShowRecordsEvent()));
 		return records;
 	}
 
@@ -42,10 +38,10 @@ public class ViewMenu extends JMenu {
 	 * 
 	 * @return the statistics menu item.
 	 */
-	public JMenuItem showStatistics() {
+	private JMenuItem showStatistics() {
 		var statistics = new JMenuItem("Statistics");
 		statistics.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 2));
-		statistics.addActionListener(evt -> service.publish(new ShowStatisticsEvent(true)));
+		statistics.addActionListener(evt -> eventPublisher.publish(new ShowStatisticsEvent()));
 		return statistics;
 	}
 }

@@ -1,7 +1,9 @@
 package gui.panel.mines;
 
-import gui.panel.MainPanel;
-import logic.game.MineField;
+import gui.ClassFactory;
+import events.IEventSubscriber;
+import events.UpdateMinePanelEvent;
+import events.ResetMinePanelEvent;
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;
@@ -10,59 +12,66 @@ import javax.swing.*;
  * Renders the the mine panel that allows the player to play the game.
  */
 public class MinePanel extends JPanel {
-	private static JPanel interiorMinePanel;
-	private static GridLayout glo;
-	private static Vector<MineButton> mineButtons;
+	private IEventSubscriber eventSubscriber;
+	private JPanel minePanel;
+	private GridLayout minePanelLayout;
+	private Vector<MineButton> mineButtons;
+	
+	public MinePanel(
+		int initialHeight,
+		int initialWidth,
+		int maximumPuzzleMineCount,
+		IEventSubscriber subscriber
+	) {
+		eventSubscriber = subscriber;
 
-	public MinePanel() {
 		setLayout(new FlowLayout());
-		mineButtons = new Vector(MineField.getNumMines());
-		setupInteriorMinePanel();
-		MineButton.init();
+		mineButtons = new Vector(maximumPuzzleMineCount);
+		setupInteriorMinePanel(initialHeight, initialWidth);
+		setupSubscriptions();
 	}
 
-	private void setupInteriorMinePanel() {
-		int w = MineField.getWidth();
-		int h = MineField.getHeight();
-		interiorMinePanel = new JPanel();
+	private void setupInteriorMinePanel(int h, int w) {
+		minePanel = new JPanel();
 
 		// GridLayout goes by row, column
-		glo = new GridLayout(h, w);
-		interiorMinePanel.setLayout(glo);
+		minePanelLayout = new GridLayout(h, w);
+		minePanel.setLayout(minePanelLayout);
 
 		addMines(h, w);
-		add(interiorMinePanel);
+		add(minePanel);
 	}
 
-	public static void update() {
-		for (int i = 0; i < mineButtons.size(); i++) {
-			mineButtons.get(i).decorate();
-		}
-		MainPanel.getMinePanel().revalidate();
-		MainPanel.getMinePanel().repaint();
-	}
-
-	public static void reset() {
-		int w = MineField.getWidth();
-		int h = MineField.getHeight();
-		glo.setRows(h);
-		glo.setColumns(w);
-		addMines(h, w);
-		MainPanel.getMinePanel().revalidate();
-		MainPanel.getMinePanel().repaint();
-		MineButton.reset();
-	}
-
-	private static void addMines(int h, int w) {
-		interiorMinePanel.removeAll();
+	private void addMines(int h, int w) {
+		minePanel.removeAll();
 		mineButtons.clear();
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
-				MineButton mb = new MineButton();
+				// TODO this is temporary for now... Need to figure out how to create mines. Perhaps this IS the best way.
+				MineButton mb = ClassFactory.create(MineButton.class);
 				mb.setPosition(x, y);
 				mineButtons.add(mb);
-				interiorMinePanel.add(mb);
+				minePanel.add(mb);
 			}
 		}
+	}
+
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(UpdateMinePanelEvent.class, (event) -> {
+			for (int i = 0; i < mineButtons.size(); i++) {
+				mineButtons.get(i).decorate();
+			}
+			revalidate();
+			repaint();
+		});
+
+		eventSubscriber.subscribe(ResetMinePanelEvent.class, (event) -> {
+			minePanelLayout.setRows(event.h);
+			minePanelLayout.setColumns(event.w);
+			addMines(event.h, event.w);
+			
+			revalidate();
+			repaint();
+		});
 	}
 }

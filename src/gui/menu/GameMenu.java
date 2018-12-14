@@ -1,9 +1,9 @@
 package gui.menu;
 
-import gui.events.EventPublisher;
-import gui.events.QuitGameEvent;
-import gui.events.ResetGameEvent;
-import gui.events.ShowOptionsEvent;
+import events.IEventPublisher;
+import events.QuitGameEvent;
+import events.ResetGameEvent;
+import events.ShowOptionsEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -13,15 +13,11 @@ import javax.swing.KeyStroke;
  * Sets up the game menu.
  */
 public class GameMenu extends JMenu {
-	private EventPublisher service;
+	private IEventPublisher eventPublisher;
 
-	public GameMenu() {
+	public GameMenu(IEventPublisher publisher) {
 		super("Game");
-
-		// TODO replace with dependency injection.
-		// Create an event publisher for the menu items to use.
-		service = new EventPublisher();
-
+		eventPublisher = publisher;
 		add(newGame());
 		addSeparator();
 		add(options());
@@ -34,10 +30,10 @@ public class GameMenu extends JMenu {
 	 * 
 	 * @return the new game menu item.
 	 */
-	public JMenuItem newGame() {
+	private JMenuItem newGame() {
 		var newGame = new JMenuItem("New Game");
 		newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, 2));
-		newGame.addActionListener(evt -> service.publish(new ResetGameEvent()));
+		newGame.addActionListener(evt -> eventPublisher.publish(new ResetGameEvent()));
 		return newGame;
 	}
 
@@ -46,10 +42,10 @@ public class GameMenu extends JMenu {
 	 * 
 	 * @return the options menu item.
 	 */
-	public JMenuItem options() {
+	private JMenuItem options() {
 		var gameOptions = new JMenuItem("Options");
 		gameOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 2));
-		gameOptions.addActionListener(evt -> service.publish(new ShowOptionsEvent(true)));
+		gameOptions.addActionListener(evt -> eventPublisher.publish(new ShowOptionsEvent()));
 		return gameOptions;
 	}
 
@@ -58,10 +54,10 @@ public class GameMenu extends JMenu {
 	 * 
 	 * @return the quit menu item.
 	 */
-	public JMenuItem quit() {
+	private JMenuItem quit() {
 		var quitGame = new JMenuItem("Quit");
 		quitGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, 2));
-		quitGame.addActionListener(evt -> service.publish(new QuitGameEvent()));
+		quitGame.addActionListener(evt -> eventPublisher.publish(new QuitGameEvent()));
 		return quitGame;
 	}
 }

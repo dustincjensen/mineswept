@@ -1,88 +1,51 @@
 package gui;
 
-import gui.events.EventPublisher;
-import gui.events.QuitGameEvent;
+import events.IEventSubscriber;
+import events.RefreshMainWindowEvent;
 import gui.menu.Menus;
-import gui.menu.OptionWindow;
-import gui.menu.RecordWindow;
-import gui.menu.StatisticsWindow;
 import gui.panel.MainPanel;
-import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import javax.swing.*;
-import logic.files.FileManagement;
-import logic.Logic;
+import gui.Resource;
+import javax.swing.JFrame;
 
 /**
  * Runs the JFrame for the game.
  */
-public class MineSwept implements WindowListener {
-	private static JFrame window;
-	private static MainPanel mp;
-	private static Menus mb;
-
-	public MineSwept() {
-		RecordWindow.init();
-		StatisticsWindow.init();
-		// Loaded after gui starts MOSTLY
-		Logic.init();
-		OptionWindow.init();
-		mp = new MainPanel();
-		mb = new Menus();
+public class MineSwept {
+	private IEventSubscriber eventSubscriber;
+	// TODO should the window be provided in it's own component?
+	private JFrame window;
+	
+	public MineSwept(
+		Menus menus,
+		MainPanel mainPanel,
+		IEventSubscriber subscriber,
+		MainWindowHandler mainWindowHandler,
+		ResourceLoader loader
+	) {
+		eventSubscriber = subscriber;
 
 		window = new JFrame("MineSwept");
-		window.setContentPane(mp);
-		window.setJMenuBar(mb);
+		window.setContentPane(mainPanel);
+		window.setJMenuBar(menus);
 		window.pack();
 		window.setResizable(false);
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.addWindowListener(this);
+		window.addWindowListener(mainWindowHandler);
+		window.setIconImage(loader.get(Resource.SmileyCool).getImage());
 
-		try {
-			ImageIcon frameIcon = new ImageIcon((MineSwept.class).getResource("/icons/smiley-cool.png"));
-			window.setIconImage(frameIcon.getImage());
-		} catch (Exception e) {
-			System.out.println("Failed to load JFrame icon");
-			System.exit(1);
-		}
+		setupSubscription();
 	}
 
-	public static JFrame getWindow() {
-		return window;
+	public void showWindow() {
+		window.setVisible(true);
 	}
 
-	public static MainPanel getMainPanel() {
-		return mp;
-	}
-
-	public static void refresh() {
-		window.pack();
-		window.getContentPane().repaint();
-	}
-
-	public void windowActivated(WindowEvent e) {
-	}
-
-	public void windowClosed(WindowEvent e) {
-	}
-
-	public void windowClosing(WindowEvent e) {
-		var pub = new EventPublisher();
-		pub.publish(new QuitGameEvent());
-	}
-
-	public void windowDeactivated(WindowEvent e) {
-	}
-
-	public void windowDeiconified(WindowEvent e) {
-	}
-
-	public void windowIconified(WindowEvent e) {
-	}
-
-	public void windowOpened(WindowEvent e) {
+	private void setupSubscription() {
+		eventSubscriber.subscribe(RefreshMainWindowEvent.class, (event) -> {
+			window.pack();
+			window.getContentPane().repaint();
+		});
 	}
 
 	/**
@@ -91,7 +54,7 @@ public class MineSwept implements WindowListener {
 	 * @param args command line arguments.
 	 */
 	public static void main(String[] args) {
-		MineSwept ms = new MineSwept();
-		ms.getWindow().setVisible(true);
+		MineSwept mineSwept = ClassFactory.create(MineSwept.class);
+		mineSwept.showWindow();
 	}
 }

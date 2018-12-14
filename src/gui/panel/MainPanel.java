@@ -1,46 +1,46 @@
 package gui.panel;
 
-import javax.swing.*;
-import java.awt.*;
+import events.IEventSubscriber;
+import events.PauseGameEvent;
 import gui.panel.header.HeaderPanel;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
-/**
- * Sets up the JFrame content pane.
- */
 public class MainPanel extends JPanel {
-	private static MinePanel minePanel;
+	private MinePanel minePanel;
 	private PausePanel pausePanel;
+	private IEventSubscriber eventSubscriber;
 
-	public MainPanel() {
+	public MainPanel(
+		HeaderPanel header,
+		MinePanel mine,
+		PausePanel pause,
+		IEventSubscriber subscriber
+	) {
+		minePanel = mine;
+		pausePanel = pause;
+		eventSubscriber = subscriber;
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		minePanel = new MinePanel();
-		pausePanel = new PausePanel();
-
-		add(new HeaderPanel());
+		add(header);
 		add(minePanel);
+
+		setupSubscriptions();
 	}
 
-	public static MinePanel getMinePanel() {
-		return minePanel;
-	}
-
-	/**
-	 * Remove or show the pause panel.
-	 * 
-	 * @param pause true if the game should be paused.
-	 */
-	public void pausePanel(boolean pause) {
-		if (pause) {
-			remove(minePanel);
-			add(pausePanel);
-		} else {
-			remove(pausePanel);
-			add(minePanel);
-		}
-		repaint();
-		revalidate();
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(PauseGameEvent.class, (event) -> {
+			if (event.pause) {
+				remove(minePanel);
+				add(pausePanel);
+			} else {
+				remove(pausePanel);
+				add(minePanel);
+			}
+			repaint();
+			revalidate();
+		});
 	}
 }

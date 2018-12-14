@@ -1,7 +1,30 @@
 TODO
 ========
-- Implement Resource loader for icons.
-- Implement Dependency Injection.
-- Remove static nature of all classes.
-- Remove Loading of Preferences from MineButton.java
+- Refactor MineButton to remove all statics?
+    - Some form of shared state is needed to know:
+        - dragging position
+        - background color
+        - if the click started inside the mine buttons.
+        - if the click ended inside the mine buttons.
+- Refactor MineButton to simplify rendering.
+- Refactor GUI folder
+    - rename ui
+    - move files around, rename folders
+    - better modules
+    - move injection module out of ui folder
+    - move MineSwept out of UI folder
+        - remove MineSwept dependency on JFrame directly.
+- Refactor GameState
+    - perhaps it is watching too much internally, and should delegate out to separate states 
+      and conglomerate them like combineReducers.
+- Refactor UI Options Window
+- Refactor UI Records Window
+- Implement Records Saving / Loading (includes Smiley with Stars in eyes).
+- Implement Options Saving / Loading
+- Implement Statistics and Statistics UI Window
 - Optimize Bomb clues to be near uncovered spaces.
+- Implement alternate color schemes, borders and such for the mines.
+- Remove unnecessary resources.
+- Re-evaluate the use of `var` Java in VSCode doesn't recognize it very well.
+- Make Installable
+- Make resize-able?

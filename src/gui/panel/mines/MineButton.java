@@ -1,143 +1,150 @@
 package gui.panel.mines;
 
-import logic.game.*;
-import logic.files.Preferences;
+import events.IEventPublisher;
+import events.IEventSubscriber;
+import events.MineClickedEvent;
+import events.SetResetButtonIconEvent;
+import events.UpdateMineCountEvent;
+import events.UpdateMinePanelEvent;
+import gui.ClockTimer;
 import gui.FontChange;
-import gui.panel.header.MineCount;
-import gui.panel.header.ResetButton;
-import gui.panel.header.SmileyEnum;
-
+import gui.Resource;
+import gui.ResourceLoader;
+import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.awt.*;
-
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.InputEvent;
+import models.Mine;
+import models.Mines;
+import services.PreferencesService;
+import state.GameState;
 
 /**
  * Setup a mine button.
  */
 public class MineButton extends JLabel implements MouseListener {
-	private static int w, h; // 32, 48 //font size, 22 for 32 and 32 for 48
-	private static ImageIcon flag, mine, mineWrong, hint, flagHint;
+	private GameState gameState;
+	private ClockTimer clockTimer;
+	private PreferencesService preferencesService;
+	private ResourceLoader resourceLoader;
+	private IEventPublisher eventPublisher;
+	private IEventSubscriber eventSubscriber;
+
 	private int x, y;
-	private int fqe; // empty flag question //state of the button
+	private Color backgroundColor;
 
-	private static int dragX, dragY;
-	private static boolean insideSquares, startedHere;
-	/*
-	 * inside squares fixes the cursor leaving the buttons and still clicking the
-	 * last answered but I need a listener on the panel to know when it leaves to
-	 * change the face and to know when the mouse was released from a press that
-	 * starts outside of the buttons or else MineButtons don't get the release
-	 * event.
+	// TODO this should not be an int, it should be an enum.
+	/**
+	 * 0 = empty
+	 * 1 = flag
+	 * 2 = question mark
+	 * This is the state of the button when not clicked.
 	 */
+	private int nonClickedState;
 
-	private static final BevelBorder RAISEDBORDER = new BevelBorder(BevelBorder.RAISED, Color.WHITE, Color.GRAY);
-	private static final BevelBorder LOWEREDBORDER = new BevelBorder(BevelBorder.LOWERED, Color.WHITE, Color.GRAY);
-	private static final Color[] colors = { Color.BLUE, // One
-			new Color(67, 150, 67), // Two
-			Color.RED, // Three
-			new Color(75, 0, 75), // Four
-			new Color(128, 0, 0), // Five
-			new Color(64, 224, 208), // Six
-			new Color(160, 92, 240), // Seven
-			new Color(0, 0, 0) // Eight
-	};
-	private static Color backgroundColor;
-	private static Color defaultColor = new Color(50, 125, 240);
+	// TODO address these statics....
+	private static int dragX, dragY;
 
-	public MineButton() {
+	/**
+	 * This is used to fix the cursor leaving the buttons and still clicking the
+	 * last highlighted mine.
+	 */
+	private static boolean insideSquares;
+
+	/**
+	 * We don't want a click that starts at the top of the screen to start the game
+	 * if dragged into the mine field. They need to originate their click inside
+	 * the mine field.
+	 */
+	private static boolean mousePressStartedInsideSquare;
+
+	public MineButton(
+		PreferencesService prefs,
+		GameState state,
+		ClockTimer timer,
+		ResourceLoader loader,
+		IEventPublisher publisher,
+		IEventSubscriber subscriber
+	) {
+		gameState = state;
+		clockTimer = timer;
+		preferencesService = prefs;
+		resourceLoader = loader;
+		eventPublisher = publisher;
+		eventSubscriber = subscriber;
+
+		nonClickedState = 0;
+
+		// TODO move this to some shared state?
+		backgroundColor = new Color(prefs.r(), prefs.g(), prefs.b());
+
+		// TODO allow resizing?
+		// Font size 32 when w,h = 48
+		// Font size 22 when w,h = 32
 		FontChange.setFont(this, 32);
-		w = 48;
-		h = 48;
-		fqe = 0;
+		int w = 48, h = 48;
 		setPreferredSize(new Dimension(w, h));
+		
 		setHorizontalAlignment(JLabel.CENTER);
 		setOpaque(true);
 		setBackground(backgroundColor);
-		setBorder(RAISEDBORDER);
+		setBorder(Styles.RAISED_BORDER);
 		addMouseListener(this);
-	}
 
-	public static void init() {
-		loadImages();
-		reset();
-	}
-
-	public static void reset() {
-		dragX = -1;
-		dragY = -1;
-	}
-
-	private static void loadImages() {
-		try {
-			flag = new ImageIcon((MineButton.class).getResource("/icons/flag-24.png"));
-			flagHint = new ImageIcon((MineButton.class).getResource("/icons/flagHint-24.png"));
-			mine = new ImageIcon((MineButton.class).getResource("/icons/mrBomb.png"));
-			mineWrong = new ImageIcon((MineButton.class).getResource("/icons/mrBombWrong.png"));
-			hint = new ImageIcon((MineButton.class).getResource("/icons/smiley-wink-32.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		dragX = dragY = -1;
+		insideSquares = mousePressStartedInsideSquare = false;
 	}
 
 	public void decorate() {
-		Mine t = MineField.getMine(x, y);
+		Mine t = gameState.getMine(x, y);
+		
 		// Uncovered
 		if (t.uncovered()) {
 			// A bomb
 			if (t.isBomb()) {
 				setText("");
-				setIcon(mine);
+				setIcon(resourceLoader.get(Resource.Mine));
 			}
 			// Not a bomb but is has flag, is wrong
 			else if (!t.isBomb() && t.isProtected()) {
 				setText("");
-				setIcon(mineWrong);
+				setIcon(resourceLoader.get(Resource.MineWrong));
 			}
 			// A regular square or empty
 			else {
 				int val = t.getSpotValue();
-				if (val > 0) {
-					setText("" + val);
-					setIcon(null);
-					setForeground(colors[val - 1]);
-				} else {
-					setText("");
-					setIcon(null);
-					setForeground(null);
-				}
+				setText(val > 0 ? "" + val : "");
+				setForeground(val > 0 ? Styles.MINE_NUMBER_COLORS[val - 1] : null);
+				setIcon(null);
 			}
 
-			// if its uncovered, its LOWEREDBORDER
-			setBorder(LOWEREDBORDER);
-
-			// background is always NULL unless BLEWUP is true
-			if (t.blewUp())
-				setBackground(Color.RED);
-			else
-				setBackground(null);
+			// If the mine is uncovered we lower the border.
+			setBorder(Styles.LOWERED_BORDER);
+			setBackground(t.blewUp() ? Styles.FAILED_MINE_CLICKED_BACKGROUND_COLOR : null);
 		}
 
 		// Still covered
 		else {
+			// TODO This is probably pretty heavy. Any time a mine is clicked, MinePanel handles the UpdateMinePanelEvent
+			// which redecorates each mine, and we are creating the color for 16x30 mines on each render.
+			backgroundColor = new Color(
+				preferencesService.r(),
+				preferencesService.g(),
+				preferencesService.b());
 			setBackground(backgroundColor);
 
 			// check for hint (empty space)
-			if (!GameFeatures.isGameOver() && t.isHint()) {
-				if (t.isSpecialProtected())
-					setIcon(flagHint);
-				else
-					setIcon(hint);
+			if (!gameState.isGameOver() && t.isHint()) {
+				setIcon(t.isSpecialProtected() 
+					? resourceLoader.get(Resource.FlagHint) 
+					: resourceLoader.get(Resource.MineHint));
 				setText("");
-				t.setHint(false);
 			}
 
-			// allows the changing of color if the options changes it
-			if (GameFeatures.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
-				setIcon(mine);
+			if (gameState.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
+				setIcon(resourceLoader.get(Resource.Mine));
 				setText("");
 			}
 		}
@@ -148,139 +155,38 @@ public class MineButton extends JLabel implements MouseListener {
 		this.y = y;
 	}
 
-	public static void useDefaultBackgroundColor() {
-		backgroundColor = defaultColor;
-	}
-
-	public static void setBackgroundColor(Color c) {
-		backgroundColor = c;
-	}
-
-	public static Color getBackgroundColor() {
-		return backgroundColor;
-	}
-
-	public int x() {
-		return x;
-	}
-
-	public int y() {
-		return y;
-	}
-
-	public static void parseColor(String r, String g, String b) {
-		int red, green, blue;
-		red = green = blue = -1;
-		r = r.toLowerCase();
-		g = g.toLowerCase();
-		b = b.toLowerCase();
-
-		int pic = parseIndividualColor(r);
-		int who = Integer.parseInt(r.substring(r.indexOf("=") + 1).trim());
-		if (pic == 1)
-			red = who;
-		else if (pic == 2)
-			green = who;
-		else if (pic == 3)
-			blue = who;
-
-		pic = parseIndividualColor(g);
-		who = Integer.parseInt(g.substring(g.indexOf("=") + 1).trim());
-		if (pic == 1 && red == -1)
-			red = who;
-		else if (pic == 1 && red != -1) {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Reds defined.");
-			return;
-		} else if (pic == 2 && green == -1)
-			green = who;
-		else if (pic == 2 && green != -1) {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Greens defined.");
-			return;
-		} else if (pic == 3 && blue == -1)
-			blue = who;
-		else if (pic == 3 && blue != -1) {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Blues defined.");
-			return;
-		}
-
-		pic = parseIndividualColor(b);
-		who = Integer.parseInt(b.substring(b.indexOf("=") + 1).trim());
-		if (pic == 1 && red == -1)
-			red = who;
-		else if (pic == 1 && red != -1) {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Reds defined.");
-			return;
-		} else if (pic == 2 && green == -1)
-			green = who;
-		else if (pic == 2 && green != -1) {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Greens defined.");
-			return;
-		} else if (pic == 3 && blue == -1)
-			blue = who;
-		else if (pic == 3 && blue != -1) {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning("Possible Corrupted Preferences File:\n  MineButton Color has 2 Blues defined.");
-			return;
-		}
-
-		if (red > 255 || green > 255 || blue > 255)
-			useDefaultBackgroundColor();
-		else
-			setBackgroundColor(new Color(red, green, blue));
-	}
-
-	private static int parseIndividualColor(String c) {
-		if (c.indexOf("r") != -1)
-			return 1;
-		else if (c.indexOf("g") != -1)
-			return 2;
-		else if (c.indexOf("b") != -1)
-			return 3;
-		else {
-			useDefaultBackgroundColor();
-			Preferences.writeWarning(
-					"Possible Corrupted Preferences File:\n  MineButton Color does not follow RGB color pattern");
-			return -1;
-		}
-	}
-
 	// ==============================================
 	// MOUSE LISTENER
 	// ==============================================
 	public void mouseEntered(MouseEvent e) {
-		if (!GameFeatures.isGameOver() && startedHere) {
+		if (!gameState.isGameOver() && mousePressStartedInsideSquare) {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
-				Mine get = MineField.getMine(x, y);
+				Mine get = gameState.getMine(x, y);
 				dragX = x;
 				dragY = y;
 				insideSquares = true;
 				if (!get.uncovered() && !get.getAnyProtected()) {
-					ResetButton.setSmileyIcon(SmileyEnum.surprised);
-					setBorder(LOWEREDBORDER);
+					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
+					setBorder(Styles.LOWERED_BORDER);
 					setBackground(null);
 				} else {
-					ResetButton.setSmileyIcon(SmileyEnum.happy);
+					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileyHappy));
 				}
 			}
 		}
 	}
 
 	public void mouseExited(MouseEvent e) {
-		if (!GameFeatures.isGameOver() && startedHere) {
+		if (!gameState.isGameOver() && mousePressStartedInsideSquare) {
 			int modifiers = e.getModifiersEx();
 			int mask = InputEvent.BUTTON1_DOWN_MASK;
 			if ((modifiers & mask) == mask) {
 				insideSquares = false;
-				Mine get = MineField.getMine(x, y);
+				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered()) {
-					setBorder(RAISEDBORDER);
+					setBorder(Styles.RAISED_BORDER);
 					setBackground(backgroundColor);
 				}
 			}
@@ -290,81 +196,60 @@ public class MineButton extends JLabel implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		// Left Mouse Button
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (!GameFeatures.isGameStarted()) {
-				GameFeatures.setGameStarted(true);
-				ClockTimer.start();
+			if (!gameState.isGameStarted()) {
+				gameState.setGameStarted(true);
+				clockTimer.start();
 			}
-			if (!GameFeatures.isGameOver()) {
-				startedHere = true;
+			if (!gameState.isGameOver()) {
+				mousePressStartedInsideSquare = true;
 				insideSquares = true;
-				Mine get = MineField.getMine(x, y);
+				Mine get = gameState.getMine(x, y);
 				if (!get.uncovered() && !get.getAnyProtected()) {
-					setBorder(LOWEREDBORDER);
+					setBorder(Styles.LOWERED_BORDER);
 					setBackground(null);
-					ResetButton.setSmileyIcon(SmileyEnum.surprised);
+					eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
 				}
 			}
 		}
 
 		// Right mouse button
 		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (!GameFeatures.isGameStarted()) {
-				GameFeatures.setGameStarted(true);
-				ClockTimer.start();
+			if (gameState.isGameOver()) return;
+			
+			if (!gameState.isGameStarted()) {
+				gameState.setGameStarted(true);
+				clockTimer.start();
 			}
-			if (GameFeatures.isGameOver())
-				return;
 
-			Mine mineSpot = MineField.rightClicked(x, y);
+			Mine mineSpot = gameState.getMine(x, y);
 			if (!mineSpot.uncovered() && !mineSpot.isSpecialProtected()) {
-				if (fqe == 2)
-					fqe = 0;
-				else
-					fqe++;
-
-				if (fqe == 1) {
-					setIcon(flag);
-					setText("");
-					mineSpot.setProtected(true);
-
-				} else if (fqe == 2) {
-					setIcon(null);
-					setText("?");
-					setForeground(Color.WHITE);
-					mineSpot.setProtected(false);
-
-				} else if (fqe == 0) {
-					setIcon(null);
-					setText("");
-					mineSpot.setProtected(false);
+				if (nonClickedState == 2) {
+					nonClickedState = 0;
 				}
-				MineCount.setMineCount(MineField.getMineCount());
+				else {
+					nonClickedState++;
+				}
+
+				mineSpot.setProtected(nonClickedState == 1);
+				setIcon(nonClickedState == 1 ? resourceLoader.get(Resource.Flag) : null);
+				setForeground(nonClickedState == 2 ? Color.WHITE : null);
+				setText(nonClickedState == 2 ? "?" : "");
+
+				// TODO should MineButton be notifying directly?
+				// instead...
+				// publish mousePressedRightClick
+				// then gets notified on... mineProtectedEvent?
+				eventSubscriber.notify(new UpdateMineCountEvent());
 			}
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		// Left Mouse Button
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (!GameFeatures.isGameOver()) {
-				ResetButton.setSmileyIcon(SmileyEnum.happy);
-				if (insideSquares == true) {
-					if (dragX == -1 && dragY == -1) {
-						Mine get = MineField.getMine(x, y);
-						if (!get.getAnyProtected())
-							MineField.leftClicked(x, y);
-					} else {
-						Mine get = MineField.getMine(dragX, dragY);
-						if (!get.getAnyProtected())
-							MineField.leftClicked(dragX, dragY);
-					}
-				}
-				dragX = dragY = -1;
-				insideSquares = false;
-				startedHere = false;
-				MinePanel.update();
-			}
-		}
+		eventPublisher.publish(new MineClickedEvent(e.getButton() == MouseEvent.BUTTON1, insideSquares, x, y, dragX, dragY));
+
+		dragX = dragY = -1;
+		insideSquares = false;
+		mousePressStartedInsideSquare = false;
 	}
 
 	public void mouseClicked(MouseEvent e) {

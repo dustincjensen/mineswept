@@ -1,61 +1,64 @@
 package gui.panel.header;
 
-import gui.events.EventPublisher;
-import gui.events.GetHintEvent;
+import events.GetHintEvent;
+import events.IEventPublisher;
+import events.IEventSubscriber;
+import events.UpdateMineCountEvent;
 import gui.FontChange;
-import logic.game.MineField;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import gui.Resource;
+import gui.ResourceLoader;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import state.GameState;
 
 /**
  * Renders the mine count panel in the header.
  */
-public class MineCount extends JPanel implements ActionListener {
-	private static ImageIcon mineImage;
-	private static JButton mineIcon;
-	private static JLabel mineCount;
+public class MineCount extends JPanel {
+	private GameState gameState;
+	private IEventPublisher eventPublisher;
+	private IEventSubscriber eventSubscriber;
+	private ResourceLoader resourceLoader;
+	private JButton mineIcon;
+	private JLabel mineCount;
 
-	public MineCount() {
+	public MineCount(
+		GameState state,
+		IEventPublisher publisher,
+		IEventSubscriber subscriber,
+		ResourceLoader loader
+	) {
+		gameState = state;
+		eventPublisher = publisher;
+		eventSubscriber = subscriber;
+		resourceLoader = loader;
+
 		setLayout(new FlowLayout(FlowLayout.LEADING));
-		loadImages();
 		setupPanel();
-	}
-
-	private void loadImages() {
-		try {
-			mineImage = new ImageIcon(getClass().getResource("/icons/bomb.png"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		setupSubscriptions();
 	}
 
 	private void setupPanel() {
-		mineIcon = new JButton(mineImage);
+		mineIcon = new JButton(resourceLoader.get(Resource.BombHint));
 		mineIcon.setToolTipText("Get a hint");
 		mineIcon.setBorderPainted(false);
 		mineIcon.setContentAreaFilled(false);
-		mineIcon.addActionListener(this);
-		mineCount = new JLabel("");
-		reset();
-		FontChange.setFont(mineCount, 24);
+		mineIcon.addActionListener(evt -> {
+			eventPublisher.publish(new GetHintEvent());
+		});
 		add(mineIcon);
+
+		mineCount = new JLabel("");
+		mineCount.setText("" + gameState.getMineCount());
+		FontChange.setFont(mineCount, 24);
 		add(mineCount);
 	}
 
-	public static void setMineCount(int minesLeft) {
-		mineCount.setText("" + minesLeft);
-	}
-
-	public static void reset() {
-		setMineCount(MineField.getMineCount());
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == mineIcon) {
-			var pub = new EventPublisher();
-			pub.publish(new GetHintEvent());
-		}
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(UpdateMineCountEvent.class, (event) -> {
+			mineCount.setText("" + gameState.getMineCount());
+		});
 	}
 }
