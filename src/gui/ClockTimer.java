@@ -42,6 +42,10 @@ public class ClockTimer {
 		}
 	}
 
+	public int getSeconds() {
+		return time;
+	}
+
 	public void start() {
 		timer.start();
 	}

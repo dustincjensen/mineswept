@@ -15,7 +15,7 @@ public class RecordWindow {
 
 	private JFrame recordWindow;
 	private JTabbedPane tabs;
-	private RecordPanel beginner, intermediate, advanced;
+	private RecordPanel easy, medium, hard;
 
 	public RecordWindow(IEventSubscriber subscriber) {
 		eventSubscriber = subscriber;
@@ -39,9 +39,9 @@ public class RecordWindow {
 		var recordPanel = new JPanel();
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
-		beginner = new RecordPanel("Beginner");
-		intermediate = new RecordPanel("Intermediate");
-		advanced = new RecordPanel("Advanced");
+		easy = new RecordPanel("Easy");
+		medium = new RecordPanel("Medium");
+		hard = new RecordPanel("Hard");
 
 		recordPanel.add(tabs());
 		recordPanel.add(okReset());
@@ -51,9 +51,9 @@ public class RecordWindow {
 
 	private JTabbedPane tabs() {
 		tabs = new JTabbedPane();
-		tabs.add(beginner);
-		tabs.add(intermediate);
-		tabs.add(advanced);
+		tabs.add(easy);
+		tabs.add(medium);
+		tabs.add(hard);
 		return tabs;
 	}
 
@@ -78,16 +78,7 @@ public class RecordWindow {
 	private JButton reset() {
 		var reset = new JButton("Reset");
 		reset.addActionListener(evt -> {
-			if (tabs.getSelectedIndex() == 0) {
-				// Records.resetRecords("beginner");
-				beginner.refreshRecords();
-			} else if (tabs.getSelectedIndex() == 1) {
-				// Records.resetRecords("intermediate");
-				intermediate.refreshRecords();
-			} else if (tabs.getSelectedIndex() == 2) {
-				// Records.resetRecords("advanced");
-				advanced.refreshRecords();
-			}
+			// TODO publish an event...
 		});
 		return reset;
 	}
@@ -97,9 +88,9 @@ public class RecordWindow {
 			recordWindow.setVisible(true);
 
 			All allRecords = event.records;
-			beginner.setRecords(allRecords.beginner);
-			intermediate.setRecords(allRecords.intermediate);
-			advanced.setRecords(allRecords.advanced);
+			easy.setRecords(allRecords.easy);
+			medium.setRecords(allRecords.medium);
+			hard.setRecords(allRecords.hard);
 		});
 	}
 }

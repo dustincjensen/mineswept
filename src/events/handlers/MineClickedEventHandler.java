@@ -10,22 +10,26 @@ import gui.Resource;
 import models.Mine;
 import models.Mines;
 import services.MineRevealService;
+import services.RecordsService;
 import state.GameState;
 
 public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> {
     private GameState gameState;
     private MineRevealService mineRevealService;
+    private RecordsService recordsService;
     private ClockTimer clockTimer;
     private IEventSubscriber eventSubscriber;
 
     public MineClickedEventHandler(
         GameState state,
         MineRevealService service,
+        RecordsService records,
         ClockTimer timer,
         IEventSubscriber subscriber
     ) {
         gameState = state;
         mineRevealService = service;
+        recordsService = records;
         clockTimer = timer;
         eventSubscriber = subscriber;
     }
@@ -72,7 +76,13 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             // If no exception is throw, we can update the game condition.
             if (gameState.updateGameCondition()) {
                 clockTimer.stop();
-                eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyCool));
+
+                // Record a record if need be.
+                boolean recordSet = recordsService.checkAndSaveNewRecord(
+                    clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
+
+                eventSubscriber.notify(new SetResetButtonIconEvent(
+                    recordSet ? Resource.SmileyRecord : Resource.SmileyCool));
             };
         } catch (GameOverException ex) {
             gameState.setGameOver(true);

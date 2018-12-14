@@ -1,10 +1,8 @@
 package gui.records;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.Arrays;
-import java.util.Comparator;
 import models.records.Record;
 import services.RecordsService;
 
@@ -44,9 +42,6 @@ public class RecordPanel extends JPanel {
 		tableModel.addColumn("Time");
 		tableModel.addColumn("Date");
 
-		// Don't need to set up the model until we have data
-		// records is null at this time
-
 		bodyTable = new JTable(tableModel);
 		bodyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		bodyTable.getColumnModel().getColumn(0).setMaxWidth(30);
@@ -63,12 +58,8 @@ public class RecordPanel extends JPanel {
 	public void refreshRecords() {
 		tableModel.setRowCount(0);
 
-		var sortedRecords = Arrays.stream(records)
-			.sorted(Comparator.comparing(r -> r.time))
-			.toArray(Record[]::new);
-
 		int i = 0;
-		for (var record : sortedRecords) {
+		for (var record : records) {
 			String[] row = new String[4];
 			row[0] = String.valueOf(++i);
 			row[1] = record.name;
