@@ -3,8 +3,8 @@ package events.handlers;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetResetButtonIconEvent;
-import gui.Resource;
 import gui.ClockTimer;
+import gui.Resource;
 import state.GameState;
 
 public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {

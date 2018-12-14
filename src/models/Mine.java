@@ -1,5 +1,6 @@
 package models;
 
+// TODO does this class do to much? poorly named variables.
 public class Mine {
 	private int x, y;
 	private int spotValue;

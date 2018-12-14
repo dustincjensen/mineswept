@@ -21,6 +21,7 @@ public class ServicesModule extends AbstractModule {
         return new MineRevealService(octo);
     }
 
+    // TODO reevaluate if these need to be singleton's
     @Singleton
     @Provides
     public PreferencesService providePreferences(FileService fileService) {
@@ -32,4 +33,6 @@ public class ServicesModule extends AbstractModule {
     public RecordsService provideRecordsService(FileService fileService) {
         return new RecordsService(fileService);
     }
+    
+    // TODO statistics service.
 }

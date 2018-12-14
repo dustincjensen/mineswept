@@ -4,8 +4,8 @@ import events.GetHintEvent;
 import events.IEventSubscriber;
 import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
-import state.GameState;
 import services.HintService;
+import state.GameState;
 
 public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
     private GameState gameState;

@@ -4,18 +4,14 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import events.IEventPublisher;
 import events.handlers.*;
-import gui.options.OptionWindow;
-import gui.panel.header.TimeCount;
-import gui.records.RecordWindow;
-import gui.statistics.StatisticsWindow;
-import java.util.List;
+import events.IEventPublisher;
 import gui.ClockTimer;
-import state.GameState;
+import java.util.List;
 import services.HintService;
 import services.MineRevealService;
 import services.RecordsService;
+import state.GameState;
 
 public class EventModule extends AbstractModule {
     @Override

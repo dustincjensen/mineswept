@@ -1,16 +1,16 @@
 package events.handlers;
 
-import gui.Resource;
 import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
 import events.UpdateMinePanelEvent;
-import gui.ClockTimer;
 import exceptions.GameOverException;
-import state.GameState;
+import gui.ClockTimer;
+import gui.Resource;
 import models.Mine;
 import models.Mines;
 import services.MineRevealService;
+import state.GameState;
 
 public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> {
     private GameState gameState;

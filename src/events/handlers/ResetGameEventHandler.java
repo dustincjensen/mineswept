@@ -1,15 +1,14 @@
 package events.handlers;
 
-import gui.Resource;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.RefreshMainWindowEvent;
 import events.ResetGameEvent;
+import events.ResetMinePanelEvent;
 import events.SetResetButtonIconEvent;
 import events.UpdateMineCountEvent;
-import events.ResetMinePanelEvent;
-import gui.MineSwept;
 import gui.ClockTimer;
+import gui.Resource;
 import state.GameState;
 
 public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
@@ -26,14 +25,9 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
     @Override
     public void execute(ResetGameEvent event) {
         gameState.reset();
+
+        // TODO this should use the event subscriber system.
         clockTimer.reset();
-                
-        // Once this is hooked up... there should be no...
-        // MinePanel.reset();
-        // MineCount.update();
-        // MineSwept.getMainPanel().pausePanel(false);
-        // MineSwept.refresh();
-        // perhaps no clockTimer.reset();
         
         eventSubscriber.notify(new ResetMinePanelEvent(
             gameState.getCurrentPuzzleHeight(),

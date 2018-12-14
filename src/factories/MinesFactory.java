@@ -1,9 +1,9 @@
 package factories;
 
-import utils.RandomGen;
 import models.Mine;
 import models.Mines;
 import services.OctoCheckService;
+import utils.RandomGen;
 
 /**
  * Factory to create an instance of the models.Mines class.
