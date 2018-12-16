@@ -16,6 +16,16 @@ public class DefaultButtonUi extends BasicButtonUI {
 		this.backgroundHover = backgroundHover;
 	}
 
+	public void setColors(
+		Color foreground,
+		Color background,
+		Color backgroundHover
+	) {
+		this.foreground = foreground;
+		this.background = background;
+		this.backgroundHover = backgroundHover;
+	}
+
     @Override
     public void paint(Graphics g, JComponent c) {
         AbstractButton button = (AbstractButton) c;

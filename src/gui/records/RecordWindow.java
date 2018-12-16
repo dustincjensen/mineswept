@@ -7,6 +7,7 @@ import events.ShowRecordsEvent;
 import gui.HexToRgb;
 import gui.components.button.DangerButton;
 import gui.components.button.PrimaryButton;
+import gui.components.tabbedPane.CustomTabbedPane;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,8 +22,8 @@ public class RecordWindow {
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
 
-	private JFrame recordWindow;
-	private JTabbedPane tabs;
+	private JFrame frame;
+	private CustomTabbedPane tabs;
 	private RecordPanel easy, medium, hard;
 
 	public RecordWindow(
@@ -33,40 +34,26 @@ public class RecordWindow {
 		eventSubscriber = subscriber;
 
 		System.out.println("Creating: RECORD WINDOW");
-		setupWindow();
+		
+		frame = new RecordFrame(recordPanel());
+
 		setupSubscriptions();
-	}
-
-	private void setupWindow() {
-		recordWindow = new JFrame("Records");
-		recordWindow.setContentPane(recordPanel());
-
-		recordWindow.setSize(300, 175 + RecordsService.RECORD_LIMIT * 15);
-		recordWindow.setLocationRelativeTo(null);
-		recordWindow.setResizable(false);
-		recordWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 
 	private JPanel recordPanel() {
 		var recordPanel = new JPanel();
+		recordPanel.setBackground(HexToRgb.convert("#333333"));
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
 		easy = new RecordPanel("Easy");
 		medium = new RecordPanel("Medium");
 		hard = new RecordPanel("Hard");
+		tabs = new RecordTabs(easy, medium, hard);
 
-		recordPanel.add(tabs());
+		recordPanel.add(tabs);
 		recordPanel.add(okReset());
 
 		return recordPanel;
-	}
-
-	private JTabbedPane tabs() {
-		tabs = new JTabbedPane();
-		tabs.add(easy);
-		tabs.add(medium);
-		tabs.add(hard);
-		return tabs;
 	}
 
 	private JPanel okReset() {
@@ -81,7 +68,7 @@ public class RecordWindow {
 	}
 
 	private JButton ok() {
-		return new PrimaryButton("OK", evt -> recordWindow.setVisible(false));
+		return new PrimaryButton("OK", evt -> frame.setVisible(false));
 	}
 
 	private JButton reset() {
@@ -100,7 +87,7 @@ public class RecordWindow {
 
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(ShowRecordsEvent.class, event -> {
-			recordWindow.setVisible(true);
+			frame.setVisible(true);
 
 			All allRecords = event.records;
 			easy.setRecords(allRecords.easy);

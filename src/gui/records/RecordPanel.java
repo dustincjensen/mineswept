@@ -1,5 +1,6 @@
 package gui.records;
 
+import gui.HexToRgb;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,19 +11,20 @@ public class RecordPanel extends JPanel {
 	private JTable bodyTable;
 	private DefaultTableModel tableModel;
 	private Record[] records = {};
+	private String title;
 
-	public RecordPanel(String level) {
-		setupPane(level);
+	public RecordPanel(String title) {
+		this.title = title;
+		setupPane();
 	}
 
-	private void setupPane(String level) {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setName(level);
+	public String getPanelTitle() {
+		return title;
+	}
 
-		JPanel headerPane = new JPanel();
-		headerPane.setLayout(new BoxLayout(headerPane, BoxLayout.X_AXIS));
-		JLabel header = new JLabel(level + " Records");// font change
-		headerPane.add(header);
+	private void setupPane() {
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBackground(HexToRgb.convert("#333333"));
 
 		JPanel bodyPane = new JPanel();
 		bodyPane.setPreferredSize(new Dimension(300, RecordsService.RECORD_LIMIT * 10));
@@ -30,7 +32,6 @@ public class RecordPanel extends JPanel {
 		createTable();
 		bodyPane.add(bodyTable, BorderLayout.CENTER);
 
-		add(headerPane);
 		add(bodyTable.getTableHeader());
 		add(bodyPane);
 	}
