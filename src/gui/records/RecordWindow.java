@@ -4,6 +4,9 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
+import gui.HexToRgb;
+import gui.components.button.DangerButton;
+import gui.components.button.PrimaryButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,25 +71,22 @@ public class RecordWindow {
 
 	private JPanel okReset() {
 		var accept = new JPanel();
-		accept.setLayout(new BoxLayout(accept, BoxLayout.X_AXIS));
-		accept.add(Box.createHorizontalGlue());
+		accept.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		accept.setBackground(HexToRgb.convert("#333333"));
+		accept.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		accept.setLayout(new GridLayout(0, 2, 5, 5));
 		accept.add(ok());
 		accept.add(reset());
-		accept.add(Box.createHorizontalGlue());
 		return accept;
 	}
 
 	private JButton ok() {
-		var okButton = new JButton("OK");
-		okButton.addActionListener(evt -> {
-			recordWindow.setVisible(false);
-		});
-		return okButton;
+		return new PrimaryButton("OK", evt -> recordWindow.setVisible(false));
 	}
 
 	private JButton reset() {
-		var reset = new JButton("Reset");
-		reset.addActionListener(evt -> {
+		return new DangerButton("Reset", evt -> {
+			// TODO move this somewhere else?
 			var tabIndexToDifficulty = Map.of(
 				0, Difficulty.easy,
 				1, Difficulty.medium,
@@ -96,7 +96,6 @@ public class RecordWindow {
 			Difficulty difficulty = tabIndexToDifficulty.get(tabs.getSelectedIndex());
 			eventPublisher.publish(new ResetRecordsEvent(difficulty));
 		});
-		return reset;
 	}
 
 	private void setupSubscriptions() {
