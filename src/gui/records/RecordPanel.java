@@ -1,15 +1,19 @@
 package gui.records;
 
 import gui.HexToRgb;
+import gui.components.table.Cell;
+import gui.components.table.CustomReadonlyTable;
+import gui.components.table.ICellHandler;
+import gui.components.table.TableRow;
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import models.records.Record;
 import services.RecordsService;
 
 public class RecordPanel extends JPanel {
-	private JTable bodyTable;
-	private DefaultTableModel tableModel;
+	private CustomReadonlyTable table;
 	private Record[] records = {};
 	private String title;
 
@@ -23,32 +27,17 @@ public class RecordPanel extends JPanel {
 	}
 
 	private void setupPane() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setBackground(HexToRgb.convert("#333333"));
-
-		JPanel bodyPane = new JPanel();
-		bodyPane.setPreferredSize(new Dimension(300, RecordsService.RECORD_LIMIT * 10));
-		bodyPane.setLayout(new BorderLayout());
-		createTable();
-		bodyPane.add(bodyTable, BorderLayout.CENTER);
-
-		add(bodyTable.getTableHeader());
-		add(bodyPane);
+		setLayout(new GridLayout(0, 1));
+		add(createTable());
 	}
 
-	private void createTable() {
-		tableModel = new DefaultTableModel();
-		tableModel.addColumn(" ");
-		tableModel.addColumn("Name");
-		tableModel.addColumn("Time");
-		tableModel.addColumn("Date");
-
-		bodyTable = new JTable(tableModel);
-		bodyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		bodyTable.getColumnModel().getColumn(0).setMaxWidth(30);
-		bodyTable.getColumnModel().getColumn(1).setPreferredWidth(50);
-		bodyTable.getColumnModel().getColumn(2).setMaxWidth(50);
-		bodyTable.getColumnModel().getColumn(3).setPreferredWidth(25);
+	private CustomReadonlyTable createTable() {
+		TableRow header = new TableRow();
+		header.add((r, c) -> new Cell("Time", false));
+		header.add((r, c) -> new Cell("Name", true));
+		header.add((r, c) -> new Cell("Date", false));
+		table = new CustomReadonlyTable(header);
+		return table;
 	}
 
 	public void setRecords(Record[] rec) {
@@ -57,16 +46,14 @@ public class RecordPanel extends JPanel {
 	}
 
 	public void refreshRecords() {
-		tableModel.setRowCount(0);
-
-		int i = 0;
+		var listOfRows = new ArrayList<TableRow>();
 		for (var record : records) {
-			String[] row = new String[4];
-			row[0] = String.valueOf(++i);
-			row[1] = record.name;
-			row[2] = String.valueOf(record.time);
-			row[3] = record.date;
-			tableModel.addRow(row);
+			TableRow row = new TableRow();
+			row.add((r, c) -> new Cell(String.valueOf(record.time), false));
+			row.add((r, c) -> new Cell(record.name, true));
+			row.add((r, c) -> new Cell(record.date, false));
+			listOfRows.add(row);
 		}
+		table.setData(listOfRows.toArray(TableRow[]::new));
 	}
 }

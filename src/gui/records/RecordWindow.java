@@ -42,7 +42,6 @@ public class RecordWindow {
 
 	private JPanel recordPanel() {
 		var recordPanel = new JPanel();
-		recordPanel.setBackground(HexToRgb.convert("#333333"));
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
 		easy = new RecordPanel("Easy");
