@@ -3,7 +3,6 @@ package gui.records;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import services.RecordsService;
 
 public class RecordFrame extends JFrame {
     public RecordFrame(JPanel content) {

@@ -11,7 +11,6 @@ import gui.components.tabbedPane.CustomTabbedPane;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import models.Difficulty;
@@ -44,10 +43,14 @@ public class RecordWindow {
 		var recordPanel = new JPanel();
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
-		easy = new RecordPanel("Easy");
-		medium = new RecordPanel("Medium");
-		hard = new RecordPanel("Hard");
-		tabs = new RecordTabs(easy, medium, hard);
+		easy = new RecordPanel();
+		medium = new RecordPanel();
+		hard = new RecordPanel();
+
+		tabs = new CustomTabbedPane();
+		tabs.add("Easy", easy);
+		tabs.add("Medium", medium);
+		tabs.add("Hard", hard);
 
 		recordPanel.add(tabs);
 		recordPanel.add(okReset());
@@ -72,14 +75,7 @@ public class RecordWindow {
 
 	private JButton reset() {
 		return new DangerButton("Reset", evt -> {
-			// TODO move this somewhere else?
-			var tabIndexToDifficulty = Map.of(
-				0, Difficulty.easy,
-				1, Difficulty.medium,
-				2, Difficulty.hard
-			);
-
-			Difficulty difficulty = tabIndexToDifficulty.get(tabs.getSelectedIndex());
+			var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
 			eventPublisher.publish(new ResetRecordsEvent(difficulty));
 		});
 	}
