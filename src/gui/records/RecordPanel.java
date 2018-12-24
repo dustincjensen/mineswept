@@ -13,7 +13,14 @@ public class RecordPanel extends JPanel {
 	
 	public RecordPanel() {
 		setLayout(new GridLayout(0, 1));
-		add(createTable());
+
+		var header = new TableRow();
+		header.add((r, c) -> new Cell("Time", false));
+		header.add((r, c) -> new Cell("Name", true));
+		header.add((r, c) -> new Cell("Date", false));
+		_table = new CustomReadonlyTable(header);
+		
+		add(_table);
 	}
 
 	public void setRecords(Record[] records) {
@@ -26,14 +33,5 @@ public class RecordPanel extends JPanel {
 			listOfRows.add(row);
 		}
 		_table.setData(listOfRows.toArray(TableRow[]::new));
-	}
-
-	private CustomReadonlyTable createTable() {
-		var header = new TableRow();
-		header.add((r, c) -> new Cell("Time", false));
-		header.add((r, c) -> new Cell("Name", true));
-		header.add((r, c) -> new Cell("Date", false));
-		_table = new CustomReadonlyTable(header);
-		return _table;
 	}
 }

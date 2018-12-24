@@ -4,18 +4,19 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
-import gui.HexToRgb;
 import gui.components.button.DangerButton;
 import gui.components.button.PrimaryButton;
 import gui.components.tabbedPane.CustomTabbedPane;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import gui.HexToRgb;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import models.Difficulty;
 import models.records.All;
-import services.RecordsService;
 
 public class RecordWindow {
 	private IEventPublisher eventPublisher;
