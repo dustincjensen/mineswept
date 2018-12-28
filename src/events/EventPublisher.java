@@ -1,8 +1,6 @@
 package events;
 
 import events.handlers.*;
-import gui.options.OptionWindow;
-import gui.statistics.StatisticsWindow;
 import java.util.List;
 import java.lang.reflect.ParameterizedType;
 

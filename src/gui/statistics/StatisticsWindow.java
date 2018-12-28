@@ -2,7 +2,6 @@ package gui.statistics;
 
 import events.IEventSubscriber;
 import events.ShowStatisticsEvent;
-import java.awt.*;
 import javax.swing.*;
 
 public class StatisticsWindow {
