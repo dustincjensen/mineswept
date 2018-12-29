@@ -18,7 +18,7 @@ import models.records.All;
 import models.records.Record;
 
 public class RecordsService {
-	public static final int RECORD_LIMIT = 10;
+	private static final int RECORD_LIMIT = 10;
 
 	private FileService fileService;
 
@@ -33,7 +33,7 @@ public class RecordsService {
 
 	// TODO is this the best place for this?
 	public All getAllRecords() {
-		return this.allRecords;
+		return allRecords;
 	}
 
 	public boolean checkAndSaveNewRecord(int time, Difficulty level) {
