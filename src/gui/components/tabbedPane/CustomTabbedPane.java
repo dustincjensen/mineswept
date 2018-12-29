@@ -4,7 +4,6 @@ import gui.HexToRgb;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,22 +26,26 @@ public class CustomTabbedPane extends JPanel {
     }
 
     public void add(String tabName, JComponent component) {
-        ActionListener action = evt -> {
-            selectedIndex = names.indexOf(tabName);
-            for (int i = 0; i < tabHeader.getComponents().length; i++) {
-                CustomTabButton c = (CustomTabButton)tabHeader.getComponent(i);
-                c.setSelected(selectedIndex == i);
-            }
-            ((CardLayout) tabBody.getLayout()).show(tabBody, tabName);
-        };
-
         names.add(tabName);
-        tabHeader.add(new CustomTabButton(tabName, action, names.indexOf(tabName) == 0));
+        tabHeader.add(new CustomTabButton(
+            tabName,
+            evt -> setSelectedIndex(tabName),
+            names.indexOf(tabName) == 0)
+        );
         tabBody.add(component, tabName);
     }
 
     public int getSelectedIndex() {
         return selectedIndex;
+    }
+
+    public void setSelectedIndex(String tabName) {
+        selectedIndex = names.indexOf(tabName);
+        for (int i = 0; i < tabHeader.getComponents().length; i++) {
+            var c = (CustomTabButton)tabHeader.getComponent(i);
+            c.setSelected(selectedIndex == i);
+        }
+        ((CardLayout) tabBody.getLayout()).show(tabBody, tabName);
     }
 
     private JPanel tabHeader() {

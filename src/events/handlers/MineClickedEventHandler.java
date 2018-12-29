@@ -3,11 +3,11 @@ package events.handlers;
 import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
+import events.ShowRecordsEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
 import gui.ClockTimer;
 import gui.Resource;
-import models.Mine;
 import models.Mines;
 import services.MineRevealService;
 import services.RecordsService;
@@ -80,6 +80,14 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 // Record a record if need be.
                 boolean recordSet = recordsService.checkAndSaveNewRecord(
                     clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
+
+                // Show the records window if a record was set.
+                if (recordSet) {
+                    var showRecords = new ShowRecordsEvent();
+                    showRecords.records = recordsService.getAllRecords();
+                    showRecords.difficulty = gameState.getCurrentPuzzleDifficulty();
+                    eventSubscriber.notify(showRecords);
+                }
 
                 eventSubscriber.notify(new SetResetButtonIconEvent(
                     recordSet ? Resource.SmileyRecord : Resource.SmileyCool));

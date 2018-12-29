@@ -89,6 +89,10 @@ public class RecordWindow {
 			easy.setRecords(allRecords.easy);
 			medium.setRecords(allRecords.medium);
 			hard.setRecords(allRecords.hard);
+
+			if (event.difficulty != null) {
+				tabs.setSelectedIndex(Difficulty.getProperName(event.difficulty));
+			}
 		});
 
 		eventSubscriber.subscribe(ResetRecordsEvent.class, event -> {
