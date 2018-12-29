@@ -75,7 +75,7 @@ public class PreferencesService {
 			// TODO place this on game state? Or just have classes require Preferences...
 			preference = gson.fromJson(json, Preference.class);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println(e);
 		}
 	}
 

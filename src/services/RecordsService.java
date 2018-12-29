@@ -129,7 +129,7 @@ public class RecordsService {
 			allRecords.medium = sort(allRecords.medium);
 			allRecords.hard = sort(allRecords.hard);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println(e);
 		}
 	}
 
