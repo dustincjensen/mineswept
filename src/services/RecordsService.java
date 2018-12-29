@@ -56,7 +56,7 @@ public class RecordsService {
 
 	public Record[] resetRecords(Difficulty level) {
 		// We can decide if resetting restores some computer default records...
-		Record[] newRecords = new Record[0];
+		var newRecords = new Record[0];
 
 		if (level == Difficulty.easy) {
 			allRecords.easy = newRecords;
@@ -71,15 +71,15 @@ public class RecordsService {
 	}
 
 	private AddRecord addNewRecord(Record[] records, int time) {
-		ArrayList<Record> newRecords = new ArrayList<Record>(Arrays.asList(records));
+		var newRecords = new ArrayList<Record>(Arrays.asList(records));
 		var newRecord =  new Record();
 		newRecord.date = getFormattedDate();
 		newRecord.name = "Dustin Jensen";
 		newRecord.time = time;
 		newRecords.add(newRecord);
 		
-		Record[] returnRecords = sort(newRecords).stream().limit(RECORD_LIMIT).toArray(Record[]::new);
-		boolean wasNewRecord = Arrays
+		var returnRecords = sort(newRecords).stream().limit(RECORD_LIMIT).toArray(Record[]::new);
+		var wasNewRecord = Arrays
 			.stream(returnRecords)
 			.anyMatch(p -> p.time == newRecord.time && p.date == newRecord.date);
 
@@ -90,8 +90,8 @@ public class RecordsService {
 	}
 
 	private String getFormattedDate() {
-		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy");
+		var now = new Date();
+		var formatter = new SimpleDateFormat("MMM dd, yyyy");
 		return formatter.format(now);
 	}
 
@@ -118,8 +118,8 @@ public class RecordsService {
 
 	private void loadAllRecords() {
 		try {
-			String json = new String(Files.readAllBytes(Paths.get(records.toURI())), StandardCharsets.UTF_8);
-			Gson gson = new Gson();
+			var json = new String(Files.readAllBytes(Paths.get(records.toURI())), StandardCharsets.UTF_8);
+			var gson = new Gson();
 
 			// TODO place this on game state? Or just have classes require Record...
 			allRecords = gson.fromJson(json, All.class);
@@ -145,7 +145,7 @@ public class RecordsService {
 	}
 
 	private void writeDefaultJson(File recordsFile) {
-		All all = new All();
+		var all = new All();
 		all.easy = new Record[0];
 		all.medium = new Record[0];
 		all.hard = new Record[0];
@@ -153,7 +153,7 @@ public class RecordsService {
 	}
 
 	private void writeFile(File recordsFile, All records) {
-		Gson gson = new GsonBuilder()
+		var gson = new GsonBuilder()
 			.setPrettyPrinting()
 			.create();
 
