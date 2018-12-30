@@ -74,7 +74,6 @@ public class RecordsService {
 		var newRecords = new ArrayList<Record>(Arrays.asList(records));
 		var newRecord =  new Record();
 		newRecord.date = getFormattedDate();
-		newRecord.name = "Dustin Jensen";
 		newRecord.time = time;
 		newRecords.add(newRecord);
 		

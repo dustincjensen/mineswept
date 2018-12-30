@@ -29,9 +29,3 @@ TODO
 
 Working on
 ==========
-- Implement Records Saving / Loading (includes Smiley with Stars in eyes).
-    - We need to be able to set the player's name on getting a record. 
-    - Do we prompt them on each win?
-    - Do we use the window's username?
-    - Do we have them set it on startup?
-- Refactor UI Records Window

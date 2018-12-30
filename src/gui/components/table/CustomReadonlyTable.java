@@ -34,7 +34,7 @@ public class CustomReadonlyTable extends JPanel {
     private void createContentPanel() {
         content = new JPanel();
         content.setLayout(new GridBagLayout());
-        content.setBackground(HexToRgb.convert("#555555"));
+        content.setBackground(HexToRgb.convert("#333333"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;

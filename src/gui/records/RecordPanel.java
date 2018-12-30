@@ -13,11 +13,10 @@ public class RecordPanel extends JPanel {
 	
 	public RecordPanel() {
 		setLayout(new GridLayout(0, 1));
-
+		
 		var header = new TableRow();
-		header.add((r, c) -> new Cell("Time", false));
-		header.add((r, c) -> new Cell("Name", true));
-		header.add((r, c) -> new Cell("Date", false));
+		header.add((r, c) -> new Cell("Time", true));
+		header.add((r, c) -> new Cell("Date", true));
 		_table = new CustomReadonlyTable(header);
 		
 		add(_table);
@@ -27,9 +26,8 @@ public class RecordPanel extends JPanel {
 		var listOfRows = new ArrayList<TableRow>();
 		for (var record : records) {
 			var row = new TableRow();
-			row.add((r, c) -> new Cell(String.valueOf(record.time), false));
-			row.add((r, c) -> new Cell(record.name, true));
-			row.add((r, c) -> new Cell(record.date, false));
+			row.add((r, c) -> new Cell(String.valueOf(record.time), true));
+			row.add((r, c) -> new Cell(record.date, true));
 			listOfRows.add(row);
 		}
 		_table.setData(listOfRows.toArray(TableRow[]::new));
