@@ -41,7 +41,7 @@ public class CustomTabbedPane extends JPanel {
 
     public void setSelectedIndex(String tabName) {
         selectedIndex = names.indexOf(tabName);
-        for (int i = 0; i < tabHeader.getComponents().length; i++) {
+        for (var i = 0; i < tabHeader.getComponents().length; i++) {
             var c = (CustomTabButton)tabHeader.getComponent(i);
             c.setSelected(selectedIndex == i);
         }

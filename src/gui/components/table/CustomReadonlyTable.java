@@ -24,7 +24,7 @@ public class CustomReadonlyTable extends JPanel {
         content.removeAll();
         createHeader();
         
-        for (int row = 0; row < rows.length; row++) {
+        for (var row = 0; row < rows.length; row++) {
             var rowColor = row % 2 == 0 ? "#333333" : "#212529";
             renderRowCells(rows[row].cellHandlers, row + 1, "#ffffff", rowColor);
         }
@@ -36,7 +36,7 @@ public class CustomReadonlyTable extends JPanel {
         content.setLayout(new GridBagLayout());
         content.setBackground(HexToRgb.convert("#333333"));
 
-        GridBagConstraints c = new GridBagConstraints();
+        var c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1.0;
@@ -58,9 +58,9 @@ public class CustomReadonlyTable extends JPanel {
         String foregroundHexColor,
         String backgroundHexColor
     ) {
-        for (int column = 0; column < cellHandlers.size(); column++) {
-            Cell cell = cellHandlers.get(column).handleCell(row, column);
-            JLabel label = createLabel(cell.text, foregroundHexColor, backgroundHexColor);
+        for (var column = 0; column < cellHandlers.size(); column++) {
+            var cell = cellHandlers.get(column).handleCell(row, column);
+            var label = createLabel(cell.text, foregroundHexColor, backgroundHexColor);
             var c = getConstraints(column, row, cell.useExtraWidth);
             content.add(label, c);
         }
@@ -71,7 +71,7 @@ public class CustomReadonlyTable extends JPanel {
         String foregroundHexColor,
         String backgroundHexColor
     ) {
-        JLabel label = new JLabel();
+        var label = new JLabel();
         label.setText(text);
         label.setForeground(HexToRgb.convert(foregroundHexColor));
         label.setBackground(HexToRgb.convert(backgroundHexColor));
@@ -81,7 +81,7 @@ public class CustomReadonlyTable extends JPanel {
     }
 
     private GridBagConstraints getConstraints(int x, int y, boolean useExtraWidth) {
-        GridBagConstraints c = new GridBagConstraints();
+        var c = new GridBagConstraints();
         c.gridx = x;
         c.gridy = y;
         c.gridheight = 1;

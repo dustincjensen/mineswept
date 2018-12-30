@@ -78,7 +78,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 clockTimer.stop();
 
                 // Record a record if need be.
-                boolean recordSet = recordsService.checkAndSaveNewRecord(
+                var recordSet = recordsService.checkAndSaveNewRecord(
                     clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
 
                 // Show the records window if a record was set.

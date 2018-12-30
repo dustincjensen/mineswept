@@ -28,10 +28,10 @@ public class DefaultButtonUi extends BasicButtonUI {
 
     @Override
     public void paint(Graphics g, JComponent c) {
-        AbstractButton button = (AbstractButton) c;
-		ButtonModel model = button.getModel();
+        var button = (AbstractButton) c;
+		var model = button.getModel();
 		
-		boolean buttonIsActioned = model.isRollover() || model.isArmed();
+		var buttonIsActioned = model.isRollover() || model.isArmed();
 		button.setBackground(buttonIsActioned ? backgroundHover : background);
 		button.setForeground(foreground);
 		
