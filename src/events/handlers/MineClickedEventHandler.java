@@ -8,7 +8,6 @@ import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
 import gui.ClockTimer;
 import gui.Resource;
-import models.Mines;
 import services.MineRevealService;
 import services.RecordsService;
 import state.GameState;
@@ -60,9 +59,9 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
     }
 
     private void leftClicked(int x, int y) {
-        Mines mines = gameState.getMines();
-        int index = mines.contains(x, y);
-        int puzzleWidth = gameState.getCurrentPuzzleWidth();
+        var mines = gameState.getMines();
+        var index = mines.contains(x, y);
+        var puzzleWidth = gameState.getCurrentPuzzleWidth();
 
 		try {
             // These may throw a game over exception.

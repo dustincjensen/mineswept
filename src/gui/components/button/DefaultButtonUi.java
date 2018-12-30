@@ -3,7 +3,6 @@ package gui.components.button;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
 
