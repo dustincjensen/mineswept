@@ -5,14 +5,12 @@ import events.IEventSubscriber;
 import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
 import gui.components.button.DangerButton;
-import gui.components.button.PrimaryButton;
 import gui.components.tabbedPane.CustomTabbedPane;
 import gui.HexToRgb;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import models.Difficulty;
@@ -54,31 +52,22 @@ public class RecordWindow {
 		tabs.add("Hard", hard);
 
 		recordPanel.add(tabs);
-		recordPanel.add(okReset());
+		recordPanel.add(reset());
 
 		return recordPanel;
 	}
 
-	private JPanel okReset() {
-		var accept = new JPanel();
-		accept.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		accept.setBackground(HexToRgb.convert("#333333"));
-		accept.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-		accept.setLayout(new GridLayout(0, 2, 5, 5));
-		accept.add(ok());
-		accept.add(reset());
-		return accept;
-	}
-
-	private JButton ok() {
-		return new PrimaryButton("OK", evt -> frame.setVisible(false));
-	}
-
-	private JButton reset() {
-		return new DangerButton("Reset", evt -> {
+	private JPanel reset() {
+		var reset = new JPanel();
+		reset.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		reset.setBackground(HexToRgb.convert("#333333"));
+		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		reset.setLayout(new GridLayout(0, 1, 5, 5));
+		reset.add(new DangerButton("Reset", evt -> {
 			var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
 			eventPublisher.publish(new ResetRecordsEvent(difficulty));
-		});
+		}));
+		return reset;
 	}
 
 	private void setupSubscriptions() {

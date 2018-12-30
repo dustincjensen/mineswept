@@ -2,38 +2,61 @@ package gui.statistics;
 
 import events.IEventSubscriber;
 import events.ShowStatisticsEvent;
-import javax.swing.*;
+import gui.components.button.DangerButton;
+import gui.HexToRgb;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 public class StatisticsWindow {
 	private IEventSubscriber eventSubscriber;
-	private JFrame statisticWindow;
+	private StatisticsFrame frame;
+	private StatisticsPanel panel;
 
 	public StatisticsWindow(IEventSubscriber subscriber) {
 		eventSubscriber = subscriber;
 		System.out.println("Creating: STATISTICS WINDOW");
 
-		statisticWindow = new JFrame("Statistics");
-		statisticWindow.setContentPane(setupPanel());
-
-		// statisticWindow.setSize(300,175+Statistics.RECORD_LIMIT*15);
-		statisticWindow.pack();
-		statisticWindow.setLocationRelativeTo(null);
-		statisticWindow.setResizable(false);
-		statisticWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		panel = new StatisticsPanel();
+		frame = new StatisticsFrame(statisticsPanel());
 
 		setupSubscriptions();
 	}
 
-	private JPanel setupPanel() {
-		var panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(new JButton("Statistics"));
-		return panel;
+	private JPanel statisticsPanel() {
+		var statisticsPanel = new JPanel();
+		statisticsPanel.setLayout(new BoxLayout(statisticsPanel, BoxLayout.Y_AXIS));
+		statisticsPanel.add(panel);
+		statisticsPanel.add(reset());
+		return statisticsPanel;
+	}
+
+	private JPanel reset() {
+		var reset = new JPanel();
+		reset.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		reset.setBackground(HexToRgb.convert("#333333"));
+		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		reset.setLayout(new GridLayout(0, 1, 5, 5));
+		reset.add(new DangerButton("Reset", evt -> {
+			System.out.println("Reset button pressed in statistics.");
+			// var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
+			// eventPublisher.publish(new ResetRecordsEvent(difficulty));
+		}));
+		return reset;
 	}
 
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(ShowStatisticsEvent.class, event -> {
-			statisticWindow.setVisible(true);
+			panel.setStatistics(event.stats);
+
+			// TODO do we like this?
+			if (!frame.isVisible()) {
+				frame.pack();
+				frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
+			}
 		});
 	}
 }
