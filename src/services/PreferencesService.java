@@ -86,12 +86,6 @@ public class PreferencesService {
 		pref.squareColor.r = 50;
 		pref.squareColor.g = 125;
 		pref.squareColor.b = 240;
-
-		// TODO move into the file management class?
-		var gson = new GsonBuilder()
-			.setPrettyPrinting()
-			.create();
-
-		fileService.writeFile(preferencesFile, new String[] {gson.toJson(pref)});
+		fileService.writeFile(preferencesFile, pref);
 	}
 }

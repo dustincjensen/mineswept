@@ -1,5 +1,6 @@
 package services;
 
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Arrays;
@@ -29,27 +30,6 @@ public class FileService {
 	}
 
 	/**
-	 * Write a set of lines to the given file.
-	 * 
-	 * @param file the file to write the lines to.
-	 * @param lines the lines to write to the file.
-	 * @return true if lines were written successfully, otherwise false.
-	 */
-	public boolean writeFile(File file, String[] lines) {
-		try {
-			var writer = new FileWriter(file);
-			for (var line : lines) {
-				writer.write(line);
-			}
-			writer.close();
-			return true;
-		} catch (Exception ex) {
-			System.err.println("Error writing " + file.getName() + ".");
-			return false;
-		}
-	}
-
-	/**
 	 * Return the file reference for the given file name.
 	 * 
 	 * @param fileName the name of the file to retrieve.
@@ -65,6 +45,21 @@ public class FileService {
 	}
 
 	/**
+	 * Write a json object to a file.
+	 * 
+	 * @param file the file to write the json object to.
+	 * @param object the json object to write.
+	 * @return true if the json object was successfully written to file, otherwise false.
+	 */
+	public boolean writeFile(File file, Object object) {
+		var gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
+		return writeFile(file, new String[] {gson.toJson(object)});
+	}
+
+	/**
 	 * Return a file reference from a list of files by the file name.
 	 * 
 	 * @param files the files to check for the file name.
@@ -75,6 +70,27 @@ public class FileService {
 		return Arrays.stream(files)
 			.filter(f -> f.getName().matches(fileName))
 			.findAny();
+	}
+
+	/**
+	 * Write a set of lines to the given file.
+	 * 
+	 * @param file the file to write the lines to.
+	 * @param lines the lines to write to the file.
+	 * @return true if lines were written successfully, otherwise false.
+	 */
+	private boolean writeFile(File file, String[] lines) {
+		try {
+			var writer = new FileWriter(file);
+			for (var line : lines) {
+				writer.write(line);
+			}
+			writer.close();
+			return true;
+		} catch (Exception ex) {
+			System.err.println("Error writing " + file.getName() + ".");
+			return false;
+		}
 	}
 
 	/**

@@ -50,7 +50,7 @@ public class RecordsService {
 			allRecords.hard = result.records;
 		}
 		
-		writeFile(records, allRecords);
+		fileService.writeFile(records, allRecords);
 		return result != null ? result.wasNewRecord : false;
 	}
 
@@ -66,7 +66,7 @@ public class RecordsService {
 			allRecords.hard = newRecords;
 		}
 
-		writeFile(records, allRecords);
+		fileService.writeFile(records, allRecords);
 		return newRecords;
 	}
 
@@ -149,15 +149,7 @@ public class RecordsService {
 		all.easy = new Record[0];
 		all.medium = new Record[0];
 		all.hard = new Record[0];
-		writeFile(recordsFile, all);
-	}
-
-	private void writeFile(File recordsFile, All records) {
-		var gson = new GsonBuilder()
-			.setPrettyPrinting()
-			.create();
-
-		fileService.writeFile(recordsFile, new String[] {gson.toJson(records)});
+		fileService.writeFile(recordsFile, all);
 	}
 }
 
