@@ -17,15 +17,14 @@ TODO
 - Refactor GameState
     - perhaps it is watching too much internally, and should delegate out to separate states 
       and conglomerate them like combineReducers.
-- Refactor UI Options Window
-- Implement Options Saving / Loading
-- Implement Statistics and Statistics UI Window
 - Optimize Bomb clues to be near uncovered spaces.
-- Implement alternate color schemes, borders and such for the mines.
 - Remove unnecessary resources.
-- Re-evaluate the use of `var` Java in VSCode doesn't recognize it very well.
 - Make Installable
-- Make resize-able?
 
 Working on
 ==========
+- Refactor UI Options Window
+- Implement Options Saving / Loading
+- Implement Statistics and Statistics UI Window
+- Implement alternate color schemes, borders and such for the mines.
+- Make resize-able?
