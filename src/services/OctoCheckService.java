@@ -14,7 +14,7 @@ public class OctoCheckService {
      * @return an array list of integer index positions.
      */
     public ArrayList<Integer> getPositionsToCheck(int index, int width, int maxLength) {
-		ArrayList<Integer> positionsToCheck = new ArrayList<Integer>(8);
+		var positionsToCheck = new ArrayList<Integer>(8);
 		if (index - width >= 0) {
 			positionsToCheck.add(index - width);
 		}

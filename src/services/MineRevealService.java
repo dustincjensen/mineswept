@@ -1,8 +1,6 @@
 package services;
 
 import exceptions.GameOverException;
-import java.util.ArrayList;
-import models.Mine;
 import models.Mines;
 
 public class MineRevealService {
@@ -21,7 +19,7 @@ public class MineRevealService {
      * @param puzzleWidth the width of the puzzle.
      */
     public void uncover(int index, Mines mines, int puzzleWidth) throws GameOverException {
-        Mine currentMine = mines.get(index);
+        var currentMine = mines.get(index);
 		
 		// If we are a bomb and am not protected, we need to blow up.
 		if (currentMine.isBomb() && !currentMine.getAnyProtected()) {
@@ -40,7 +38,7 @@ public class MineRevealService {
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
-			ArrayList<Integer> positionsToCheck = octoCheckService.getPositionsToCheck(index, puzzleWidth, mines.size());
+			var positionsToCheck = octoCheckService.getPositionsToCheck(index, puzzleWidth, mines.size());
 			for (var position : positionsToCheck) {
 				uncover(position, mines, puzzleWidth);
 			}
@@ -57,7 +55,7 @@ public class MineRevealService {
      */
     public void specialUncover(int index, Mines mines, int puzzleWidth) throws GameOverException {
 		// Retrieve the squares around this position on which we should check for flags.
-		ArrayList<Integer> positionsToCheck = octoCheckService.getPositionsToCheck(index, puzzleWidth, mines.size());
+		var positionsToCheck = octoCheckService.getPositionsToCheck(index, puzzleWidth, mines.size());
 
 		// Count the number of flags in the positions around the current.
 		var flagCount = positionsToCheck
@@ -68,7 +66,7 @@ public class MineRevealService {
 
 		// If the spot you clicked has appropriate flags marked do the uncovering
 		if (flagCount == mines.get(index).getSpotValue()) {
-			for (int position : positionsToCheck) {
+			for (var position : positionsToCheck) {
 				uncover(position, mines, puzzleWidth);
 			}
 		}
@@ -81,10 +79,10 @@ public class MineRevealService {
      * @param mines the array of mines.
      */
     private void uncoverAll(Mines mines) {
-        for (int i = 0; i < mines.size(); i++) {
-			Mine mine = mines.get(i);
-			boolean isBombAndNotProtected = mine.isBomb() && !mine.getAnyProtected();
-			boolean isNotBombAndIsProtected = mine.getAnyProtected() && !mine.isBomb();
+        for (var i = 0; i < mines.size(); i++) {
+			var mine = mines.get(i);
+			var isBombAndNotProtected = mine.isBomb() && !mine.getAnyProtected();
+			var isNotBombAndIsProtected = mine.getAnyProtected() && !mine.isBomb();
 
 			if (isBombAndNotProtected || isNotBombAndIsProtected) {
 				mine.setUncovered(true);

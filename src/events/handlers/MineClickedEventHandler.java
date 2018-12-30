@@ -3,29 +3,32 @@ package events.handlers;
 import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
+import events.ShowRecordsEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
 import gui.ClockTimer;
 import gui.Resource;
-import models.Mine;
-import models.Mines;
 import services.MineRevealService;
+import services.RecordsService;
 import state.GameState;
 
 public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> {
     private GameState gameState;
     private MineRevealService mineRevealService;
+    private RecordsService recordsService;
     private ClockTimer clockTimer;
     private IEventSubscriber eventSubscriber;
 
     public MineClickedEventHandler(
         GameState state,
         MineRevealService service,
+        RecordsService records,
         ClockTimer timer,
         IEventSubscriber subscriber
     ) {
         gameState = state;
         mineRevealService = service;
+        recordsService = records;
         clockTimer = timer;
         eventSubscriber = subscriber;
     }
@@ -56,9 +59,9 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
     }
 
     private void leftClicked(int x, int y) {
-        Mines mines = gameState.getMines();
-        int index = mines.contains(x, y);
-        int puzzleWidth = gameState.getCurrentPuzzleWidth();
+        var mines = gameState.getMines();
+        var index = mines.contains(x, y);
+        var puzzleWidth = gameState.getCurrentPuzzleWidth();
 
 		try {
             // These may throw a game over exception.
@@ -72,7 +75,21 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             // If no exception is throw, we can update the game condition.
             if (gameState.updateGameCondition()) {
                 clockTimer.stop();
-                eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyCool));
+
+                // Record a record if need be.
+                var recordSet = recordsService.checkAndSaveNewRecord(
+                    clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
+
+                // Show the records window if a record was set.
+                if (recordSet) {
+                    var showRecords = new ShowRecordsEvent();
+                    showRecords.records = recordsService.getAllRecords();
+                    showRecords.difficulty = gameState.getCurrentPuzzleDifficulty();
+                    eventSubscriber.notify(showRecords);
+                }
+
+                eventSubscriber.notify(new SetResetButtonIconEvent(
+                    recordSet ? Resource.SmileyRecord : Resource.SmileyCool));
             };
         } catch (GameOverException ex) {
             gameState.setGameOver(true);

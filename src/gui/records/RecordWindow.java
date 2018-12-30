@@ -1,105 +1,108 @@
 package gui.records;
 
+import events.IEventPublisher;
 import events.IEventSubscriber;
+import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import gui.components.button.DangerButton;
+import gui.components.button.PrimaryButton;
+import gui.components.tabbedPane.CustomTabbedPane;
+import gui.HexToRgb;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import models.Difficulty;
 import models.records.All;
-import services.RecordsService;
 
 public class RecordWindow {
+	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
 
-	private JFrame recordWindow;
-	private JTabbedPane tabs;
-	private RecordPanel beginner, intermediate, advanced;
+	private JFrame frame;
+	private CustomTabbedPane tabs;
+	private RecordPanel easy, medium, hard;
 
-	public RecordWindow(IEventSubscriber subscriber) {
+	public RecordWindow(
+		IEventPublisher publisher,
+		IEventSubscriber subscriber
+	) {
+		eventPublisher = publisher;
 		eventSubscriber = subscriber;
 
 		System.out.println("Creating: RECORD WINDOW");
-		setupWindow();
+		
+		frame = new RecordFrame(recordPanel());
+
 		setupSubscriptions();
-	}
-
-	private void setupWindow() {
-		recordWindow = new JFrame("Records");
-		recordWindow.setContentPane(recordPanel());
-
-		recordWindow.setSize(300, 175 + RecordsService.RECORD_LIMIT * 15);
-		recordWindow.setLocationRelativeTo(null);
-		recordWindow.setResizable(false);
-		recordWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 
 	private JPanel recordPanel() {
 		var recordPanel = new JPanel();
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
-		beginner = new RecordPanel("Beginner");
-		intermediate = new RecordPanel("Intermediate");
-		advanced = new RecordPanel("Advanced");
+		easy = new RecordPanel();
+		medium = new RecordPanel();
+		hard = new RecordPanel();
 
-		recordPanel.add(tabs());
+		tabs = new CustomTabbedPane();
+		tabs.add("Easy", easy);
+		tabs.add("Medium", medium);
+		tabs.add("Hard", hard);
+
+		recordPanel.add(tabs);
 		recordPanel.add(okReset());
 
 		return recordPanel;
 	}
 
-	private JTabbedPane tabs() {
-		tabs = new JTabbedPane();
-		tabs.add(beginner);
-		tabs.add(intermediate);
-		tabs.add(advanced);
-		return tabs;
-	}
-
 	private JPanel okReset() {
 		var accept = new JPanel();
-		accept.setLayout(new BoxLayout(accept, BoxLayout.X_AXIS));
-		accept.add(Box.createHorizontalGlue());
+		accept.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		accept.setBackground(HexToRgb.convert("#333333"));
+		accept.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		accept.setLayout(new GridLayout(0, 2, 5, 5));
 		accept.add(ok());
 		accept.add(reset());
-		accept.add(Box.createHorizontalGlue());
 		return accept;
 	}
 
 	private JButton ok() {
-		var okButton = new JButton("OK");
-		okButton.addActionListener(evt -> {
-			recordWindow.setVisible(false);
-		});
-		return okButton;
+		return new PrimaryButton("OK", evt -> frame.setVisible(false));
 	}
 
 	private JButton reset() {
-		var reset = new JButton("Reset");
-		reset.addActionListener(evt -> {
-			if (tabs.getSelectedIndex() == 0) {
-				// Records.resetRecords("beginner");
-				beginner.refreshRecords();
-			} else if (tabs.getSelectedIndex() == 1) {
-				// Records.resetRecords("intermediate");
-				intermediate.refreshRecords();
-			} else if (tabs.getSelectedIndex() == 2) {
-				// Records.resetRecords("advanced");
-				advanced.refreshRecords();
-			}
+		return new DangerButton("Reset", evt -> {
+			var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
+			eventPublisher.publish(new ResetRecordsEvent(difficulty));
 		});
-		return reset;
 	}
 
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(ShowRecordsEvent.class, event -> {
-			recordWindow.setVisible(true);
+			frame.setVisible(true);
 
 			All allRecords = event.records;
-			beginner.setRecords(allRecords.beginner);
-			intermediate.setRecords(allRecords.intermediate);
-			advanced.setRecords(allRecords.advanced);
+			easy.setRecords(allRecords.easy);
+			medium.setRecords(allRecords.medium);
+			hard.setRecords(allRecords.hard);
+
+			if (event.difficulty != null) {
+				tabs.setSelectedIndex(Difficulty.getProperName(event.difficulty));
+			}
+		});
+
+		eventSubscriber.subscribe(ResetRecordsEvent.class, event -> {
+			if (event.difficulty == Difficulty.easy) {
+				easy.setRecords(event.records);
+			} else if (event.difficulty == Difficulty.medium) {
+				medium.setRecords(event.records);
+			} else if (event.difficulty == Difficulty.hard) {
+				hard.setRecords(event.records);
+			}
 		});
 	}
 }

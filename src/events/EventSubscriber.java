@@ -23,7 +23,7 @@ public class EventSubscriber implements IEventSubscriber {
         ArrayList<IEventHandleSubscription> eventSubscribers = subscribers.get(event.getClass());
 
         if (eventSubscribers == null) {
-            System.out.println("Error: There are no subscribers for the event type: " + event.getClass());
+            System.err.println("Error: There are no subscribers for the event type: " + event.getClass());
             return;
         }
 

@@ -69,29 +69,23 @@ public class PreferencesService {
 
 	private void loadPreferences() {
 		try {
-			String json = new String(Files.readAllBytes(Paths.get(preferences.toURI())), StandardCharsets.UTF_8);
-			Gson gson = new Gson();
+			var json = new String(Files.readAllBytes(Paths.get(preferences.toURI())), StandardCharsets.UTF_8);
+			var gson = new Gson();
 
 			// TODO place this on game state? Or just have classes require Preferences...
 			preference = gson.fromJson(json, Preference.class);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println(e);
 		}
 	}
 
 	private void writeDefaultJson(File preferencesFile) {
-		Preference pref = new Preference();
+		var pref = new Preference();
 		pref.difficulty = "easy";
 		pref.squareColor = new Color();
 		pref.squareColor.r = 50;
 		pref.squareColor.g = 125;
 		pref.squareColor.b = 240;
-
-		// TODO move into the file management class?
-		Gson gson = new GsonBuilder()
-			.setPrettyPrinting()
-			.create();
-
-		fileService.writeFile(preferencesFile, new String[] {gson.toJson(pref)});
+		fileService.writeFile(preferencesFile, pref);
 	}
 }

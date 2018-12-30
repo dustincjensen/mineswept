@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
+import events.IEventPublisher;
 import events.IEventSubscriber;
 
 public class RecordModule extends AbstractModule {
@@ -21,15 +22,17 @@ public class RecordModule extends AbstractModule {
  * dependency.
  */
 class RecordWindowProvider implements Provider<RecordWindow> {
+    private IEventPublisher eventPublisher;
     private IEventSubscriber eventSubscriber;
 
     @Inject
-    public RecordWindowProvider(IEventSubscriber subscriber) {
+    public RecordWindowProvider(IEventPublisher publisher, IEventSubscriber subscriber) {
+        eventPublisher = publisher;
         eventSubscriber = subscriber;
     }
 
     @Override
     public RecordWindow get() {
-        return new RecordWindow(eventSubscriber);
+        return new RecordWindow(eventPublisher, eventSubscriber);
     }
 }

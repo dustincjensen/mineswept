@@ -26,7 +26,7 @@ public class MinePanel extends JPanel {
 		eventSubscriber = subscriber;
 
 		setLayout(new FlowLayout());
-		mineButtons = new Vector(maximumPuzzleMineCount);
+		mineButtons = new Vector<MineButton>(maximumPuzzleMineCount);
 		setupInteriorMinePanel(initialHeight, initialWidth);
 		setupSubscriptions();
 	}

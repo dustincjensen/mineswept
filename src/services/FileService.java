@@ -1,14 +1,96 @@
 package services;
 
-import java.io.BufferedWriter;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Optional;
 
 public class FileService {
-	public FileService() {
-		System.out.println("Creating File Service");
+	private static final String USER_DIRECTORY = "user.home";
+	private static final String MINE_SWEPT_DIRECTORY = ".MineSwept";
+
+	/**
+	 * Create a file with the given name.
+	 * 
+	 * @param fileName the name of the file to create.
+	 * @return a reference to the file that was created, otherwise empty. 
+	 */
+	public Optional<File> createFile(String fileName) {
+		var fileToCreate = new File(getGameDir().toString() + "/" + fileName);
+		try {
+			if (!fileToCreate.createNewFile()) {
+				throw new Exception();
+			}
+		} catch (Exception ex) {
+			System.err.println("Unable to create new " + fileName + " file.");
+			return Optional.empty();
+		}
+		return Optional.of(fileToCreate);
+	}
+
+	/**
+	 * Return the file reference for the given file name.
+	 * 
+	 * @param fileName the name of the file to retrieve.
+	 * @return reference to the file if the game directory exists, otherwise empty.
+	 */
+	public Optional<File> get(String fileName) {
+		var gameDir = getGameDir();
+		if (gameDir != null) {
+			var files = gameDir.listFiles();
+			return get(files, fileName);
+		}
+		return Optional.empty();
+	}
+
+	/**
+	 * Write a json object to a file.
+	 * 
+	 * @param file the file to write the json object to.
+	 * @param object the json object to write.
+	 * @return true if the json object was successfully written to file, otherwise false.
+	 */
+	public boolean writeFile(File file, Object object) {
+		var gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
+		return writeFile(file, new String[] {gson.toJson(object)});
+	}
+
+	/**
+	 * Return a file reference from a list of files by the file name.
+	 * 
+	 * @param files the files to check for the file name.
+	 * @param fileName the file name to check for.
+	 * @return reference to the file if it exists in the list, otherwise empty.
+	 */
+	private Optional<File> get(File[] files, String fileName) {
+		return Arrays.stream(files)
+			.filter(f -> f.getName().matches(fileName))
+			.findAny();
+	}
+
+	/**
+	 * Write a set of lines to the given file.
+	 * 
+	 * @param file the file to write the lines to.
+	 * @param lines the lines to write to the file.
+	 * @return true if lines were written successfully, otherwise false.
+	 */
+	private boolean writeFile(File file, String[] lines) {
+		try {
+			var writer = new FileWriter(file);
+			for (var line : lines) {
+				writer.write(line);
+			}
+			writer.close();
+			return true;
+		} catch (Exception ex) {
+			System.err.println("Error writing " + file.getName() + ".");
+			return false;
+		}
 	}
 
 	/**
@@ -17,65 +99,14 @@ public class FileService {
 	 * 
 	 * @return the game directory where files should be saved.
 	 */
-	public File getGameDir() {
-		String userDir = System.getProperty("user.home");
-		File gameDir = new File(userDir + "/.MineSwept/");
+	private File getGameDir() {
+		var userDir = System.getProperty(USER_DIRECTORY);
+		var gameDir = new File(userDir + "/" + MINE_SWEPT_DIRECTORY);
 		
-		if (!gameDir.exists()) {
-			if (!gameDir.mkdir()) {
-				System.out.println("Directory creation failed...");
-				return null;
-			}
+		if (!gameDir.exists() && !gameDir.mkdir()) {
+			System.err.println("Directory creation failed...");
+			return null;
 		}
-
 		return gameDir;
-	}
-	
-	public void saveFiles() {
-		// TODO save to the file system.
-		System.out.println("TODO save files to system.");
-	}
-	
-	public Optional<File> createFile(String fileName) {
-		var fileToCreate = new File(getGameDir().toString() + "/" + fileName);
-		try {
-			if (!fileToCreate.createNewFile()) {
-				System.out.println("Unable to create new " + fileName + " file.");
-				return Optional.empty();
-			}
-		} catch (Exception ex) {
-			System.out.println("I/O exception: Preferences File");
-			return Optional.empty();
-		}
-		return Optional.of(fileToCreate);
-	}
-
-	public boolean writeFile(File file, String[] lines) {
-		try {
-			FileWriter writer = new FileWriter(file);
-			for (String line : lines) {
-				writer.write(line);
-			}
-			writer.close();
-			return true;
-		} catch (Exception ex) {
-			System.out.println("Error writing " + file.getName() + ".");
-			return false;
-		}
-	}
-
-	public Optional<File> get(String fileName) {
-		File gameDir = getGameDir();
-		if (gameDir != null) {
-			File[] files = gameDir.listFiles();
-			return get(files, fileName);
-		}
-		return Optional.empty();
-	}
-
-	private Optional<File> get(File[] files, String fileName) {
-		return Arrays.stream(files)
-			.filter(f -> f.getName().matches(fileName))
-			.findAny();
 	}
 }

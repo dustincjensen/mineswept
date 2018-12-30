@@ -38,6 +38,7 @@ public class EventModule extends AbstractModule {
         PauseGameEventHandler pauseGame,
         QuitGameEventHandler quitGame,
         ResetGameEventHandler resetGame,
+        ResetRecordsEventHandler resetRecords,
         SetResetButtonIconEventHandler setResetButtonIcon,
         SetTimeCountEventHandler setTimeCount,
         ShowOptionsEventHandler showOptions,
@@ -51,6 +52,7 @@ public class EventModule extends AbstractModule {
             pauseGame,
             quitGame,
             resetGame,
+            resetRecords,
             setResetButtonIcon,
             setTimeCount,
             showOptions,
@@ -68,10 +70,11 @@ public class EventModule extends AbstractModule {
     public MineClickedEventHandler provideMineClickedEventHandler(
         GameState state,
         MineRevealService service,
+        RecordsService records,
         ClockTimer timer,
         IEventSubscriber subscriber
     ) {
-        return new MineClickedEventHandler(state, service, timer, subscriber);
+        return new MineClickedEventHandler(state, service, records, timer, subscriber);
     }
 
     @Provides
@@ -90,6 +93,11 @@ public class EventModule extends AbstractModule {
         IEventSubscriber subscriber
     ) {
         return new ResetGameEventHandler(gameState, clockTimer, subscriber);
+    }
+
+    @Provides
+    public ResetRecordsEventHandler provideResetRecordsEventHandler(RecordsService records, IEventSubscriber subscriber) {
+        return new ResetRecordsEventHandler(records, subscriber);
     }
 
     @Provides
