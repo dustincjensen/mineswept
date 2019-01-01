@@ -74,10 +74,11 @@ public class EventModule extends AbstractModule {
         GameState state,
         MineRevealService service,
         RecordsService records,
+        StatisticsService statistics,
         ClockTimer timer,
         IEventSubscriber subscriber
     ) {
-        return new MineClickedEventHandler(state, service, records, timer, subscriber);
+        return new MineClickedEventHandler(state, service, records, statistics, timer, subscriber);
     }
 
     @Provides

@@ -39,6 +39,70 @@ public class StatisticsService {
 		return writeDefaultJson(file.get());
 	}
 
+	/**
+	 * Increments the games played and games won counts.
+	 */
+	public void gameWon(Difficulty difficulty) {
+		var file = _fileService.get(FILE_NAME);
+		AllStats currentStatistics = null;
+
+		// If the file doesn't exist, create it and populate a basic statistics object.
+		if (file.isEmpty()) {
+			file = _fileService.createFile(FILE_NAME);
+			currentStatistics = new AllStats();
+			currentStatistics.easy = new LongTermStats();
+			currentStatistics.medium = new LongTermStats();
+			currentStatistics.hard = new LongTermStats();
+		} else {
+			currentStatistics = load(file);
+		}
+
+		// Set games played and won.
+		if (difficulty == Difficulty.easy) {
+			currentStatistics.easy.gamesPlayed++;
+			currentStatistics.easy.gamesWon++;
+		} else if (difficulty == Difficulty.medium) {
+			currentStatistics.medium.gamesPlayed++;
+			currentStatistics.medium.gamesWon++;
+		} else if (difficulty == Difficulty.hard) {
+			currentStatistics.hard.gamesPlayed++;
+			currentStatistics.hard.gamesWon++;
+		}
+		_fileService.writeFile(file.get(), currentStatistics);
+	}
+
+	/**
+	 * Increments the games played and games lost counts.
+	 */
+	public void gameLost(Difficulty difficulty) {
+		var file = _fileService.get(FILE_NAME);
+		AllStats currentStatistics = null;
+
+		// If the file doesn't exist, create it and populate a basic statistics object.
+		if (file.isEmpty()) {
+			file = _fileService.createFile(FILE_NAME);
+			currentStatistics = new AllStats();
+			currentStatistics.easy = new LongTermStats();
+			currentStatistics.medium = new LongTermStats();
+			currentStatistics.hard = new LongTermStats();
+		} else {
+			currentStatistics = load(file);
+		}
+		
+		// Set games played and lost.
+		if (difficulty == Difficulty.easy) {
+			currentStatistics.easy.gamesPlayed++;
+			currentStatistics.easy.gamesLost++;
+		} else if (difficulty == Difficulty.medium) {
+			currentStatistics.medium.gamesPlayed++;
+			currentStatistics.medium.gamesLost++;
+		} else if (difficulty == Difficulty.hard) {
+			currentStatistics.hard.gamesPlayed++;
+			currentStatistics.hard.gamesLost++;
+		}
+		_fileService.writeFile(file.get(), currentStatistics);
+	}
+
 	private AllStats load(Optional<File> file) {
 		AllStats allStats = null;
 

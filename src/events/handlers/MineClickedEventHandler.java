@@ -10,27 +10,31 @@ import gui.ClockTimer;
 import gui.Resource;
 import services.MineRevealService;
 import services.RecordsService;
+import services.StatisticsService;
 import state.GameState;
 
 public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> {
     private GameState gameState;
     private MineRevealService mineRevealService;
     private RecordsService recordsService;
+    private StatisticsService statisticsService;
     private ClockTimer clockTimer;
     private IEventSubscriber eventSubscriber;
 
     public MineClickedEventHandler(
-        GameState state,
-        MineRevealService service,
-        RecordsService records,
-        ClockTimer timer,
-        IEventSubscriber subscriber
+        GameState gameState,
+        MineRevealService mineRevealService,
+        RecordsService recordsService,
+        StatisticsService statisticsService,
+        ClockTimer clockTimer,
+        IEventSubscriber eventSubscriber
     ) {
-        gameState = state;
-        mineRevealService = service;
-        recordsService = records;
-        clockTimer = timer;
-        eventSubscriber = subscriber;
+        this.gameState = gameState;
+        this.mineRevealService = mineRevealService;
+        this.recordsService = recordsService;
+        this.statisticsService = statisticsService;
+        this.clockTimer = clockTimer;
+        this.eventSubscriber = eventSubscriber;
     }
 
     @Override
@@ -80,6 +84,9 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 var recordSet = recordsService.checkAndSaveNewRecord(
                     clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
 
+                // Add game played and won.
+                statisticsService.gameWon(gameState.getCurrentPuzzleDifficulty());
+
                 // Show the records window if a record was set.
                 if (recordSet) {
                     var showRecords = new ShowRecordsEvent();
@@ -93,7 +100,8 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             };
         } catch (GameOverException ex) {
             gameState.setGameOver(true);
-			clockTimer.stop();
+            clockTimer.stop();
+            statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
 			eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileySad));
         }
     }
