@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
+import events.IEventPublisher;
 import events.IEventSubscriber;
 
 public class StatisticsModule extends AbstractModule {
@@ -21,15 +22,17 @@ public class StatisticsModule extends AbstractModule {
  * dependency.
  */
 class StatisticsWindowProvider implements Provider<StatisticsWindow> {
+    private IEventPublisher eventPublisher;
     private IEventSubscriber eventSubscriber;
 
     @Inject
-    public StatisticsWindowProvider(IEventSubscriber subscriber) {
-        eventSubscriber = subscriber;
+    public StatisticsWindowProvider(IEventPublisher eventPublisher, IEventSubscriber eventSubscriber) {
+        this.eventPublisher = eventPublisher;
+        this.eventSubscriber = eventSubscriber;
     }
 
     @Override
     public StatisticsWindow get() {
-        return new StatisticsWindow(eventSubscriber);
+        return new StatisticsWindow(eventPublisher, eventSubscriber);
     }
 }

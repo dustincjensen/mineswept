@@ -1,6 +1,8 @@
 package gui.statistics;
 
+import events.IEventPublisher;
 import events.IEventSubscriber;
+import events.ResetStatisticsEvent;
 import events.ShowStatisticsEvent;
 import gui.components.button.DangerButton;
 import gui.HexToRgb;
@@ -11,12 +13,14 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 public class StatisticsWindow {
+	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
 	private StatisticsFrame frame;
 	private StatisticsPanel panel;
 
-	public StatisticsWindow(IEventSubscriber subscriber) {
-		eventSubscriber = subscriber;
+	public StatisticsWindow(IEventPublisher	eventPublisher, IEventSubscriber eventSubscriber) {
+		this.eventPublisher = eventPublisher;
+		this.eventSubscriber = eventSubscriber;
 		System.out.println("Creating: STATISTICS WINDOW");
 
 		panel = new StatisticsPanel();
@@ -40,9 +44,7 @@ public class StatisticsWindow {
 		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 		reset.setLayout(new GridLayout(0, 1, 5, 5));
 		reset.add(new DangerButton("Reset", evt -> {
-			System.out.println("Reset button pressed in statistics.");
-			// var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
-			// eventPublisher.publish(new ResetRecordsEvent(difficulty));
+			eventPublisher.publish(new ResetStatisticsEvent());
 		}));
 		return reset;
 	}
@@ -53,6 +55,11 @@ public class StatisticsWindow {
 			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
+		});
+
+		eventSubscriber.subscribe(ResetStatisticsEvent.class, event -> {
+			panel.setStatistics(event.stats);
+			frame.pack();
 		});
 	}
 }

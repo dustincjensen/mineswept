@@ -40,6 +40,7 @@ public class EventModule extends AbstractModule {
         QuitGameEventHandler quitGame,
         ResetGameEventHandler resetGame,
         ResetRecordsEventHandler resetRecords,
+        ResetStatisticsEventHandler resetStatistics,
         SetResetButtonIconEventHandler setResetButtonIcon,
         SetTimeCountEventHandler setTimeCount,
         ShowOptionsEventHandler showOptions,
@@ -54,6 +55,7 @@ public class EventModule extends AbstractModule {
             quitGame,
             resetGame,
             resetRecords,
+            resetStatistics,
             setResetButtonIcon,
             setTimeCount,
             showOptions,
@@ -99,6 +101,11 @@ public class EventModule extends AbstractModule {
     @Provides
     public ResetRecordsEventHandler provideResetRecordsEventHandler(RecordsService records, IEventSubscriber subscriber) {
         return new ResetRecordsEventHandler(records, subscriber);
+    }
+
+    @Provides
+    public ResetStatisticsEventHandler provideResetStatisticsEventHandler(StatisticsService statisticsService, IEventSubscriber eventSubscriber) {
+        return new ResetStatisticsEventHandler(statisticsService, eventSubscriber);
     }
 
     @Provides

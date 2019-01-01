@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
+import models.Difficulty;
 import models.statistics.AllStats;
 import models.statistics.LongTermStats;
 
@@ -25,6 +26,17 @@ public class StatisticsService {
 	 */
 	public AllStats getStatistics() {
 		return load(_fileService.get(FILE_NAME));
+	}
+
+	/**
+	 * Reset the statistics in the json file.
+	 */
+	public AllStats resetStatistics() {
+		var file = _fileService.get(FILE_NAME);
+		if (file.isEmpty()) {
+			file = _fileService.createFile(FILE_NAME);
+		}
+		return writeDefaultJson(file.get());
 	}
 
 	private AllStats load(Optional<File> file) {
