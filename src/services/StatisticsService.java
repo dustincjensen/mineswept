@@ -1,14 +1,8 @@
 package services;
 
-import com.google.gson.Gson;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Optional;
 import models.Difficulty;
 import models.statistics.AllStats;
-import models.statistics.LongTermStats;
 
 public class StatisticsService {
 	private static final String FILE_NAME = "statistics.json";
@@ -25,115 +19,82 @@ public class StatisticsService {
 	 * @return the statistics from the file.
 	 */
 	public AllStats getStatistics() {
-		return load(_fileService.get(FILE_NAME));
+		return withFile(file -> { 
+			return load(file);
+		});
 	}
 
 	/**
 	 * Reset the statistics in the json file.
+	 * 
+	 * @return the reset statistics.
 	 */
 	public AllStats resetStatistics() {
-		var file = _fileService.get(FILE_NAME);
-		if (file.isEmpty()) {
-			file = _fileService.createFile(FILE_NAME);
-		}
-		return writeDefaultJson(file.get());
+		return withFile(file -> {
+			var resetStats = new AllStats();
+			_fileService.writeFile(file, resetStats);
+			return resetStats;
+		});
 	}
 
 	/**
 	 * Increments the games played and games won counts.
 	 */
 	public void gameWon(Difficulty difficulty) {
-		var file = _fileService.get(FILE_NAME);
-		AllStats currentStatistics = null;
+		withFile(file -> {
+			var stats = load(file);
 
-		// If the file doesn't exist, create it and populate a basic statistics object.
-		if (file.isEmpty()) {
-			file = _fileService.createFile(FILE_NAME);
-			currentStatistics = new AllStats();
-			currentStatistics.easy = new LongTermStats();
-			currentStatistics.medium = new LongTermStats();
-			currentStatistics.hard = new LongTermStats();
-		} else {
-			currentStatistics = load(file);
-		}
+			// Set games played and won.
+			if (difficulty == Difficulty.easy) {
+				stats.easy.gamesPlayed++;
+				stats.easy.gamesWon++;
+			} else if (difficulty == Difficulty.medium) {
+				stats.medium.gamesPlayed++;
+				stats.medium.gamesWon++;
+			} else if (difficulty == Difficulty.hard) {
+				stats.hard.gamesPlayed++;
+				stats.hard.gamesWon++;
+			}
 
-		// Set games played and won.
-		if (difficulty == Difficulty.easy) {
-			currentStatistics.easy.gamesPlayed++;
-			currentStatistics.easy.gamesWon++;
-		} else if (difficulty == Difficulty.medium) {
-			currentStatistics.medium.gamesPlayed++;
-			currentStatistics.medium.gamesWon++;
-		} else if (difficulty == Difficulty.hard) {
-			currentStatistics.hard.gamesPlayed++;
-			currentStatistics.hard.gamesWon++;
-		}
-		_fileService.writeFile(file.get(), currentStatistics);
+			_fileService.writeFile(file, stats);
+		});
 	}
 
 	/**
 	 * Increments the games played and games lost counts.
 	 */
 	public void gameLost(Difficulty difficulty) {
-		var file = _fileService.get(FILE_NAME);
-		AllStats currentStatistics = null;
+		withFile(file -> {
+			var stats = load(file);
 
-		// If the file doesn't exist, create it and populate a basic statistics object.
-		if (file.isEmpty()) {
-			file = _fileService.createFile(FILE_NAME);
-			currentStatistics = new AllStats();
-			currentStatistics.easy = new LongTermStats();
-			currentStatistics.medium = new LongTermStats();
-			currentStatistics.hard = new LongTermStats();
-		} else {
-			currentStatistics = load(file);
-		}
-		
-		// Set games played and lost.
-		if (difficulty == Difficulty.easy) {
-			currentStatistics.easy.gamesPlayed++;
-			currentStatistics.easy.gamesLost++;
-		} else if (difficulty == Difficulty.medium) {
-			currentStatistics.medium.gamesPlayed++;
-			currentStatistics.medium.gamesLost++;
-		} else if (difficulty == Difficulty.hard) {
-			currentStatistics.hard.gamesPlayed++;
-			currentStatistics.hard.gamesLost++;
-		}
-		_fileService.writeFile(file.get(), currentStatistics);
-	}
-
-	private AllStats load(Optional<File> file) {
-		AllStats allStats = null;
-
-		if (file.isPresent()) {
-			allStats = loadStats(file.get());
-		} else {
-			var newFile = _fileService.createFile(FILE_NAME);
-			if (newFile.isPresent()) {
-				allStats = writeDefaultJson(newFile.get());
+			// Set games played and lost.
+			if (difficulty == Difficulty.easy) {
+				stats.easy.gamesPlayed++;
+				stats.easy.gamesLost++;
+			} else if (difficulty == Difficulty.medium) {
+				stats.medium.gamesPlayed++;
+				stats.medium.gamesLost++;
+			} else if (difficulty == Difficulty.hard) {
+				stats.hard.gamesPlayed++;
+				stats.hard.gamesLost++;
 			}
-		}
 
-		return allStats;
+			_fileService.writeFile(file, stats);
+		});
 	}
 
-	private AllStats loadStats(File file) {
-		try {
-			var json = new String(Files.readAllBytes(Paths.get(file.toURI())), StandardCharsets.UTF_8);
-			return new Gson().fromJson(json, AllStats.class);
-		} catch (Exception e) {
-			System.err.println(e);
-			return null;
-		}
+	// Wrapping the file service generic methods that require multiple arguments.
+	// When these are invoke here in statistics service, they always are invoked
+	// with the same parameters.
+	private AllStats load(File file) {
+		return _fileService.read(file, AllStats.class);
 	}
 
-	private AllStats writeDefaultJson(File file) {
-		var allStats = new AllStats();
-		allStats.easy = new LongTermStats();
-		allStats.medium = new LongTermStats();
-		allStats.hard = new LongTermStats();
-		_fileService.writeFile(file, allStats);
-		return allStats;
+	private AllStats withFile(IRequiresFileAndHasReturn<AllStats> method) {
+		return _fileService.withFile(FILE_NAME, new AllStats(), method);
+	}
+
+	private void withFile(IRequiresFile method) {
+		_fileService.withFile(FILE_NAME, new AllStats(), method);
 	}
 }
