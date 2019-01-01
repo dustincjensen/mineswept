@@ -34,5 +34,8 @@ public class ServicesModule extends AbstractModule {
         return new RecordsService(fileService);
     }
     
-    // TODO statistics service.
+    @Provides
+    public StatisticsService provideStatisticsService(FileService fileService) {
+        return new StatisticsService(fileService);
+    }
 }

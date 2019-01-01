@@ -11,6 +11,7 @@ import java.util.List;
 import services.HintService;
 import services.MineRevealService;
 import services.RecordsService;
+import services.StatisticsService;
 import state.GameState;
 
 public class EventModule extends AbstractModule {
@@ -121,7 +122,7 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public ShowStatisticsEventHandler provideShowStatisticsEventHandler(IEventSubscriber subscriber) {
-        return new ShowStatisticsEventHandler(subscriber);
+    public ShowStatisticsEventHandler provideShowStatisticsEventHandler(StatisticsService statisticsService, IEventSubscriber subscriber) {
+        return new ShowStatisticsEventHandler(statisticsService, subscriber);
     }
 }

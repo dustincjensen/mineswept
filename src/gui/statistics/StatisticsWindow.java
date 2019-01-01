@@ -50,13 +50,9 @@ public class StatisticsWindow {
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(ShowStatisticsEvent.class, event -> {
 			panel.setStatistics(event.stats);
-
-			// TODO do we like this?
-			if (!frame.isVisible()) {
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
-			}
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 		});
 	}
 }

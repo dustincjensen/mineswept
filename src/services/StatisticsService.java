@@ -1,14 +1,63 @@
 package services;
 
-// TODO implement service...
-// TODO make non-static.
-public class StatisticsService {
-	// Long term stats
-	private static int oneHitKills, ohkBeginner, ohkIntermediate, ohkExpert;
-	private static int gamesPlayed, gpBeginner, gpIntermediate, gpExpert;
-	private static int gamesWon, gwBeginner, gwIntermediate, gwExpert;
-	private static int gamesLost, glBeginner, glIntermediate, glExpert;
+import com.google.gson.Gson;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
+import models.statistics.AllStats;
+import models.statistics.LongTermStats;
 
-	// Short term stats
-	private static int numberOfHintsUsed;
+public class StatisticsService {
+	private static final String FILE_NAME = "statistics.json";
+
+	private FileService _fileService;
+
+	public StatisticsService(FileService fileService) {
+		_fileService = fileService;
+	}
+
+	/**
+	 * Gets the statistics from the statistics json file.
+	 
+	 * @return the statistics from the file.
+	 */
+	public AllStats getStatistics() {
+		return load(_fileService.get(FILE_NAME));
+	}
+
+	private AllStats load(Optional<File> file) {
+		AllStats allStats = null;
+
+		if (file.isPresent()) {
+			allStats = loadStats(file.get());
+		} else {
+			var newFile = _fileService.createFile(FILE_NAME);
+			if (newFile.isPresent()) {
+				allStats = writeDefaultJson(newFile.get());
+			}
+		}
+
+		return allStats;
+	}
+
+	private AllStats loadStats(File file) {
+		try {
+			var json = new String(Files.readAllBytes(Paths.get(file.toURI())), StandardCharsets.UTF_8);
+			return new Gson().fromJson(json, AllStats.class);
+		} catch (Exception e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+
+	private AllStats writeDefaultJson(File file) {
+		var allStats = new AllStats();
+		allStats.easy = new LongTermStats();
+		allStats.medium = new LongTermStats();
+		allStats.hard = new LongTermStats();
+		_fileService.writeFile(file, allStats);
+		return allStats;
+	}
 }
