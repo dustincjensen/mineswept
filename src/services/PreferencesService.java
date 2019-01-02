@@ -22,7 +22,7 @@ public class PreferencesService {
 	public Color squareColor() {
 		if (_cachedPreferences == null) {
 			_fileService.withFile(FILE_NAME, new Preference(), file -> {
-				var preferences = _fileService.read(file, Preference.class);
+				var preferences = _fileService.readFile(file, Preference.class);
 				_cachedPreferences = preferences;
 			});
 		}
@@ -38,7 +38,7 @@ public class PreferencesService {
 	 */
 	public void setSquareColor(int r, int g, int b) {
 		_fileService.withFile(FILE_NAME, new Preference(), file -> {
-			var preferences = _fileService.read(file, Preference.class);
+			var preferences = _fileService.readFile(file, Preference.class);
 			preferences.squareColor.r = r;
 			preferences.squareColor.g = g;
 			preferences.squareColor.b = b;
@@ -57,7 +57,7 @@ public class PreferencesService {
 	public Difficulty difficulty() {
 		if (_cachedPreferences == null) {
 			_fileService.withFile(FILE_NAME, new Preference(), file -> {
-				var preferences = _fileService.read(file, Preference.class);
+				var preferences = _fileService.readFile(file, Preference.class);
 				_cachedPreferences = preferences;
 			});
 		}
@@ -71,7 +71,7 @@ public class PreferencesService {
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		_fileService.withFile(FILE_NAME, new Preference(), file -> {
-			var preferences = _fileService.read(file, Preference.class);
+			var preferences = _fileService.readFile(file, Preference.class);
 			preferences.difficulty = difficulty.toString();
 
 			_cachedPreferences = preferences;

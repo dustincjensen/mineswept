@@ -26,7 +26,7 @@ public class RecordsService {
 	 */
 	public AllRecords getAllRecords() {
 		return _fileService.withFile(FILE_NAME, new AllRecords(), file -> {
-			var records = _fileService.read(file, AllRecords.class);
+			var records = _fileService.readFile(file, AllRecords.class);
 			records.easy = sort(records.easy);
 			records.medium = sort(records.medium);
 			records.hard = sort(records.hard);
@@ -43,7 +43,7 @@ public class RecordsService {
 	 */
 	public boolean checkAndSaveNewRecord(int time, Difficulty level) {
 		return _fileService.withFile(FILE_NAME, new AllRecords(), file -> {
-			var records = _fileService.read(file, AllRecords.class);
+			var records = _fileService.readFile(file, AllRecords.class);
 
 			AddRecord result = null;
 			if (level == Difficulty.easy) {
@@ -71,7 +71,7 @@ public class RecordsService {
 	 */
 	public Record[] resetRecords(Difficulty level) {
 		return _fileService.withFile(FILE_NAME, new AllRecords(), file -> {
-			var records = _fileService.read(file, AllRecords.class);
+			var records = _fileService.readFile(file, AllRecords.class);
 
 			// We can decide if resetting restores some computer default records...
 			var newRecords = new Record[0];

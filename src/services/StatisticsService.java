@@ -87,7 +87,7 @@ public class StatisticsService {
 	// When these are invoke here in statistics service, they always are invoked
 	// with the same parameters.
 	private AllStats load(File file) {
-		return _fileService.read(file, AllStats.class);
+		return _fileService.readFile(file, AllStats.class);
 	}
 
 	private AllStats withFile(IRequiresFileAndHasReturn<AllStats> method) {

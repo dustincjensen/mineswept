@@ -16,25 +16,6 @@ public class FileService {
 	private static final String MINE_SWEPT_DIRECTORY = ".MineSwept";
 
 	/**
-	 * Create a file with the given name.
-	 * 
-	 * @param fileName the name of the file to create.
-	 * @return a reference to the file that was created, otherwise empty. 
-	 */
-	public Optional<File> createFile(String fileName) {
-		var fileToCreate = new File(getGameDir().toString() + "/" + fileName);
-		try {
-			if (!fileToCreate.createNewFile()) {
-				throw new Exception();
-			}
-		} catch (Exception ex) {
-			System.err.println("Unable to create new " + fileName + " file.");
-			return Optional.empty();
-		}
-		return Optional.of(fileToCreate);
-	}
-
-	/**
 	 * Handles the invocation of a method that requires a file to do it's action.
 	 * 
 	 * @param fileName the name of the file to get or create.
@@ -69,6 +50,48 @@ public class FileService {
 	}
 
 	/**
+	 * Reads a file as a json object of a specific type.
+	 * 
+	 * @param file the file to read the json object from.
+	 * @param type the type to try and cast the json object to.
+	 * @return the json read into an object of type <T>.
+	 */
+	public <T> T readFile(File file, Class<T> type) {
+		try {
+			var json = new String(Files.readAllBytes(Paths.get(file.toURI())), StandardCharsets.UTF_8);
+			return new Gson().fromJson(json, type);
+		} catch (Exception e) {
+			System.err.println(e);
+			return null;
+		}
+	}
+
+	/**
+	 * Write a json object to a file.
+	 * 
+	 * @param file the file to write the json object to.
+	 * @param object the json object to write.
+	 * @return true if the json object was successfully written to file, otherwise false.
+	 */
+	public boolean writeFile(File file, Object object) {
+		var gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.create();
+
+		try {
+			var writer = new FileWriter(file);
+			for (var line : new String[] { gson.toJson(object) }) {
+				writer.write(line);
+			}
+			writer.close();
+			return true;
+		} catch (Exception ex) {
+			System.err.println("Error writing " + file.getName() + ".");
+			return false;
+		}
+	}
+
+	/**
 	 * Get or create the file with the provided name.
 	 * If the file does not exist, it is created and is populated 
 	 * with the default object provided.
@@ -99,79 +122,33 @@ public class FileService {
 	 * @param fileName the name of the file to retrieve.
 	 * @return reference to the file if the game directory exists, otherwise empty.
 	 */
-	public Optional<File> get(String fileName) {
+	private Optional<File> get(String fileName) {
 		var gameDir = getGameDir();
 		if (gameDir != null) {
-			var files = gameDir.listFiles();
-			return get(files, fileName);
+			return Arrays.stream(gameDir.listFiles())
+				.filter(f -> f.getName().matches(fileName))
+				.findAny();
 		}
 		return Optional.empty();
 	}
 
 	/**
-	 * Reads a file as a json object of a specific type.
+	 * Create a file with the given name.
 	 * 
-	 * @param file the file to read the json object from.
-	 * @param type the type to try and cast the json object to.
-	 * @return the json read into an object of type <T>.
+	 * @param fileName the name of the file to create.
+	 * @return a reference to the file that was created, otherwise empty. 
 	 */
-	public <T> T read(File file, Class<T> type) {
+	private Optional<File> createFile(String fileName) {
+		var fileToCreate = new File(getGameDir().toString() + "/" + fileName);
 		try {
-			var json = new String(Files.readAllBytes(Paths.get(file.toURI())), StandardCharsets.UTF_8);
-			return new Gson().fromJson(json, type);
-		} catch (Exception e) {
-			System.err.println(e);
-			return null;
-		}
-	}
-
-	/**
-	 * Write a json object to a file.
-	 * 
-	 * @param file the file to write the json object to.
-	 * @param object the json object to write.
-	 * @return true if the json object was successfully written to file, otherwise false.
-	 */
-	public boolean writeFile(File file, Object object) {
-		var gson = new GsonBuilder()
-			.setPrettyPrinting()
-			.create();
-
-		return writeFile(file, new String[] {gson.toJson(object)});
-	}
-
-	/**
-	 * Return a file reference from a list of files by the file name.
-	 * 
-	 * @param files the files to check for the file name.
-	 * @param fileName the file name to check for.
-	 * @return reference to the file if it exists in the list, otherwise empty.
-	 */
-	private Optional<File> get(File[] files, String fileName) {
-		return Arrays.stream(files)
-			.filter(f -> f.getName().matches(fileName))
-			.findAny();
-	}
-
-	/**
-	 * Write a set of lines to the given file.
-	 * 
-	 * @param file the file to write the lines to.
-	 * @param lines the lines to write to the file.
-	 * @return true if lines were written successfully, otherwise false.
-	 */
-	private boolean writeFile(File file, String[] lines) {
-		try {
-			var writer = new FileWriter(file);
-			for (var line : lines) {
-				writer.write(line);
+			if (!fileToCreate.createNewFile()) {
+				throw new Exception();
 			}
-			writer.close();
-			return true;
 		} catch (Exception ex) {
-			System.err.println("Error writing " + file.getName() + ".");
-			return false;
+			System.err.println("Unable to create new " + fileName + " file.");
+			return Optional.empty();
 		}
+		return Optional.of(fileToCreate);
 	}
 
 	/**
