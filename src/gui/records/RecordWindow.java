@@ -14,7 +14,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import models.Difficulty;
-import models.records.All;
 
 public class RecordWindow {
 	private IEventPublisher eventPublisher;
@@ -74,7 +73,7 @@ public class RecordWindow {
 		eventSubscriber.subscribe(ShowRecordsEvent.class, event -> {
 			frame.setVisible(true);
 
-			All allRecords = event.records;
+			var allRecords = event.records;
 			easy.setRecords(allRecords.easy);
 			medium.setRecords(allRecords.medium);
 			hard.setRecords(allRecords.hard);

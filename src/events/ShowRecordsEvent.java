@@ -1,10 +1,10 @@
 package events;
 
 import models.Difficulty;
-import models.records.All;
+import models.records.AllRecords;
 
 public class ShowRecordsEvent {
-	public All records;
+	public AllRecords records;
 	public Difficulty difficulty;
 
 	public ShowRecordsEvent() {
