@@ -1,91 +1,82 @@
 package services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.BufferedReader;
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Optional;
 import models.Difficulty;
 import models.preferences.Color;
 import models.preferences.Preference;
-import state.GameState;
 
 public class PreferencesService {
-	private FileService fileService;
+	private static final String FILE_NAME = "preferences.json";
 
-	private final Map<String, Difficulty> difficultyMap = Map.of(
-		"easy", Difficulty.easy,
-		"medium", Difficulty.medium,
-		"hard", Difficulty.hard);
-	private File preferences;
-	private Preference preference;
+	private FileService _fileService;
+	private Preference _cachedPreferences;
 
 	public PreferencesService(FileService file) {
-		fileService = file;
-
-		load(fileService.get("preferences.json"));
+		_fileService = file;
 	}
 
-	// TODO what happens if preferences are corrupted?
-	public int r() { return preference.squareColor.r; }
-	public int g() { return preference.squareColor.g; }
-	public int b() { return preference.squareColor.b; }
+	/**
+	 * Retrieves the color that should be used to decorate the game board squares.
+	 * 
+	 * @return an object with the RGB color for the game board squares.
+	 */
+	public Color squareColor() {
+		if (_cachedPreferences == null) {
+			_fileService.withFile(FILE_NAME, new Preference(), file -> {
+				var preferences = _fileService.read(file, Preference.class);
+				_cachedPreferences = preferences;
+			});
+		}
+		return _cachedPreferences.squareColor;
+	}
+
+	/**
+	 * Sets the color that should be used to decorate the game board squares.
+	 * 
+	 * @param r the red component of the color.
+	 * @param g the green component of the color.
+	 * @param b the blue component of the color.
+	 */
+	public void setSquareColor(int r, int g, int b) {
+		_fileService.withFile(FILE_NAME, new Preference(), file -> {
+			var preferences = _fileService.read(file, Preference.class);
+			preferences.squareColor.r = r;
+			preferences.squareColor.g = g;
+			preferences.squareColor.b = b;
+			
+			_cachedPreferences = preferences;
+			
+			_fileService.writeFile(file, _cachedPreferences);
+		});
+	}
+
+	/**
+	 * Retrieves the difficulty that the game should be played at.
+	 * 
+	 * @return the difficulty level.
+	 */
 	public Difficulty difficulty() {
-		return difficultyMap.get(
-			preference.difficulty.toLowerCase()
-		);
-	}
-
-	public void setBackgroundColor(int r, int g, int b) {
-		preference.squareColor.r = r;
-		preference.squareColor.g = g;
-		preference.squareColor.b = b;
-	}
-
-	public boolean load(Optional<File> preferenceFile) {
-		if (preferenceFile.isPresent()) {
-			preferences = preferenceFile.get();
-		} else {
-			var newFile = fileService.createFile("preferences.json");
-			if (newFile.isPresent()) {
-				preferences = newFile.get();
-			}
-			writeDefaultJson(preferences);
+		if (_cachedPreferences == null) {
+			_fileService.withFile(FILE_NAME, new Preference(), file -> {
+				var preferences = _fileService.read(file, Preference.class);
+				_cachedPreferences = preferences;
+			});
 		}
-		
-		if (preferences == null) {
-			return false;
-		}
-
-		// Otherwise load the file...
-		loadPreferences();
-
-		return true;
+		return Difficulty.getDifficulty(_cachedPreferences.difficulty.toLowerCase());
 	}
 
-	private void loadPreferences() {
-		try {
-			var json = new String(Files.readAllBytes(Paths.get(preferences.toURI())), StandardCharsets.UTF_8);
-			var gson = new Gson();
+	/**
+	 * Sets the difficulty that the game should be played at.
+	 * 
+	 * @param difficulty the difficulty level.
+	 */
+	public void setDifficulty(Difficulty difficulty) {
+		_fileService.withFile(FILE_NAME, new Preference(), file -> {
+			var preferences = _fileService.read(file, Preference.class);
+			preferences.difficulty = difficulty.toString();
 
-			// TODO place this on game state? Or just have classes require Preferences...
-			preference = gson.fromJson(json, Preference.class);
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-	}
+			_cachedPreferences = preferences;
 
-	private void writeDefaultJson(File preferencesFile) {
-		var pref = new Preference();
-		pref.difficulty = "easy";
-		pref.squareColor = new Color();
-		pref.squareColor.r = 50;
-		pref.squareColor.g = 125;
-		pref.squareColor.b = 240;
-		fileService.writeFile(preferencesFile, pref);
+			_fileService.writeFile(file, _cachedPreferences);
+		});
 	}
 }

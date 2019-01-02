@@ -146,11 +146,12 @@ public class OptionWindow {
 
 		mineButtonColor = new JButton("Minefield Colour");
 		mineButtonColor.addActionListener(evt -> {
-			Color current = new Color(preferencesService.r(), preferencesService.g(), preferencesService.b());
-			Color newMineColor = JColorChooser.showDialog(null, "Choose Minefield Colour", current);
+			var prefColor = preferencesService.squareColor();
+			var current = new Color(prefColor.r, prefColor.g, prefColor.b);
+			var newMineColor = JColorChooser.showDialog(null, "Choose Minefield Colour", current);
 
 			if (newMineColor != null) {
-				preferencesService.setBackgroundColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
+				preferencesService.setSquareColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
 			}
 
 			eventSubscriber.notify(new UpdateMinePanelEvent());
@@ -172,11 +173,19 @@ public class OptionWindow {
 	private void setNewOptions() {
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
+			// TODO this should set the preference service value...
+			// TODO this should not access game state directly, but set this through
+			// an event publish.
+			// TODO perhaps game state should not "know" the next puzzle difficulty?
+			// Perhaps it is just loaded from the preferences?
 			gameState.setNextPuzzleDifficulty(Difficulty.easy);
+			preferencesService.setDifficulty(Difficulty.easy);
 		} else if (diff.equals(medium.getModel())) {
 			gameState.setNextPuzzleDifficulty(Difficulty.medium);
+			preferencesService.setDifficulty(Difficulty.medium);
 		} else if (diff.equals(hard.getModel())) {
 			gameState.setNextPuzzleDifficulty(Difficulty.hard);
+			preferencesService.setDifficulty(Difficulty.hard);
 		}
 	}
 
