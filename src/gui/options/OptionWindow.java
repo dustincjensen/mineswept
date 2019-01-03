@@ -1,10 +1,13 @@
 package gui.options;
 
-import gui.Resource;
-import gui.ResourceLoader;
 import events.IEventSubscriber;
 import events.ShowOptionsEvent;
 import events.UpdateMinePanelEvent;
+import gui.components.button.LightButton;
+import gui.components.button.PrimaryButton;
+import gui.HexToRgb;
+import gui.Resource;
+import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
 import models.Difficulty;
@@ -17,11 +20,10 @@ public class OptionWindow {
 	private PreferencesService preferencesService;
 	private IEventSubscriber eventSubscriber;
 
-	private JFrame optionsWindow;
+	private OptionsFrame frame;
 	private boolean optionsHaveChanged;
 	private ButtonGroup difficultyRadioButtonGroup;
 	private JRadioButton easy, medium, hard;
-	private JButton mineButtonColor;
 
 	public OptionWindow(
 		GameState state,
@@ -35,61 +37,97 @@ public class OptionWindow {
 		preferencesService = prefs;
 		eventSubscriber = subscriber;
 
-		optionsWindow = new JFrame("Options");
-		optionsWindow.setContentPane(mainPanel());
-		optionsWindow.setSize(500, 350);
-		optionsWindow.setLocationRelativeTo(null);
-		optionsWindow.setResizable(false);
-		optionsWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame = new OptionsFrame(mainPanel());
 
 		optionsHaveChanged = false;
 
 		setupSubscriptions();
 	}
 
-	private void hide() {
-		optionsWindow.setVisible(false);
-	}
-
 	private JPanel mainPanel() {
 		var mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.setBackground(HexToRgb.convert("#333333"));
 		mainPanel.add(subPanePanel());
-		mainPanel.add(acceptDeclinePanel());
+		mainPanel.add(saveCancel());
 		return mainPanel;
 	}
 
-	private JPanel subPanePanel() {
-		var subPane = new JPanel();
-		subPane.setLayout(new BoxLayout(subPane, BoxLayout.X_AXIS));
-		subPane.add(difficultyPanel());
-		subPane.add(otherOptionsPanel());
-		return subPane;
+	private Box subPanePanel() {
+		var panel = new Box(BoxLayout.Y_AXIS);
+		panel.setOpaque(false);
+		panel.add(difficultyPanel());
+		panel.add(otherOptionsPanel());
+		return panel;
 	}
 
-	private JPanel acceptDeclinePanel() {
-		var acceptDecline = new JPanel();
-		acceptDecline.setLayout(new BoxLayout(acceptDecline, BoxLayout.X_AXIS));
-		acceptDecline.add(Box.createHorizontalGlue());
-		acceptDecline.add(confirmButton());
-		acceptDecline.add(cancelButton());
-		return acceptDecline;
+	private JPanel saveCancel() {
+		var panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		panel.setBackground(HexToRgb.convert("#333333"));
+		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		panel.setLayout(new GridLayout(0, 2, 5, 5));
+		panel.add(saveButton());
+		panel.add(cancelButton());
+		return panel;
 	}
 
-	private JPanel difficultyPanel() {
-		var difficultyPanel = new JPanel();
-		difficultyPanel.setLayout(new BoxLayout(difficultyPanel, BoxLayout.Y_AXIS));
-		difficultyPanel.setBorder(BorderFactory.createTitledBorder("Difficulty"));
+	private JButton saveButton() {
+		return new PrimaryButton("Save", event -> {
+			if (optionsHaveChanged) {
+				int answer = confirmDialog("Would you like to change the options?");
+				if (answer == JOptionPane.YES_OPTION) {
+					setNewOptions();
+					optionsHaveChanged = false;
+					frame.setVisible(false);
+				}
+			} else {
+				frame.setVisible(false);
+			}
+		});
+	}
 
-		easy = new JRadioButton("<html>Beginner<br/>10 mines<br/>9 x 9 tile grid</html>");
+	private JButton cancelButton() {
+		return new LightButton("Cancel", evt -> {
+			frame.setVisible(false);
+			resetOptions();
+		});
+	}
+
+	private JPanel header(String title) {
+        var header = new JPanel(new FlowLayout());
+        header.setBackground(HexToRgb.convert("#007bff"));
+        header.add(createJLabel(title, SwingConstants.LEFT));
+        return header;
+	}
+	
+	private JLabel createJLabel(String text, int alignment) {
+        var label = new JLabel(text);
+        label.setHorizontalAlignment(alignment);
+		label.setForeground(HexToRgb.convert("#ffffff"));
+		label.setOpaque(false);
+        return label;
+    }
+
+	private Box difficultyPanel() {
+		var difficultyPanel = new JPanel(new GridLayout(3, 1));
+		difficultyPanel.setOpaque(false);
+        
+		easy = new JRadioButton("<html>Easy<br/><i>10 mines<br/>9x9 grid</i></html>");
+		easy.setOpaque(false);
+		easy.setForeground(HexToRgb.convert("#ffffff"));
 		easy.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.easy);
 		difficultyPanel.add(easy);
 
-		medium = new JRadioButton("<html>Intermediate<br/>40 mines<br/>16 x 16 tile grid</html>");
+		medium = new JRadioButton("<html>Medium<br/><i>40 mines<br/>16x16 grid</i></html>");
+		medium.setOpaque(false);
+		medium.setForeground(HexToRgb.convert("#ffffff"));
 		medium.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.medium);
 		difficultyPanel.add(medium);
 
-		hard = new JRadioButton("<html>Advanced<br/>99 mines<br/>16 x 30 tile grid</html>");
+		hard = new JRadioButton("<html>Hard<br/><i>99 mines<br/>16x30 grid</i></html>");
+		hard.setOpaque(false);
+		hard.setForeground(HexToRgb.convert("#ffffff"));
 		hard.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.hard);
 		difficultyPanel.add(hard);
 
@@ -100,8 +138,11 @@ public class OptionWindow {
 
 		chooseSelectedDifficulty();
 
-		difficultyPanel.add(Box.createVerticalGlue());
-		return difficultyPanel;
+		var headerWithDifficultyPanel = new Box(BoxLayout.Y_AXIS);
+		headerWithDifficultyPanel.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
+		headerWithDifficultyPanel.add(header("Difficulty"));
+		headerWithDifficultyPanel.add(difficultyPanel);
+		return headerWithDifficultyPanel;
 	}
 
 	private void chooseSelectedDifficulty() {
@@ -111,53 +152,51 @@ public class OptionWindow {
 		hard.setSelected(currentPuzzle == Difficulty.hard);
 	}
 
-	private JButton confirmButton() {
-		var confirm = new JButton("OK");
-		confirm.addActionListener(evt -> {
-			if (optionsHaveChanged) {
-				int yes_no = confirmDialog("Would you like to change the options?");
-				if (yes_no == JOptionPane.YES_OPTION) {
-					setNewOptions();
-					optionsHaveChanged = false;
-					hide();
-				}
-			} else {
-				hide();
-			}
-		});
-		return confirm;
+	private Box otherOptionsPanel() {
+		var colorPanel = new JPanel(new GridLayout(0, 1));
+		colorPanel.setOpaque(false);
+
+		var prefColor = preferencesService.squareColor();
+		var current = new Color(prefColor.r, prefColor.g, prefColor.b);
+		colorPanel.add(individualColorPanel(current));
+		
+		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
+		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
+		headerWithColorPanel.add(header("Minefield Colors"));
+		headerWithColorPanel.add(colorPanel);
+		return headerWithColorPanel;
 	}
 
-	private JButton cancelButton() {
-		var cancel = new JButton("Cancel");
-		cancel.addActionListener(evt -> {
-			hide();
-			resetOptions();
-		});
-		return cancel;
-	}
+	private Box individualColorPanel(Color base) {
+		var color = new JPanel();
+		color.setBorder(BorderFactory.createLineBorder(HexToRgb.convert("#444444"), 1));
+		color.setBackground(base);
 
-	private JPanel otherOptionsPanel() {
-		var otherOptions = new JPanel();
-		otherOptions.setLayout(new BoxLayout(otherOptions, BoxLayout.Y_AXIS));
-		otherOptions.setBorder(BorderFactory.createTitledBorder("Other"));
+		var labelAndButton = new JPanel(new GridLayout(2, 1));
+		labelAndButton.setOpaque(false);
+		labelAndButton.add(createJLabel("Base Color", SwingConstants.LEFT));
+		labelAndButton.add(Box.createVerticalStrut(5));
 
-		mineButtonColor = new JButton("Minefield Colour");
-		mineButtonColor.addActionListener(evt -> {
-			var prefColor = preferencesService.squareColor();
-			var current = new Color(prefColor.r, prefColor.g, prefColor.b);
-			var newMineColor = JColorChooser.showDialog(null, "Choose Minefield Colour", current);
+		// TODO this is hardcoded to one color... we need to build an interface to call another lambda when the color is executed.
+		labelAndButton.add(new PrimaryButton("Select New Color", evt -> {
+			var newMineColor = JColorChooser.showDialog(null, "Select Base Color", base);
 
 			if (newMineColor != null) {
 				preferencesService.setSquareColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
+				color.setBackground(newMineColor);
 			}
 
 			eventSubscriber.notify(new UpdateMinePanelEvent());
-		});
+		}));
 
-		otherOptions.add(mineButtonColor);
-		otherOptions.add(Box.createVerticalGlue());
-		return otherOptions;
+		var panel = new Box(BoxLayout.X_AXIS);
+		panel.setOpaque(false);
+		panel.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
+		panel.add(color);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(labelAndButton);
+		panel.add(Box.createHorizontalGlue());
+		return panel;
 	}
 
 	private void resetOptions() {
@@ -190,7 +229,9 @@ public class OptionWindow {
 
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(ShowOptionsEvent.class, event -> {
-			optionsWindow.setVisible(true);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 		});
 	}
 }
