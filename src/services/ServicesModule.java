@@ -21,19 +21,27 @@ public class ServicesModule extends AbstractModule {
         return new MineRevealService(octo);
     }
 
-    // TODO reevaluate if these need to be singleton's
+    /**
+     * Provides the preferences as a singleton. This is because we cache
+     * the preferences for repeated access. The square color is accessed
+     * hundreds of times.
+     * 
+     * @param fileService utility service for file interactions.
+     * @return a reference to the preference service.
+     */
     @Singleton
     @Provides
     public PreferencesService providePreferences(FileService fileService) {
         return new PreferencesService(fileService);
     }
 
-    @Singleton
+    // No cached state, so no need for a singleton.
     @Provides
     public RecordsService provideRecordsService(FileService fileService) {
         return new RecordsService(fileService);
     }
     
+    // No cached state, so no need for a singleton.
     @Provides
     public StatisticsService provideStatisticsService(FileService fileService) {
         return new StatisticsService(fileService);

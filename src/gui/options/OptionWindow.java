@@ -48,8 +48,6 @@ public class OptionWindow {
 	}
 
 	private void hide() {
-		// TODO save options...
-		// saveCurrentOptions();
 		optionsWindow.setVisible(false);
 	}
 
@@ -160,10 +158,6 @@ public class OptionWindow {
 		otherOptions.add(mineButtonColor);
 		otherOptions.add(Box.createVerticalGlue());
 		return otherOptions;
-	}
-
-	private void saveCurrentOptions() {
-		// System.out.println("Saving current options...");
 	}
 
 	private void resetOptions() {

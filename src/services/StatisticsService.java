@@ -1,6 +1,5 @@
 package services;
 
-import java.io.File;
 import models.Difficulty;
 import models.statistics.AllStats;
 
@@ -19,8 +18,8 @@ public class StatisticsService {
 	 * @return the statistics from the file.
 	 */
 	public AllStats getStatistics() {
-		return withFile(file -> { 
-			return load(file);
+		return _fileService.withFile(FILE_NAME, new AllStats(), file -> { 
+			return _fileService.readFile(file, AllStats.class);
 		});
 	}
 
@@ -30,7 +29,7 @@ public class StatisticsService {
 	 * @return the reset statistics.
 	 */
 	public AllStats resetStatistics() {
-		return withFile(file -> {
+		return _fileService.withFile(FILE_NAME, new AllStats(), file -> {
 			var resetStats = new AllStats();
 			_fileService.writeFile(file, resetStats);
 			return resetStats;
@@ -41,8 +40,8 @@ public class StatisticsService {
 	 * Increments the games played and games won counts.
 	 */
 	public void gameWon(Difficulty difficulty) {
-		withFile(file -> {
-			var stats = load(file);
+		_fileService.withFile(FILE_NAME, new AllStats(), file -> {
+			var stats = _fileService.readFile(file, AllStats.class);
 
 			// Set games played and won.
 			if (difficulty == Difficulty.easy) {
@@ -64,8 +63,8 @@ public class StatisticsService {
 	 * Increments the games played and games lost counts.
 	 */
 	public void gameLost(Difficulty difficulty) {
-		withFile(file -> {
-			var stats = load(file);
+		_fileService.withFile(FILE_NAME, new AllStats(), file -> {
+			var stats = _fileService.readFile(file, AllStats.class);
 
 			// Set games played and lost.
 			if (difficulty == Difficulty.easy) {
@@ -81,20 +80,5 @@ public class StatisticsService {
 
 			_fileService.writeFile(file, stats);
 		});
-	}
-
-	// Wrapping the file service generic methods that require multiple arguments.
-	// When these are invoke here in statistics service, they always are invoked
-	// with the same parameters.
-	private AllStats load(File file) {
-		return _fileService.readFile(file, AllStats.class);
-	}
-
-	private AllStats withFile(IRequiresFileAndHasReturn<AllStats> method) {
-		return _fileService.withFile(FILE_NAME, new AllStats(), method);
-	}
-
-	private void withFile(IRequiresFile method) {
-		_fileService.withFile(FILE_NAME, new AllStats(), method);
 	}
 }
