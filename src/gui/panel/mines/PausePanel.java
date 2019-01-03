@@ -2,6 +2,9 @@ package gui.panel.mines;
 
 import events.IEventPublisher;
 import events.PauseGameEvent;
+import gui.FontChange;
+import gui.components.button.PrimaryButton;
+
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -20,8 +23,8 @@ public class PausePanel extends JPanel {
 	}
 
 	private JButton continueButton() {
-		JButton button = new JButton("Continue Playing");
-		button.addActionListener(evt -> eventPublisher.publish(new PauseGameEvent(false)));
+		var button = new PrimaryButton("Continue Playing", evt -> eventPublisher.publish(new PauseGameEvent(false)));
+		FontChange.setFont(button, 24);
 		return button;
 	}
 }
