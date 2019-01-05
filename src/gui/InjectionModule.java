@@ -60,14 +60,19 @@ public class InjectionModule extends AbstractModule {
 
     // TODO move this into it's own module?
     @Provides
-    public MineSwept provideMineSwept(
-        Menus menus,
+    public MineSwept provideMineSwept(MainWindow window) {
+        return new MineSwept(window);
+    }
+
+    @Provides
+    public MainWindow provideMainWindow(
         MainPanel mainPanel,
-        IEventSubscriber subscriber,
-        MainWindowHandler handler,
-        ResourceLoader loader
+        Menus menus,
+        MainWindowHandler mainWindowHandler,
+        ResourceLoader loader,
+        IEventSubscriber eventSubscriber
     ) {
-        return new MineSwept(menus, mainPanel, subscriber, handler, loader);
+        return new MainWindow(mainPanel, menus, mainWindowHandler, loader, eventSubscriber);
     }
 
     @Provides
