@@ -11,13 +11,13 @@ import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
 import models.Difficulty;
-import services.PreferencesService;
+import services.OptionsService;
 import state.GameState;
 
-public class OptionWindow {
+public class OptionsWindow {
 	private GameState gameState;
 	private ResourceLoader resourceLoader;
-	private PreferencesService preferencesService;
+	private OptionsService optionsService;
 	private IEventSubscriber eventSubscriber;
 
 	private OptionsFrame frame;
@@ -25,16 +25,16 @@ public class OptionWindow {
 	private ButtonGroup difficultyRadioButtonGroup;
 	private JRadioButton easy, medium, hard;
 
-	public OptionWindow(
+	public OptionsWindow(
 		GameState state,
 		ResourceLoader loader,
-		PreferencesService prefs,
+		OptionsService options,
 		IEventSubscriber subscriber
 	) {
 		System.out.println("Creating new option window...");
 		gameState = state;
 		resourceLoader = loader;
-		preferencesService = prefs;
+		optionsService = options;
 		eventSubscriber = subscriber;
 
 		frame = new OptionsFrame(mainPanel());
@@ -156,8 +156,8 @@ public class OptionWindow {
 		var colorPanel = new JPanel(new GridLayout(0, 1));
 		colorPanel.setOpaque(false);
 
-		var prefColor = preferencesService.squareColor();
-		var current = new Color(prefColor.r, prefColor.g, prefColor.b);
+		var color = optionsService.squareColor();
+		var current = new Color(color.r, color.g, color.b);
 		colorPanel.add(individualColorPanel(current));
 		
 		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
@@ -182,7 +182,7 @@ public class OptionWindow {
 			var newMineColor = JColorChooser.showDialog(null, "Select Base Color", base);
 
 			if (newMineColor != null) {
-				preferencesService.setSquareColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
+				optionsService.setSquareColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
 				color.setBackground(newMineColor);
 			}
 
@@ -206,19 +206,19 @@ public class OptionWindow {
 	private void setNewOptions() {
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
-			// TODO this should set the preference service value...
+			// TODO this should set the options service value...
 			// TODO this should not access game state directly, but set this through
 			// an event publish.
 			// TODO perhaps game state should not "know" the next puzzle difficulty?
-			// Perhaps it is just loaded from the preferences?
+			// Perhaps it is just loaded from the options?
 			gameState.setNextPuzzleDifficulty(Difficulty.easy);
-			preferencesService.setDifficulty(Difficulty.easy);
+			optionsService.setDifficulty(Difficulty.easy);
 		} else if (diff.equals(medium.getModel())) {
 			gameState.setNextPuzzleDifficulty(Difficulty.medium);
-			preferencesService.setDifficulty(Difficulty.medium);
+			optionsService.setDifficulty(Difficulty.medium);
 		} else if (diff.equals(hard.getModel())) {
 			gameState.setNextPuzzleDifficulty(Difficulty.hard);
-			preferencesService.setDifficulty(Difficulty.hard);
+			optionsService.setDifficulty(Difficulty.hard);
 		}
 	}
 

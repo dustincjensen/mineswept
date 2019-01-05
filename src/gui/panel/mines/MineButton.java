@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import models.Mine;
-import services.PreferencesService;
+import services.OptionsService;
 import state.GameState;
 
 /**
@@ -24,7 +24,7 @@ import state.GameState;
 public class MineButton extends JLabel implements MouseListener {
 	private GameState gameState;
 	private ClockTimer clockTimer;
-	private PreferencesService preferencesService;
+	private OptionsService optionsService;
 	private ResourceLoader resourceLoader;
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
@@ -58,7 +58,7 @@ public class MineButton extends JLabel implements MouseListener {
 	private static boolean mousePressStartedInsideSquare;
 
 	public MineButton(
-		PreferencesService prefs,
+		OptionsService options,
 		GameState state,
 		ClockTimer timer,
 		ResourceLoader loader,
@@ -67,7 +67,7 @@ public class MineButton extends JLabel implements MouseListener {
 	) {
 		gameState = state;
 		clockTimer = timer;
-		preferencesService = prefs;
+		optionsService = options;
 		resourceLoader = loader;
 		eventPublisher = publisher;
 		eventSubscriber = subscriber;
@@ -75,8 +75,8 @@ public class MineButton extends JLabel implements MouseListener {
 		nonClickedState = 0;
 
 		// TODO move this to some shared state?
-		var prefColor = prefs.squareColor();
-		backgroundColor = new Color(prefColor.r, prefColor.g, prefColor.b);
+		var color = options.squareColor();
+		backgroundColor = new Color(color.r, color.g, color.b);
 
 		// TODO allow resizing?
 		// Font size 32 when w,h = 48
@@ -125,12 +125,12 @@ public class MineButton extends JLabel implements MouseListener {
 
 		// Still covered
 		else {
-			// TODO if we don't cache the preferences... this would read from file 16x30 times.
-			var prefColor = preferencesService.squareColor();
+			// TODO if we don't cache the options... this would read from file 16x30 times.
+			var color = optionsService.squareColor();
 			// TODO This is probably pretty heavy. Any time a mine is clicked, MinePanel handles the UpdateMinePanelEvent
 			// which redecorates each mine, and we are creating the color for 16x30 mines on each render.
 			backgroundColor = new Color(
-				prefColor.r, prefColor.g, prefColor.b);
+				color.r, color.g, color.b);
 			setBackground(backgroundColor);
 
 			// check for hint (empty space)

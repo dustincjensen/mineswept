@@ -6,14 +6,14 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import events.IEventSubscriber;
 import gui.ResourceLoader;
-import services.PreferencesService;
+import services.OptionsService;
 import state.GameState;
 
-public class OptionModule extends AbstractModule {
+public class OptionsModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(OptionWindow.class)
-            .toProvider(OptionWindowProvider.class)
+        bind(OptionsWindow.class)
+            .toProvider(OptionsWindowProvider.class)
             .asEagerSingleton();
     }
 }
@@ -23,31 +23,31 @@ public class OptionModule extends AbstractModule {
  * We have to do this because we use event publish and subscribe, no one actually loads the option window as a
  * dependency.
  */
-class OptionWindowProvider implements Provider<OptionWindow> {
+class OptionsWindowProvider implements Provider<OptionsWindow> {
     private GameState gameState;
     private ResourceLoader resourceLoader;
-    private PreferencesService preferencesService;
+    private OptionsService optionsService;
     private IEventSubscriber eventSubscriber;
 
     @Inject
-    public OptionWindowProvider(
+    public OptionsWindowProvider(
         GameState state,
         ResourceLoader loader,
-        PreferencesService prefs,
+        OptionsService options,
 		IEventSubscriber subscriber
     ) {
         gameState = state;
         resourceLoader = loader;
-        preferencesService = prefs;
+        optionsService = options;
         eventSubscriber = subscriber;
     }
 
     @Override
-    public OptionWindow get() {
-        return new OptionWindow(
+    public OptionsWindow get() {
+        return new OptionsWindow(
             gameState,
             resourceLoader,
-            preferencesService,
+            optionsService,
             eventSubscriber);
     }
 }

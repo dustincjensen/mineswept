@@ -1,4 +1,4 @@
-package models.preferences;
+package models.options;
 
 public class Color {
     public int r;

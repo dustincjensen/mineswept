@@ -22,17 +22,17 @@ public class ServicesModule extends AbstractModule {
     }
 
     /**
-     * Provides the preferences as a singleton. This is because we cache
-     * the preferences for repeated access. The square color is accessed
+     * Provides the options as a singleton. This is because we cache
+     * the options for repeated access. The square color is accessed
      * hundreds of times.
      * 
      * @param fileService utility service for file interactions.
-     * @return a reference to the preference service.
+     * @return a reference to the options service.
      */
     @Singleton
     @Provides
-    public PreferencesService providePreferences(FileService fileService) {
-        return new PreferencesService(fileService);
+    public OptionsService provideOptions(FileService fileService) {
+        return new OptionsService(fileService);
     }
 
     // No cached state, so no need for a singleton.

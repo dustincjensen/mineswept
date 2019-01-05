@@ -8,8 +8,8 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import gui.menu.MenuModule;
 import gui.menu.Menus;
-import gui.options.OptionModule;
-import gui.options.OptionWindow;
+import gui.options.OptionsModule;
+import gui.options.OptionsWindow;
 import gui.panel.MainPanel;
 import gui.panel.header.HeaderModule;
 import gui.panel.header.HeaderPanel;
@@ -23,7 +23,7 @@ import factories.MinesFactory;
 import services.HintService;
 import services.MineRevealService;
 import services.OctoCheckService;
-import services.PreferencesService;
+import services.OptionsService;
 import services.ServicesModule;
 import state.GameState;
 
@@ -34,7 +34,7 @@ public class InjectionModule extends AbstractModule {
         install(new HeaderModule());
         install(new MenuModule());
 
-        install(new OptionModule());
+        install(new OptionsModule());
         install(new RecordModule());
         install(new StatisticsModule());
 
@@ -88,21 +88,21 @@ public class InjectionModule extends AbstractModule {
     // TODO move this into it's own module?
     @Provides
     public MineButton provideMineButton(
-        PreferencesService prefs, 
+        OptionsService options, 
         GameState gameState, 
         ClockTimer clockTimer,
         ResourceLoader loader,
         IEventPublisher publisher,
         IEventSubscriber subscriber
     ) {
-        return new MineButton(prefs, gameState, clockTimer, loader, publisher, subscriber);
+        return new MineButton(options, gameState, clockTimer, loader, publisher, subscriber);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
     @Singleton
     @Provides
-    public GameState provideGameState(PreferencesService prefs, MinesFactory factory) {
-        return new GameState(prefs, factory);
+    public GameState provideGameState(OptionsService options, MinesFactory factory) {
+        return new GameState(options, factory);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.

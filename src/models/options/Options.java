@@ -1,10 +1,10 @@
-package models.preferences;
+package models.options;
 
-public class Preference {
+public class Options {
     public Color squareColor;
     public String difficulty;
 
-    public Preference() {
+    public Options() {
         squareColor = new Color(50, 125, 240);
         difficulty = "easy";
     }
