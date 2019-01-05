@@ -5,12 +5,12 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.UpdateMineCountEvent;
 import gui.FontChange;
-import gui.Resource;
 import gui.ResourceLoader;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import models.Resource;
 import state.GameState;
 
 /**

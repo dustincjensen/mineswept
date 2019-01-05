@@ -1,6 +1,6 @@
 package events;
 
-import gui.Resource;
+import models.Resource;
 
 public class SetResetButtonIconEvent {
 	public Resource resource;

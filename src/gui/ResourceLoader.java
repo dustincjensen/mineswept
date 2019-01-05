@@ -3,6 +3,7 @@ package gui;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import models.Resource;
 
 /**
  * Loads all of the icons that the application will need.

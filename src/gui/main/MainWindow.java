@@ -1,10 +1,12 @@
-package gui;
+package gui.main;
 
-import javax.swing.JFrame;
 import events.IEventSubscriber;
 import events.RefreshMainWindowEvent;
 import gui.menu.Menus;
 import gui.panel.MainPanel;
+import gui.ResourceLoader;
+import javax.swing.JFrame;
+import models.Resource;
 
 public class MainWindow extends JFrame {
     private IEventSubscriber eventSubscriber;
@@ -20,7 +22,6 @@ public class MainWindow extends JFrame {
 		setContentPane(mainPanel);
 		setJMenuBar(menus);
         setResizable(false);
-		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(loader.get(Resource.SmileyCool).getImage());
         addWindowListener(mainWindowHandler);
@@ -32,7 +33,8 @@ public class MainWindow extends JFrame {
 
     public void showWindow() {
         pack();
-        setVisible(true);
+        setLocationRelativeTo(null);
+		setVisible(true);
     }
 
     private void setupSubscription() {

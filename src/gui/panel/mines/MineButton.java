@@ -7,7 +7,6 @@ import events.SetResetButtonIconEvent;
 import events.UpdateMineCountEvent;
 import gui.ClockTimer;
 import gui.FontChange;
-import gui.Resource;
 import gui.ResourceLoader;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -15,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import models.Mine;
+import models.Resource;
 import services.OptionsService;
 import state.GameState;
 

@@ -4,7 +4,7 @@ import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetResetButtonIconEvent;
 import gui.ClockTimer;
-import gui.Resource;
+import models.Resource;
 import state.GameState;
 
 public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {

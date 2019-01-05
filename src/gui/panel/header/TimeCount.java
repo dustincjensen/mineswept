@@ -5,10 +5,10 @@ import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetTimeCountEvent;
 import gui.FontChange;
-import gui.Resource;
 import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
+import models.Resource;
 import state.GameState;
 
 /**

@@ -1,4 +1,7 @@
-package gui;
+package bootstrap;
+
+import gui.main.MainWindow;
+import utils.ClassFactory;
 
 public class MineSwept {
 	private MainWindow window;

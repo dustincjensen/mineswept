@@ -1,4 +1,4 @@
-package gui;
+package bootstrap;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -6,6 +6,10 @@ import com.google.inject.Singleton;
 import events.EventModule;
 import events.IEventPublisher;
 import events.IEventSubscriber;
+import gui.ClockTimer;
+import gui.main.MainWindow;
+import gui.main.MainWindowHandler;
+import gui.ResourceLoader;
 import gui.menu.MenuModule;
 import gui.menu.Menus;
 import gui.options.OptionsModule;

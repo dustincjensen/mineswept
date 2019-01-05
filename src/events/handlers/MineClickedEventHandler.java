@@ -7,7 +7,7 @@ import events.ShowRecordsEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
 import gui.ClockTimer;
-import gui.Resource;
+import models.Resource;
 import services.MineRevealService;
 import services.RecordsService;
 import services.StatisticsService;

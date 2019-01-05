@@ -60,7 +60,7 @@
 			<zipgroupfileset dir="lib/" includes="**/*.jar" />
 
 			<manifest>
-				<attribute name="Main-Class" value="gui.MineSwept"/>
+				<attribute name="Main-Class" value="bootstrap.MineSwept"/>
 			</manifest>
 		</jar>
 	</target>

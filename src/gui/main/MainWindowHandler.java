@@ -1,6 +1,6 @@
 
 
-package gui;
+package gui.main;
 
 import events.IEventPublisher;
 import events.QuitGameEvent;

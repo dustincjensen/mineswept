@@ -1,14 +1,14 @@
 package gui.panel.header;
 
-import gui.ResourceLoader;
-import gui.Resource;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.ResetGameEvent;
 import events.SetResetButtonIconEvent;
+import gui.ResourceLoader;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import models.Resource;
 
 /**
  * Renders the reset button in the header.

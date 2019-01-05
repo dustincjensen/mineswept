@@ -1,4 +1,4 @@
-package gui;
+package models;
 
 public enum Resource {
     BombHint,

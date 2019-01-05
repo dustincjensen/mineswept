@@ -8,7 +8,7 @@ import events.ResetMinePanelEvent;
 import events.SetResetButtonIconEvent;
 import events.UpdateMineCountEvent;
 import gui.ClockTimer;
-import gui.Resource;
+import models.Resource;
 import state.GameState;
 
 public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {

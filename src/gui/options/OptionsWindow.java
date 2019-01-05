@@ -6,11 +6,11 @@ import events.UpdateMinePanelEvent;
 import gui.components.button.LightButton;
 import gui.components.button.PrimaryButton;
 import gui.HexToRgb;
-import gui.Resource;
 import gui.ResourceLoader;
 import java.awt.*;
 import javax.swing.*;
 import models.Difficulty;
+import models.Resource;
 import services.OptionsService;
 import state.GameState;
 

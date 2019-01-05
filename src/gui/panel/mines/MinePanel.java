@@ -1,12 +1,12 @@
 package gui.panel.mines;
 
-import gui.ClassFactory;
 import events.IEventSubscriber;
-import events.UpdateMinePanelEvent;
 import events.ResetMinePanelEvent;
+import events.UpdateMinePanelEvent;
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;
+import utils.ClassFactory;
 
 /**
  * Renders the the mine panel that allows the player to play the game.
