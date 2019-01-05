@@ -16,7 +16,7 @@ import gui.panel.header.HeaderPanel;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
-import gui.records.RecordModule;
+import gui.records.RecordsModule;
 import gui.statistics.StatisticsModule;
 import factories.FactoriesModule;
 import factories.MinesFactory;
@@ -35,7 +35,7 @@ public class InjectionModule extends AbstractModule {
         install(new MenuModule());
 
         install(new OptionsModule());
-        install(new RecordModule());
+        install(new RecordsModule());
         install(new StatisticsModule());
 
         install(new FactoriesModule());

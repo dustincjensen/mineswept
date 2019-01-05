@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class RecordFrame extends JFrame {
-    public RecordFrame(JPanel content) {
+public class RecordsFrame extends JFrame {
+    public RecordsFrame(JPanel content) {
         super("Records");
         setContentPane(content);
         setSize(300, 450);

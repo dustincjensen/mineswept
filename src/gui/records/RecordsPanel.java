@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import models.records.Record;
 
-public class RecordPanel extends JPanel {
+public class RecordsPanel extends JPanel {
 	private CustomReadonlyTable _table;
 	
-	public RecordPanel() {
+	public RecordsPanel() {
 		setLayout(new GridLayout(0, 1));
 		
 		var header = new TableRow();

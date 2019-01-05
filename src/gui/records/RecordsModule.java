@@ -7,11 +7,11 @@ import com.google.inject.Provides;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 
-public class RecordModule extends AbstractModule {
+public class RecordsModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(RecordWindow.class)
-            .toProvider(RecordWindowProvider.class)
+        bind(RecordsWindow.class)
+            .toProvider(RecordsWindowProvider.class)
             .asEagerSingleton();
     }
 }
@@ -21,18 +21,18 @@ public class RecordModule extends AbstractModule {
  * We have to do this because we use event publish and subscribe, no one actually loads the record window as a
  * dependency.
  */
-class RecordWindowProvider implements Provider<RecordWindow> {
+class RecordsWindowProvider implements Provider<RecordsWindow> {
     private IEventPublisher eventPublisher;
     private IEventSubscriber eventSubscriber;
 
     @Inject
-    public RecordWindowProvider(IEventPublisher publisher, IEventSubscriber subscriber) {
+    public RecordsWindowProvider(IEventPublisher publisher, IEventSubscriber subscriber) {
         eventPublisher = publisher;
         eventSubscriber = subscriber;
     }
 
     @Override
-    public RecordWindow get() {
-        return new RecordWindow(eventPublisher, eventSubscriber);
+    public RecordsWindow get() {
+        return new RecordsWindow(eventPublisher, eventSubscriber);
     }
 }

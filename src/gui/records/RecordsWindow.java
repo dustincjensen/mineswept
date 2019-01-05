@@ -15,15 +15,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import models.Difficulty;
 
-public class RecordWindow {
+public class RecordsWindow {
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
 
 	private JFrame frame;
 	private CustomTabbedPane tabs;
-	private RecordPanel easy, medium, hard;
+	private RecordsPanel easy, medium, hard;
 
-	public RecordWindow(
+	public RecordsWindow(
 		IEventPublisher publisher,
 		IEventSubscriber subscriber
 	) {
@@ -32,7 +32,7 @@ public class RecordWindow {
 
 		System.out.println("Creating: RECORD WINDOW");
 		
-		frame = new RecordFrame(recordPanel());
+		frame = new RecordsFrame(recordPanel());
 
 		setupSubscriptions();
 	}
@@ -41,9 +41,9 @@ public class RecordWindow {
 		var recordPanel = new JPanel();
 		recordPanel.setLayout(new BoxLayout(recordPanel, BoxLayout.Y_AXIS));
 
-		easy = new RecordPanel();
-		medium = new RecordPanel();
-		hard = new RecordPanel();
+		easy = new RecordsPanel();
+		medium = new RecordsPanel();
+		hard = new RecordsPanel();
 
 		tabs = new CustomTabbedPane();
 		tabs.add("Easy", easy);
