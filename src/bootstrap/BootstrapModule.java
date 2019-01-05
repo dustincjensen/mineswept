@@ -8,42 +8,27 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import gui.ClockTimer;
 import gui.main.MainWindow;
-import gui.main.MainWindowHandler;
 import gui.ResourceLoader;
-import gui.menu.MenuModule;
-import gui.menu.Menus;
-import gui.options.OptionsModule;
-import gui.options.OptionsWindow;
+import gui.UiModule;
 import gui.panel.MainPanel;
-import gui.panel.header.HeaderModule;
 import gui.panel.header.HeaderPanel;
 import gui.panel.mines.MineButton;
 import gui.panel.mines.MinePanel;
 import gui.panel.mines.PausePanel;
-import gui.records.RecordsModule;
-import gui.statistics.StatisticsModule;
 import factories.FactoriesModule;
-import factories.MinesFactory;
-import services.HintService;
-import services.MineRevealService;
-import services.OctoCheckService;
 import services.OptionsService;
 import services.ServicesModule;
 import state.GameState;
+import state.StateModule;
 
-public class InjectionModule extends AbstractModule {
+public class BootstrapModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new EventModule());
-        install(new HeaderModule());
-        install(new MenuModule());
-
-        install(new OptionsModule());
-        install(new RecordsModule());
-        install(new StatisticsModule());
-
         install(new FactoriesModule());
         install(new ServicesModule());
+        install(new StateModule());
+        install(new UiModule());
     }
 
     // TODO move this into it's own module...
@@ -69,17 +54,6 @@ public class InjectionModule extends AbstractModule {
     }
 
     @Provides
-    public MainWindow provideMainWindow(
-        MainPanel mainPanel,
-        Menus menus,
-        MainWindowHandler mainWindowHandler,
-        ResourceLoader loader,
-        IEventSubscriber eventSubscriber
-    ) {
-        return new MainWindow(mainPanel, menus, mainWindowHandler, loader, eventSubscriber);
-    }
-
-    @Provides
     public MainPanel provideMainPanel(
         HeaderPanel header,
         MinePanel mine,
@@ -87,11 +61,6 @@ public class InjectionModule extends AbstractModule {
         IEventSubscriber subscriber
     ) {
         return new MainPanel(header, mine, pause, subscriber);
-    }
-
-    @Provides
-    public MainWindowHandler provideMainWindowHandler(IEventPublisher publisher) {
-        return new MainWindowHandler(publisher);
     }
 
     // TODO move this into it's own module?
@@ -105,13 +74,6 @@ public class InjectionModule extends AbstractModule {
         IEventSubscriber subscriber
     ) {
         return new MineButton(options, gameState, clockTimer, loader, publisher, subscriber);
-    }
-
-    // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
-    @Singleton
-    @Provides
-    public GameState provideGameState(OptionsService options, MinesFactory factory) {
-        return new GameState(options, factory);
     }
 
     // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.

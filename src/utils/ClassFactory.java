@@ -1,6 +1,6 @@
 package utils;
 
-import bootstrap.InjectionModule;
+import bootstrap.BootstrapModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -17,7 +17,7 @@ public class ClassFactory {
         // We want to make sure we use the same injector when creating classes,
         // otherwise we may end up creating more instances of classes than we had hoped.
         if (injector == null) {
-            injector = Guice.createInjector(new InjectionModule());
+            injector = Guice.createInjector(new BootstrapModule());
         }
         return (T) injector.getInstance(c);
     }
