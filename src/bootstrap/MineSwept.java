@@ -1,6 +1,6 @@
 package bootstrap;
 
-import gui.main.MainWindow;
+import ui.main.MainWindow;
 import utils.ClassFactory;
 
 public class MineSwept {

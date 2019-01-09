@@ -6,7 +6,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import events.handlers.*;
 import events.IEventPublisher;
-import gui.ClockTimer;
+import ui.ClockTimer;
 import java.util.List;
 import services.HintService;
 import services.MineRevealService;

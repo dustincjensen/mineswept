@@ -6,7 +6,7 @@ import events.SetResetButtonIconEvent;
 import events.ShowRecordsEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
-import gui.ClockTimer;
+import ui.ClockTimer;
 import models.Resource;
 import services.MineRevealService;
 import services.RecordsService;

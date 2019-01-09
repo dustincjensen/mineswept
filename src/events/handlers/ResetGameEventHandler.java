@@ -7,7 +7,7 @@ import events.ResetGameEvent;
 import events.ResetMinePanelEvent;
 import events.SetResetButtonIconEvent;
 import events.UpdateMineCountEvent;
-import gui.ClockTimer;
+import ui.ClockTimer;
 import models.Resource;
 import state.GameState;
 

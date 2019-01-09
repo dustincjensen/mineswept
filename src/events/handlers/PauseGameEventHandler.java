@@ -3,7 +3,7 @@ package events.handlers;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetResetButtonIconEvent;
-import gui.ClockTimer;
+import ui.ClockTimer;
 import models.Resource;
 import state.GameState;
 
