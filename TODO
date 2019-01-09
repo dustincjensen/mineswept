@@ -16,15 +16,12 @@ TODO
 
 Working on
 ==========
-- Refactor UI Options Window
-- Implement Options Saving / Loading
-- Implement Statistics and Statistics UI Window
+/ Refactor UI Options Window
+/ Implement Options Saving / Loading
+/ Implement Statistics and Statistics UI Window
 - Implement alternate color schemes, borders and such for the mines.
 - Make resize-able?
-- Refactor GUI folder
-    - rename ui
+/ Refactor GUI folder
     / move files around, rename folders
     / better modules
-    + move injection module out of ui folder
-    + move MineSwept out of UI folder
-        + remove MineSwept dependency on JFrame directly.
+    
