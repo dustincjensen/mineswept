@@ -1,62 +1,69 @@
 package ui;
 
 import events.IEventPublisher;
+import events.IEventSubscriber;
+import events.ResetClockTimerEvent;
 import events.SetTimeCountEvent;
+import events.StartClockTimerEvent;
+import events.StopClockTimerEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
-// TODO investigate this implementation and make sure it is counting seconds properly...
 public class ClockTimer {
-	private static final int DELAY_IN_MILLISECONDS = 1000;
-	private static final int MAXIMUM_SECONDS_TO_COUNT = 999;
+	private static final int DELAY_IN_MILLISECONDS = 100;
+	private static final int MAXIMUM_TICK_EVENTS = 9999;
 
 	private IEventPublisher eventPublisher;
-	private int time;
+	private IEventSubscriber eventSubscriber;
 	private Timer timer;
+	private int occurrences;
+	private int seconds;
 
-	public ClockTimer(IEventPublisher publisher) {
-		System.out.println("Creating a new clock timer.");
-		eventPublisher = publisher;
-		time = 0;
+	public ClockTimer(
+		IEventPublisher eventPublisher, 
+		IEventSubscriber eventSubscriber
+	) {
+		this.eventPublisher = eventPublisher;
+		this.eventSubscriber = eventSubscriber;
+		occurrences = 0;
+		seconds = 0;
 		timer = new Timer(DELAY_IN_MILLISECONDS, tickEvent());
+
+		setupSubscriptions();
 	}
 
-	public ActionListener tickEvent() {
+	// TODO can this be put on state?
+	// We have a problem that the tick event won't wait to fire for state to be updated, so the local copy is king...
+	public int getSeconds() {
+		return seconds;
+	}
+
+	private ActionListener tickEvent() {
 		return evt -> {
-			if (time >= MAXIMUM_SECONDS_TO_COUNT) {
-				stop();
-			} else {
-				time++;
+			occurrences++;
+			
+			// Stop the timer if we are greater than the maximum ticks to count.
+			if (occurrences >= MAXIMUM_TICK_EVENTS) {
+				timer.stop();
 			}
-			eventPublisher.publish(new SetTimeCountEvent(getTime()));
+
+			var currentSeconds = seconds;
+			seconds = occurrences / 10;
+			
+			// Only publish when the time in seconds no longer match.
+			if (currentSeconds != seconds) {
+				eventPublisher.publish(new SetTimeCountEvent(seconds));	
+			}
 		};
 	}
 
-	public String getTime() {
-		if (time < 10) {
-			return "00" + time;
-		} else if (time < 100) {
-			return "0" + time;
-		} else {
-			return "" + time;
-		}
-	}
-
-	public int getSeconds() {
-		return time;
-	}
-
-	public void start() {
-		timer.start();
-	}
-
-	public void stop() {
-		timer.stop();
-	}
-
-	public void reset() {
-		timer.stop();
-		time = 0;
-		eventPublisher.publish(new SetTimeCountEvent(getTime()));
+	private void setupSubscriptions() {
+		eventSubscriber.subscribe(StartClockTimerEvent.class, event -> timer.start());
+		eventSubscriber.subscribe(StopClockTimerEvent.class, event -> timer.stop());
+		eventSubscriber.subscribe(ResetClockTimerEvent.class, event -> {
+			timer.stop();
+			occurrences = 0;
+			seconds = 0;
+		});
 	}
 }

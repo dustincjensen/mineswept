@@ -4,6 +4,7 @@ import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
 import events.ShowRecordsEvent;
+import events.StopClockTimerEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
 import ui.ClockTimer;
@@ -33,6 +34,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
         this.mineRevealService = mineRevealService;
         this.recordsService = recordsService;
         this.statisticsService = statisticsService;
+        // TODO this should not require the clock timer component directly.
         this.clockTimer = clockTimer;
         this.eventSubscriber = eventSubscriber;
     }
@@ -78,7 +80,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
 
             // If no exception is throw, we can update the game condition.
             if (gameState.updateGameCondition()) {
-                clockTimer.stop();
+                eventSubscriber.notify(new StopClockTimerEvent());
 
                 // Record a record if need be.
                 var recordSet = recordsService.checkAndSaveNewRecord(
@@ -99,10 +101,11 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                     recordSet ? Resource.SmileyRecord : Resource.SmileyCool));
             };
         } catch (GameOverException ex) {
-            gameState.setGameOver(true);
-            clockTimer.stop();
-            statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
+            eventSubscriber.notify(new StopClockTimerEvent());
 			eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileySad));
+            
+            gameState.setGameOver(true);
+            statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
         }
     }
 }

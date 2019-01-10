@@ -6,13 +6,13 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import events.handlers.*;
 import events.IEventPublisher;
-import ui.ClockTimer;
 import java.util.List;
 import services.HintService;
 import services.MineRevealService;
 import services.RecordsService;
 import services.StatisticsService;
 import state.GameState;
+import ui.ClockTimer;
 
 public class EventModule extends AbstractModule {
     @Override
@@ -45,7 +45,9 @@ public class EventModule extends AbstractModule {
         SetTimeCountEventHandler setTimeCount,
         ShowOptionsEventHandler showOptions,
         ShowRecordsEventHandler showRecords,
-        ShowStatisticsEventHandler showStatistics
+        ShowStatisticsEventHandler showStatistics,
+        StartClockTimerEventHandler startClockTimer,
+        StopClockTimerEventHandler stopClockTimer
     ) {
         return List.of(
             about,
@@ -60,7 +62,9 @@ public class EventModule extends AbstractModule {
             setTimeCount,
             showOptions,
             showRecords,
-            showStatistics
+            showStatistics,
+            startClockTimer,
+            stopClockTimer
         );
     }
 
@@ -84,19 +88,17 @@ public class EventModule extends AbstractModule {
     @Provides
     public PauseGameEventHandler providePauseGameEventHandler(
         GameState gameState,
-        ClockTimer clockTimer,
         IEventSubscriber subscriber
     ) {
-        return new PauseGameEventHandler(gameState, clockTimer, subscriber);
+        return new PauseGameEventHandler(gameState, subscriber);
     }
 
     @Provides
     public ResetGameEventHandler provideResetGameEventHandler(
         GameState gameState,
-        ClockTimer clockTimer,
         IEventSubscriber subscriber
     ) {
-        return new ResetGameEventHandler(gameState, clockTimer, subscriber);
+        return new ResetGameEventHandler(gameState, subscriber);
     }
 
     @Provides
@@ -132,5 +134,15 @@ public class EventModule extends AbstractModule {
     @Provides
     public ShowStatisticsEventHandler provideShowStatisticsEventHandler(StatisticsService statisticsService, IEventSubscriber subscriber) {
         return new ShowStatisticsEventHandler(statisticsService, subscriber);
+    }
+
+    @Provides
+    public StartClockTimerEventHandler provideStartClockTimerEventHandler(IEventSubscriber subscriber) {
+        return new StartClockTimerEventHandler(subscriber);
+    }
+
+    @Provides
+    public StopClockTimerEventHandler provideStopClockTimerEventHandler(IEventSubscriber subscriber) {
+        return new StopClockTimerEventHandler(subscriber);
     }
 }

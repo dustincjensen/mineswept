@@ -4,8 +4,8 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
+import events.StartClockTimerEvent;
 import events.UpdateMineCountEvent;
-import ui.ClockTimer;
 import ui.FontChange;
 import ui.ResourceLoader;
 import java.awt.*;
@@ -23,7 +23,6 @@ import state.GameState;
  */
 public class MineButton extends JLabel implements MouseListener {
 	private GameState gameState;
-	private ClockTimer clockTimer;
 	private OptionsService optionsService;
 	private ResourceLoader resourceLoader;
 	private IEventPublisher eventPublisher;
@@ -60,13 +59,11 @@ public class MineButton extends JLabel implements MouseListener {
 	public MineButton(
 		OptionsService options,
 		GameState state,
-		ClockTimer timer,
 		ResourceLoader loader,
 		IEventPublisher publisher,
 		IEventSubscriber subscriber
 	) {
 		gameState = state;
-		clockTimer = timer;
 		optionsService = options;
 		resourceLoader = loader;
 		eventPublisher = publisher;
@@ -196,7 +193,7 @@ public class MineButton extends JLabel implements MouseListener {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			if (!gameState.isGameStarted()) {
 				gameState.setGameStarted(true);
-				clockTimer.start();
+				eventPublisher.publish(new StartClockTimerEvent());
 			}
 			if (!gameState.isGameOver()) {
 				mousePressStartedInsideSquare = true;
@@ -216,7 +213,7 @@ public class MineButton extends JLabel implements MouseListener {
 			
 			if (!gameState.isGameStarted()) {
 				gameState.setGameStarted(true);
-				clockTimer.start();
+				eventPublisher.publish(new StartClockTimerEvent());
 			}
 
 			Mine mineSpot = gameState.getMine(x, y);

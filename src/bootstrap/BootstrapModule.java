@@ -67,20 +67,19 @@ public class BootstrapModule extends AbstractModule {
     @Provides
     public MineButton provideMineButton(
         OptionsService options, 
-        GameState gameState, 
-        ClockTimer clockTimer,
+        GameState gameState,
         ResourceLoader loader,
         IEventPublisher publisher,
         IEventSubscriber subscriber
     ) {
-        return new MineButton(options, gameState, clockTimer, loader, publisher, subscriber);
+        return new MineButton(options, gameState, loader, publisher, subscriber);
     }
 
-    // TODO this shouldn't need to be explicit... revisit this once everything is injected properly.
+    // TODO this should be moved into a different module
     @Singleton
     @Provides
-    public ClockTimer provideClockTimer(IEventPublisher publisher) {
-        return new ClockTimer(publisher);
+    public ClockTimer provideClockTimer(IEventPublisher eventPublisher, IEventSubscriber eventSubscriber) {
+        return new ClockTimer(eventPublisher, eventSubscriber);
     }
 
     @Singleton
