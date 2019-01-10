@@ -6,6 +6,7 @@ import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
 import events.StartClockTimerEvent;
 import events.UpdateMineCountEvent;
+import ui.ColorConverter;
 import ui.FontChange;
 import ui.ResourceLoader;
 import java.awt.*;
@@ -72,8 +73,7 @@ public class MineButton extends JLabel implements MouseListener {
 		nonClickedState = 0;
 
 		// TODO move this to some shared state?
-		var color = options.squareColor();
-		backgroundColor = new Color(color.r, color.g, color.b);
+		backgroundColor = ColorConverter.convert(options.squareColor());
 
 		// TODO allow resizing?
 		// Font size 32 when w,h = 48
@@ -123,11 +123,9 @@ public class MineButton extends JLabel implements MouseListener {
 		// Still covered
 		else {
 			// TODO if we don't cache the options... this would read from file 16x30 times.
-			var color = optionsService.squareColor();
 			// TODO This is probably pretty heavy. Any time a mine is clicked, MinePanel handles the UpdateMinePanelEvent
 			// which redecorates each mine, and we are creating the color for 16x30 mines on each render.
-			backgroundColor = new Color(
-				color.r, color.g, color.b);
+			backgroundColor = ColorConverter.convert(optionsService.squareColor());
 			setBackground(backgroundColor);
 
 			// check for hint (empty space)

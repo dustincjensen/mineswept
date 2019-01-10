@@ -5,6 +5,7 @@ import events.ShowOptionsEvent;
 import events.UpdateMinePanelEvent;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
+import ui.ColorConverter;
 import ui.HexToRgb;
 import ui.ResourceLoader;
 import java.awt.*;
@@ -156,8 +157,7 @@ public class OptionsWindow {
 		var colorPanel = new JPanel(new GridLayout(0, 1));
 		colorPanel.setOpaque(false);
 
-		var color = optionsService.squareColor();
-		var current = new Color(color.r, color.g, color.b);
+		var current = ColorConverter.convert(optionsService.squareColor());
 		colorPanel.add(individualColorPanel(current));
 		
 		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
