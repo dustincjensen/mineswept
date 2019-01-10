@@ -2,7 +2,7 @@
 // This does allow us to remove some clutter from MineButton.java though.
 // Specifically for MineButton.java
 
-package ui.panel.mines;
+package ui.layout.body;
 
 import java.awt.Color;
 import javax.swing.border.BevelBorder;

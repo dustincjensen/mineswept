@@ -1,4 +1,4 @@
-package ui.panel.header;
+package ui.layout.header;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -14,8 +14,8 @@ public class HeaderModule extends AbstractModule {
     }
 
     @Provides
-    public HeaderPanel provideHeaderPanel(MineCount mineCount, ResetButton resetButton, TimeCount timeCount) {
-        return new HeaderPanel(mineCount, resetButton, timeCount);
+    public HeaderLayout provideHeaderLayout(MineCount mineCount, ResetButton resetButton, TimeCount timeCount) {
+        return new HeaderLayout(mineCount, resetButton, timeCount);
     }
 
     @Provides

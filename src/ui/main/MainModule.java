@@ -5,19 +5,19 @@ import com.google.inject.Provides;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import ui.menu.Menus;
-import ui.panel.MainPanel;
+import ui.layout.body.BodyLayout;
 import ui.ResourceLoader;
 
 public class MainModule extends AbstractModule {
     @Provides
     public MainWindow provideMainWindow(
-        MainPanel mainPanel,
+        BodyLayout bodyLayout,
         Menus menus,
         MainWindowHandler mainWindowHandler,
         ResourceLoader loader,
         IEventSubscriber eventSubscriber
     ) {
-        return new MainWindow(mainPanel, menus, mainWindowHandler, loader, eventSubscriber);
+        return new MainWindow(bodyLayout, menus, mainWindowHandler, loader, eventSubscriber);
     }
 
     @Provides

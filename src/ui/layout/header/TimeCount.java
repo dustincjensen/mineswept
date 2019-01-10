@@ -1,4 +1,4 @@
-package ui.panel.header;
+package ui.layout.header;
 
 import events.IEventPublisher;
 import events.IEventSubscriber;

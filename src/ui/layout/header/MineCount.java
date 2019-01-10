@@ -1,4 +1,4 @@
-package ui.panel.header;
+package ui.layout.header;
 
 import events.GetHintEvent;
 import events.IEventPublisher;

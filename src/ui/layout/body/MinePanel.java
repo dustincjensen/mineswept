@@ -1,4 +1,4 @@
-package ui.panel.mines;
+package ui.layout.body;
 
 import events.IEventSubscriber;
 import events.ResetMinePanelEvent;

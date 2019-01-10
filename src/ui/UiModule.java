@@ -10,12 +10,12 @@ import state.GameState;
 import ui.main.MainModule;
 import ui.menu.MenuModule;
 import ui.options.OptionsModule;
-import ui.panel.header.HeaderModule;
-import ui.panel.header.HeaderPanel;
-import ui.panel.MainPanel;
-import ui.panel.mines.MineButton;
-import ui.panel.mines.MinePanel;
-import ui.panel.mines.PausePanel;
+import ui.layout.header.HeaderModule;
+import ui.layout.header.HeaderLayout;
+import ui.layout.body.BodyLayout;
+import ui.layout.body.MineButton;
+import ui.layout.body.MinePanel;
+import ui.layout.body.PausePanel;
 import ui.records.RecordsModule;
 import ui.statistics.StatisticsModule;
 
@@ -63,13 +63,13 @@ public class UiModule extends AbstractModule {
     }
 
     @Provides
-    public MainPanel provideMainPanel(
-        HeaderPanel header,
+    public BodyLayout provideBodyLayout(
+        HeaderLayout header,
         MinePanel mine,
         PausePanel pause,
         IEventSubscriber subscriber
     ) {
-        return new MainPanel(header, mine, pause, subscriber);
+        return new BodyLayout(header, mine, pause, subscriber);
     }
 
     // TODO move this into it's own module?

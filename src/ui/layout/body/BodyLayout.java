@@ -1,20 +1,20 @@
-package ui.panel;
+package ui.layout.body;
 
 import events.IEventSubscriber;
 import events.PauseGameEvent;
-import ui.panel.header.HeaderPanel;
-import ui.panel.mines.MinePanel;
-import ui.panel.mines.PausePanel;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import ui.layout.body.MinePanel;
+import ui.layout.body.PausePanel;
+import ui.layout.header.HeaderLayout;
 
-public class MainPanel extends JPanel {
+public class BodyLayout extends JPanel {
 	private MinePanel minePanel;
 	private PausePanel pausePanel;
 	private IEventSubscriber eventSubscriber;
 
-	public MainPanel(
-		HeaderPanel header,
+	public BodyLayout(
+		HeaderLayout header,
 		MinePanel mine,
 		PausePanel pause,
 		IEventSubscriber subscriber

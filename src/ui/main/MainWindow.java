@@ -3,7 +3,7 @@ package ui.main;
 import events.IEventSubscriber;
 import events.RefreshMainWindowEvent;
 import ui.menu.Menus;
-import ui.panel.MainPanel;
+import ui.layout.body.BodyLayout;
 import ui.ResourceLoader;
 import javax.swing.JFrame;
 import models.Resource;
@@ -12,14 +12,14 @@ public class MainWindow extends JFrame {
     private IEventSubscriber eventSubscriber;
 
     public MainWindow(
-        MainPanel mainPanel,
+        BodyLayout bodyLayout,
         Menus menus,
         MainWindowHandler mainWindowHandler,
         ResourceLoader loader,
         IEventSubscriber eventSubscriber
     ) {
         super("MineSwept");
-		setContentPane(mainPanel);
+		setContentPane(bodyLayout);
 		setJMenuBar(menus);
         setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
