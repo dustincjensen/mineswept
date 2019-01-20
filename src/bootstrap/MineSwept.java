@@ -1,12 +1,12 @@
 package bootstrap;
 
-import ui.main.MainWindow;
+import ui.window.Window;
 import utils.ClassFactory;
 
 public class MineSwept {
-	private MainWindow window;
+	private Window window;
 	
-	public MineSwept(MainWindow window) {
+	public MineSwept(Window window) {
 		this.window = window;
 	}
 

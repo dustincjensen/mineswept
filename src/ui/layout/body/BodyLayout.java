@@ -7,7 +7,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import ui.layout.body.MinePanel;
 import ui.layout.body.PausePanel;
-import ui.layout.header.HeaderLayout;
 
 public class BodyLayout extends Box {
 	private IEventSubscriber eventSubscriber;
@@ -15,18 +14,15 @@ public class BodyLayout extends Box {
 	private PausePanel pausePanel;
 
 	public BodyLayout(
-		HeaderLayout header,
 		MinePanel minePanel,
 		PausePanel pausePanel,
 		IEventSubscriber eventSubscriber
 	) {
 		super(BoxLayout.Y_AXIS);
-		
+		this.eventSubscriber = eventSubscriber;
 		this.minePanel = minePanel;
 		this.pausePanel = pausePanel;
-		this.eventSubscriber = eventSubscriber;
 		
-		add(header);
 		add(minePanel);
 		
 		setupSubscriptions();

@@ -7,22 +7,16 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import services.OptionsService;
 import state.GameState;
-import ui.layout.header.HeaderLayout;
 import ui.ResourceLoader;
 
 public class BodyModule extends AbstractModule {
-    @Override
-    protected void configure() {
-    }
-
     @Provides
     public BodyLayout provideBodyLayout(
-        HeaderLayout header,
         MinePanel mine,
         PausePanel pause,
         IEventSubscriber subscriber
     ) {
-        return new BodyLayout(header, mine, pause, subscriber);
+        return new BodyLayout(mine, pause, subscriber);
     }
 
     @Provides

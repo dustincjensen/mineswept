@@ -1,16 +1,16 @@
 
 
-package ui.main;
+package ui.window;
 
 import events.IEventPublisher;
 import events.QuitGameEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 
-public class MainWindowHandler extends WindowAdapter {
+public class WindowHandler extends WindowAdapter {
     private IEventPublisher eventPublisher;
 
-    public MainWindowHandler(IEventPublisher publisher) {
+    public WindowHandler(IEventPublisher publisher) {
         eventPublisher = publisher;
     }
 

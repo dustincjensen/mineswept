@@ -7,7 +7,7 @@ import events.EventModule;
 import factories.FactoriesModule;
 import services.ServicesModule;
 import state.StateModule;
-import ui.main.MainWindow;
+import ui.window.Window;
 import ui.UiModule;
 
 public class BootstrapModule extends AbstractModule {
@@ -21,7 +21,7 @@ public class BootstrapModule extends AbstractModule {
     }
 
     @Provides
-    public MineSwept provideMineSwept(MainWindow window) {
+    public MineSwept provideMineSwept(Window window) {
         return new MineSwept(window);
     }
 }

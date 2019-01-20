@@ -6,7 +6,7 @@ import com.google.inject.Singleton;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import ui.layout.LayoutModule;
-import ui.main.MainModule;
+import ui.window.WindowModule;
 import ui.menu.MenuModule;
 import ui.options.OptionsModule;
 import ui.records.RecordsModule;
@@ -16,7 +16,7 @@ public class UiModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new LayoutModule());
-        install(new MainModule());
+        install(new WindowModule());
         install(new MenuModule());
         install(new OptionsModule());
         install(new RecordsModule());

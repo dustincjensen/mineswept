@@ -1,25 +1,25 @@
-package ui.main;
+package ui.window;
 
 import events.IEventSubscriber;
 import events.RefreshMainWindowEvent;
 import ui.menu.Menus;
-import ui.layout.body.BodyLayout;
+import ui.layout.MainLayout;
 import ui.ResourceLoader;
 import javax.swing.JFrame;
 import models.Resource;
 
-public class MainWindow extends JFrame {
+public class Window extends JFrame {
     private IEventSubscriber eventSubscriber;
 
-    public MainWindow(
-        BodyLayout bodyLayout,
+    public Window(
+        MainLayout mainLayout,
         Menus menus,
-        MainWindowHandler mainWindowHandler,
+        WindowHandler mainWindowHandler,
         ResourceLoader loader,
         IEventSubscriber eventSubscriber
     ) {
         super("MineSwept");
-		setContentPane(bodyLayout);
+		setContentPane(mainLayout);
 		setJMenuBar(menus);
         setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
