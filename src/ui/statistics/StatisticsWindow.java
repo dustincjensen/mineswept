@@ -5,7 +5,7 @@ import events.IEventSubscriber;
 import events.ResetStatisticsEvent;
 import events.ShowStatisticsEvent;
 import ui.components.button.DangerButton;
-import ui.HexToRgb;
+import ui.utils.HexToRgb;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;

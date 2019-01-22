@@ -1,4 +1,4 @@
-package ui;
+package ui.utils;
 
 public class ColorConverter {
     /**

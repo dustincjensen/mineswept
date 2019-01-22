@@ -4,7 +4,7 @@ import events.IEventPublisher;
 import events.PauseGameEvent;
 import javax.swing.JPanel;
 import ui.components.button.PrimaryButton;
-import ui.FontChange;
+import ui.utils.FontChange;
 
 /**
  * Renders a pause screen and allows the user to restart the game.

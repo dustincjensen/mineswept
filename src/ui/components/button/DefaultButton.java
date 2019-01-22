@@ -1,6 +1,6 @@
 package ui.components.button;
 
-import ui.HexToRgb;
+import ui.utils.HexToRgb;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 

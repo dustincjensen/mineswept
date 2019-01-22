@@ -4,11 +4,11 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.ResetGameEvent;
 import events.SetResetButtonIconEvent;
-import ui.ResourceLoader;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import models.Resource;
+import ui.ResourceLoader;
 
 /**
  * Renders the reset button in the header.

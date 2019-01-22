@@ -6,7 +6,7 @@ import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
 import ui.components.button.DangerButton;
 import ui.components.tabbedPane.CustomTabbedPane;
-import ui.HexToRgb;
+import ui.utils.HexToRgb;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;

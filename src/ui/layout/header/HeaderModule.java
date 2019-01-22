@@ -3,10 +3,11 @@ package ui.layout.header;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import ui.ResourceLoader;
 import events.IEventPublisher;
 import events.IEventSubscriber;
+import models.Resource;
 import state.GameState;
+import ui.ResourceLoader;
 
 public class HeaderModule extends AbstractModule {
     @Override
@@ -25,7 +26,7 @@ public class HeaderModule extends AbstractModule {
         IEventSubscriber subscriber,
         ResourceLoader loader
     ) {
-        return new MineCount(gameState, publisher, subscriber, loader);
+        return new MineCount(gameState, publisher, subscriber, loader.get(Resource.BombHint));
     }
 
     // TODO remove singleton when event subscribers are fully fleshed out
@@ -40,6 +41,6 @@ public class HeaderModule extends AbstractModule {
     @Singleton
     @Provides
     public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, IEventSubscriber subscriber, ResourceLoader loader) {
-        return new TimeCount(gameState, publisher, subscriber, loader);
+        return new TimeCount(gameState, publisher, subscriber, loader.get(Resource.Clock));
     }
 }

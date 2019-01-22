@@ -5,21 +5,19 @@ import events.ShowOptionsEvent;
 import events.UpdateMinePanelEvent;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
-import ui.ColorConverter;
-import ui.HexToRgb;
-import ui.ResourceLoader;
+import ui.utils.ColorConverter;
+import ui.utils.HexToRgb;
 import java.awt.*;
 import javax.swing.*;
 import models.Difficulty;
-import models.Resource;
 import services.OptionsService;
 import state.GameState;
 
 public class OptionsWindow {
 	private GameState gameState;
-	private ResourceLoader resourceLoader;
 	private OptionsService optionsService;
 	private IEventSubscriber eventSubscriber;
+	private ImageIcon confirmationIcon;
 
 	private OptionsFrame frame;
 	private boolean optionsHaveChanged;
@@ -27,16 +25,16 @@ public class OptionsWindow {
 	private JRadioButton easy, medium, hard;
 
 	public OptionsWindow(
-		GameState state,
-		ResourceLoader loader,
-		OptionsService options,
-		IEventSubscriber subscriber
+		GameState gameState,
+		OptionsService optionsService,
+		IEventSubscriber eventSubscriber,
+		ImageIcon confirmationIcon
 	) {
 		System.out.println("Creating new option window...");
-		gameState = state;
-		resourceLoader = loader;
-		optionsService = options;
-		eventSubscriber = subscriber;
+		this.gameState = gameState;
+		this.optionsService = optionsService;
+		this.eventSubscriber = eventSubscriber;
+		this.confirmationIcon = confirmationIcon;
 
 		frame = new OptionsFrame(mainPanel());
 
@@ -224,7 +222,7 @@ public class OptionsWindow {
 
 	private int confirmDialog(String message) {
 		return JOptionPane.showConfirmDialog(null, message, "Confirm?", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, resourceLoader.get(Resource.SmileyHappy));
+				JOptionPane.QUESTION_MESSAGE, confirmationIcon);
 	}
 
 	private void setupSubscriptions() {

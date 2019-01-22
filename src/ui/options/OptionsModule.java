@@ -5,9 +5,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import events.IEventSubscriber;
-import ui.ResourceLoader;
+import models.Resource;
 import services.OptionsService;
 import state.GameState;
+import ui.ResourceLoader;
 
 public class OptionsModule extends AbstractModule {
     @Override
@@ -46,8 +47,8 @@ class OptionsWindowProvider implements Provider<OptionsWindow> {
     public OptionsWindow get() {
         return new OptionsWindow(
             gameState,
-            resourceLoader,
             optionsService,
-            eventSubscriber);
+            eventSubscriber,
+            resourceLoader.get(Resource.SmileyHappy));
     }
 }

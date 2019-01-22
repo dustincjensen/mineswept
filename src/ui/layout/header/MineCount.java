@@ -4,14 +4,13 @@ import events.GetHintEvent;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.UpdateMineCountEvent;
-import ui.FontChange;
-import ui.ResourceLoader;
 import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import models.Resource;
 import state.GameState;
+import ui.utils.FontChange;
 
 /**
  * Renders the mine count panel in the header.
@@ -20,20 +19,19 @@ public class MineCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
-	private ResourceLoader resourceLoader;
-	private JButton mineIcon;
+	private ImageIcon bombHintIcon;
 	private JLabel mineCount;
 
 	public MineCount(
-		GameState state,
-		IEventPublisher publisher,
-		IEventSubscriber subscriber,
-		ResourceLoader loader
+		GameState gameState,
+		IEventPublisher eventPublisher,
+		IEventSubscriber eventSubscriber,
+		ImageIcon bombHintIcon
 	) {
-		gameState = state;
-		eventPublisher = publisher;
-		eventSubscriber = subscriber;
-		resourceLoader = loader;
+		this.gameState = gameState;
+		this.eventPublisher = eventPublisher;
+		this.eventSubscriber = eventSubscriber;
+		this.bombHintIcon = bombHintIcon;
 
 		setLayout(new FlowLayout(FlowLayout.LEADING));
 		setupPanel();
@@ -41,14 +39,14 @@ public class MineCount extends JPanel {
 	}
 
 	private void setupPanel() {
-		mineIcon = new JButton(resourceLoader.get(Resource.BombHint));
-		mineIcon.setToolTipText("Get a hint");
-		mineIcon.setBorderPainted(false);
-		mineIcon.setContentAreaFilled(false);
-		mineIcon.addActionListener(evt -> {
+		var button = new JButton(bombHintIcon);
+		button.setToolTipText("Get a hint");
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.addActionListener(evt -> {
 			eventPublisher.publish(new GetHintEvent());
 		});
-		add(mineIcon);
+		add(button);
 
 		mineCount = new JLabel("");
 		mineCount.setText("" + gameState.getMineCount());

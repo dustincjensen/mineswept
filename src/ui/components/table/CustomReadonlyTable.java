@@ -1,6 +1,6 @@
 package ui.components.table;
 
-import ui.HexToRgb;
+import ui.utils.HexToRgb;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package ui.components.tabbedPane;
 
-import ui.HexToRgb;
+import ui.utils.HexToRgb;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;

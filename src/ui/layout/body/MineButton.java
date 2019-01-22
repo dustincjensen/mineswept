@@ -6,9 +6,6 @@ import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
 import events.StartClockTimerEvent;
 import events.UpdateMineCountEvent;
-import ui.ColorConverter;
-import ui.FontChange;
-import ui.ResourceLoader;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -18,6 +15,8 @@ import models.Mine;
 import models.Resource;
 import services.OptionsService;
 import state.GameState;
+import ui.utils.ColorConverter;
+import ui.utils.FontChange;
 
 /**
  * Setup a mine button.
@@ -25,9 +24,13 @@ import state.GameState;
 public class MineButton extends JLabel implements MouseListener {
 	private GameState gameState;
 	private OptionsService optionsService;
-	private ResourceLoader resourceLoader;
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
+	private ImageIcon mineIcon;
+	private ImageIcon mineWrongIcon;
+	private ImageIcon mineHintIcon;
+	private ImageIcon flagIcon;
+	private ImageIcon flagHintIcon;
 
 	private int x, y;
 	private Color backgroundColor;
@@ -58,22 +61,30 @@ public class MineButton extends JLabel implements MouseListener {
 	private static boolean mousePressStartedInsideSquare;
 
 	public MineButton(
-		OptionsService options,
-		GameState state,
-		ResourceLoader loader,
-		IEventPublisher publisher,
-		IEventSubscriber subscriber
+		GameState gameState,
+		OptionsService optionsService,
+		IEventPublisher eventPublisher,
+		IEventSubscriber eventSubscriber,
+		ImageIcon mineIcon,
+		ImageIcon mineWrongIcon,
+		ImageIcon mineHintIcon,
+		ImageIcon flagIcon,
+		ImageIcon flagHintIcon
 	) {
-		gameState = state;
-		optionsService = options;
-		resourceLoader = loader;
-		eventPublisher = publisher;
-		eventSubscriber = subscriber;
+		this.gameState = gameState;
+		this.optionsService = optionsService;
+		this.eventPublisher = eventPublisher;
+		this.eventSubscriber = eventSubscriber;
+		this.mineIcon = mineIcon;
+		this.mineWrongIcon = mineWrongIcon;
+		this.mineHintIcon = mineHintIcon;
+		this.flagIcon = flagIcon;
+		this.flagHintIcon = flagHintIcon;
 
 		nonClickedState = 0;
 
 		// TODO move this to some shared state?
-		backgroundColor = ColorConverter.convert(options.squareColor());
+		backgroundColor = ColorConverter.convert(optionsService.squareColor());
 
 		// TODO allow resizing?
 		// Font size 32 when w,h = 48
@@ -100,12 +111,12 @@ public class MineButton extends JLabel implements MouseListener {
 			// A bomb
 			if (t.isBomb()) {
 				setText("");
-				setIcon(resourceLoader.get(Resource.Mine));
+				setIcon(mineIcon);
 			}
 			// Not a bomb but is has flag, is wrong
 			else if (!t.isBomb() && t.isProtected()) {
 				setText("");
-				setIcon(resourceLoader.get(Resource.MineWrong));
+				setIcon(mineWrongIcon);
 			}
 			// A regular square or empty
 			else {
@@ -130,14 +141,12 @@ public class MineButton extends JLabel implements MouseListener {
 
 			// check for hint (empty space)
 			if (!gameState.isGameOver() && t.isHint()) {
-				setIcon(t.isSpecialProtected() 
-					? resourceLoader.get(Resource.FlagHint) 
-					: resourceLoader.get(Resource.MineHint));
+				setIcon(t.isSpecialProtected() ? flagHintIcon : mineHintIcon);
 				setText("");
 			}
 
 			if (gameState.isGameOver() && t.isBomb() && !t.getAnyProtected()) {
-				setIcon(resourceLoader.get(Resource.Mine));
+				setIcon(mineIcon);
 				setText("");
 			}
 		}
@@ -224,7 +233,7 @@ public class MineButton extends JLabel implements MouseListener {
 				}
 
 				mineSpot.setProtected(nonClickedState == 1);
-				setIcon(nonClickedState == 1 ? resourceLoader.get(Resource.Flag) : null);
+				setIcon(nonClickedState == 1 ? flagIcon : null);
 				setForeground(nonClickedState == 2 ? Color.WHITE : null);
 				setText(nonClickedState == 2 ? "?" : "");
 

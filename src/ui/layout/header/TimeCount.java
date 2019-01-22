@@ -4,12 +4,13 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetTimeCountEvent;
-import ui.FontChange;
-import ui.ResourceLoader;
-import java.awt.*;
-import javax.swing.*;
-import models.Resource;
+import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import state.GameState;
+import ui.utils.FontChange;
 
 /**
  * Renders the time count in the header.
@@ -18,19 +19,19 @@ public class TimeCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
-	private ResourceLoader resourceLoader;
+	private ImageIcon clockIcon;
 	private JLabel clockCount;
 
 	public TimeCount(
-		GameState state, 
-		IEventPublisher publisher,
-		IEventSubscriber subscriber,
-		ResourceLoader loader
+		GameState gameState,
+		IEventPublisher eventPublisher,
+		IEventSubscriber eventSubscriber,
+		ImageIcon clockIcon
 	) {
-		gameState = state;
-		eventPublisher = publisher;
-		eventSubscriber = subscriber;
-		resourceLoader = loader;
+		this.gameState = gameState;
+		this.eventPublisher = eventPublisher;
+		this.eventSubscriber = eventSubscriber;
+		this.clockIcon = clockIcon;
 		
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
 		setupPanel();
@@ -42,14 +43,14 @@ public class TimeCount extends JPanel {
 		FontChange.setFont(clockCount, 24);
 		add(clockCount);
 
-		var clockIcon = new JButton(resourceLoader.get(Resource.Clock));
-		clockIcon.setToolTipText("Pause or Continue");
-		clockIcon.setBorderPainted(false);
-		clockIcon.setContentAreaFilled(false);
-		clockIcon.addActionListener(evt -> {
+		var button = new JButton(clockIcon);
+		button.setToolTipText("Pause or Continue");
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.addActionListener(evt -> {
 			eventPublisher.publish(new PauseGameEvent(!gameState.isGamePaused()));
 		});
-		add(clockIcon);
+		add(button);
 	}
 
 	private void setupSubscriptions() {

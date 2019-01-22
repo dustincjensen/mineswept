@@ -1,7 +1,7 @@
 package ui.statistics;
 
 //import models.statistics.ShortTermStats;
-import ui.HexToRgb;
+import ui.utils.HexToRgb;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

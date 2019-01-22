@@ -2,11 +2,10 @@ package ui.window;
 
 import events.IEventSubscriber;
 import events.RefreshMainWindowEvent;
-import ui.menu.Menus;
-import ui.layout.MainLayout;
-import ui.ResourceLoader;
+import java.awt.Image;
 import javax.swing.JFrame;
-import models.Resource;
+import ui.layout.MainLayout;
+import ui.menu.Menus;
 
 public class Window extends JFrame {
     private IEventSubscriber eventSubscriber;
@@ -15,15 +14,15 @@ public class Window extends JFrame {
         MainLayout mainLayout,
         Menus menus,
         WindowHandler mainWindowHandler,
-        ResourceLoader loader,
-        IEventSubscriber eventSubscriber
+        IEventSubscriber eventSubscriber,
+        Image windowIcon
     ) {
         super("MineSwept");
 		setContentPane(mainLayout);
 		setJMenuBar(menus);
         setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setIconImage(loader.get(Resource.SmileyCool).getImage());
+        setIconImage(windowIcon);
         addWindowListener(mainWindowHandler);
 
         this.eventSubscriber = eventSubscriber;
