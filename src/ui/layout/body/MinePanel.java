@@ -25,7 +25,7 @@ public class MinePanel extends JPanel {
 	) {
 		eventSubscriber = subscriber;
 
-		setLayout(new FlowLayout());
+		setLayout(new BorderLayout(0 , 0));
 		mineButtons = new Vector<MineButton>(maximumPuzzleMineCount);
 		setupInteriorMinePanel(initialHeight, initialWidth);
 		setupSubscriptions();
@@ -39,7 +39,7 @@ public class MinePanel extends JPanel {
 		minePanel.setLayout(minePanelLayout);
 
 		addMines(h, w);
-		add(minePanel);
+		add(minePanel, BorderLayout.CENTER);
 	}
 
 	private void addMines(int h, int w) {

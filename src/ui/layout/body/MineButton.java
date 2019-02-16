@@ -91,7 +91,12 @@ public class MineButton extends JLabel implements MouseListener {
 		// Font size 22 when w,h = 32
 		FontChange.setFont(this, 32);
 		int w = 48, h = 48;
-		setPreferredSize(new Dimension(w, h));
+
+		// Set all these the same to force the layout to behave...
+		var dim = new Dimension(w, h);
+		setPreferredSize(dim);
+		setMaximumSize(dim);
+		setMinimumSize(dim);
 		
 		setHorizontalAlignment(JLabel.CENTER);
 		setOpaque(true);
