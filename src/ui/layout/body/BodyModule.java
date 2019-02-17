@@ -21,8 +21,17 @@ public class BodyModule extends AbstractModule {
     }
 
     @Provides
-    public PausePanel providePausePanel(IEventPublisher publisher) {
-        return new PausePanel(publisher);
+    public PausePanel providePausePanel(
+        GameState state,
+        IEventPublisher publisher,
+        IEventSubscriber subscriber
+    ) {
+        return new PausePanel(
+            state.getCurrentPuzzleHeight(),
+            state.getCurrentPuzzleWidth(),
+            state.getCurrentPuzzleMineCount(),
+            publisher,
+            subscriber);
     }
 
     @Provides

@@ -4,7 +4,7 @@ import events.IEventSubscriber;
 import events.PauseGameEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 import ui.layout.body.MinePanel;
 import ui.layout.body.PausePanel;
 
@@ -28,7 +28,7 @@ public class BodyLayout extends Box {
 		setupSubscriptions();
 	}
 
-	private void swap(JPanel panelToRemove, JPanel panelToAdd) {
+	private void swap(JComponent panelToRemove, JComponent panelToAdd) {
 		remove(panelToRemove);
 		add(panelToAdd);
 	}
