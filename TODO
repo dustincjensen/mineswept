@@ -25,3 +25,6 @@ Working on
     / move files around, rename folders
     / better modules
     
+Bugs
+==========
+- Right click while holding down left click should not work.

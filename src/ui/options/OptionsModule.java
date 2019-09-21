@@ -3,7 +3,6 @@ package ui.options;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.Provides;
 import events.IEventSubscriber;
 import models.Resource;
 import services.OptionsService;

@@ -2,7 +2,6 @@ package bootstrap;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import events.EventModule;
 import factories.FactoriesModule;
 import services.ServicesModule;

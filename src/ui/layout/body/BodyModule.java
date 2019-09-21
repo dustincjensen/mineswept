@@ -2,7 +2,6 @@ package ui.layout.body;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import models.Resource;
