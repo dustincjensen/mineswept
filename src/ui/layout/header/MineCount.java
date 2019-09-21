@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import state.GameState;
 import ui.utils.FontChange;
+import ui.utils.HexToRgb;
 
 /**
  * Renders the mine count panel in the header.
@@ -34,6 +35,7 @@ public class MineCount extends JPanel {
 		this.bombHintIcon = bombHintIcon;
 
 		setLayout(new FlowLayout(FlowLayout.LEADING));
+		setBackground(null);
 		setupPanel();
 		setupSubscriptions();
 	}
@@ -49,6 +51,7 @@ public class MineCount extends JPanel {
 		add(button);
 
 		mineCount = new JLabel("");
+		mineCount.setForeground(HexToRgb.convert("#ffffff"));
 		mineCount.setText("" + gameState.getMineCount());
 		FontChange.setFont(mineCount, 24);
 		add(mineCount);

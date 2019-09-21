@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import state.GameState;
 import ui.utils.FontChange;
+import ui.utils.HexToRgb;
 
 /**
  * Renders the time count in the header.
@@ -34,12 +35,14 @@ public class TimeCount extends JPanel {
 		this.clockIcon = clockIcon;
 		
 		setLayout(new FlowLayout(FlowLayout.TRAILING));
+		setBackground(null);
 		setupPanel();
 		setupSubscriptions();
 	}
 
 	private void setupPanel() {
 		clockCount = new JLabel("000");
+		clockCount.setForeground(HexToRgb.convert("#ffffff"));
 		FontChange.setFont(clockCount, 24);
 		add(clockCount);
 

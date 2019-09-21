@@ -29,6 +29,7 @@ public class ResetButton extends JPanel {
 		resourceLoader = loader;
 		
 		setLayout(new FlowLayout());
+		setOpaque(false);
 		setupPanel();
 		setupSubscriptions();
 	}

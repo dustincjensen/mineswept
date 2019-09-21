@@ -2,6 +2,7 @@ package ui.layout.header;
 
 import java.awt.GridLayout;
 import javax.swing.JPanel;
+import ui.utils.HexToRgb;
 
 /**
  * Renders the header for the application which includes things like the hints,
@@ -13,5 +14,7 @@ public class HeaderLayout extends JPanel {
 		add(mineCount);
 		add(resetButton);
 		add(timeCount);
+
+		setBackground(HexToRgb.convert("#333333"));
 	}
 }
