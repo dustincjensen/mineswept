@@ -22,8 +22,7 @@ public class OptionsService {
 	public Color squareColor() {
 		if (_cachedOptions == null) {
 			_fileService.withFile(FILE_NAME, new Options(), file -> {
-				var options = _fileService.readFile(file, Options.class);
-				_cachedOptions = options;
+				_cachedOptions = _fileService.readFile(file, Options.class);
 			});
 		}
 		return _cachedOptions.squareColor;
@@ -57,8 +56,7 @@ public class OptionsService {
 	public Difficulty difficulty() {
 		if (_cachedOptions == null) {
 			_fileService.withFile(FILE_NAME, new Options(), file -> {
-				var options = _fileService.readFile(file, Options.class);
-				_cachedOptions = options;
+				_cachedOptions = _fileService.readFile(file, Options.class);
 			});
 		}
 		return Difficulty.getDifficulty(_cachedOptions.difficulty.toLowerCase());

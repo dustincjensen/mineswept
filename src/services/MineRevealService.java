@@ -21,16 +21,14 @@ public class MineRevealService {
     public void uncover(int index, Mines mines, int puzzleWidth) throws GameOverException {
         var currentMine = mines.get(index);
 		
-		// If we are a bomb and am not protected, we need to blow up.
-		if (currentMine.isBomb() && !currentMine.getAnyProtected()) {
+		if (currentMine.uncovered() || currentMine.getAnyProtected()) {
+			return;
+		}
+		
+		if (currentMine.isBomb()) {
 			currentMine.setBlewUp(true);
             uncoverAll(mines);
             throw new GameOverException();
-		}
-
-		// If we are already uncovered, nothing to do here. Or it is protected... move on.
-		if (currentMine.uncovered() || currentMine.getAnyProtected()) {
-			return;
 		}
 
 		// Uncover the current mine if it is not protected.

@@ -78,7 +78,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 mineRevealService.uncover(index, mines, puzzleWidth);
             }
 
-            // If no exception is throw, we can update the game condition.
+            // If no exception is thrown, we can update the game condition.
             if (gameState.updateGameCondition()) {
                 eventSubscriber.notify(new StopClockTimerEvent());
 
