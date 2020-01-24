@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class RecordsFrame extends JFrame {
     public RecordsFrame(JPanel content) {
         super("Records");

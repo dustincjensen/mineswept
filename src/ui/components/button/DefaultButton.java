@@ -4,6 +4,7 @@ import ui.utils.HexToRgb;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
 public abstract class DefaultButton extends JButton {
     private DefaultButtonUi buttonUi;
 

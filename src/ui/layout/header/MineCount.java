@@ -16,6 +16,7 @@ import ui.utils.HexToRgb;
 /**
  * Renders the mine count panel in the header.
  */
+@SuppressWarnings("serial")
 public class MineCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;

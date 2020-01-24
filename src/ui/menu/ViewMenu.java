@@ -11,6 +11,7 @@ import javax.swing.KeyStroke;
 /**
  * Sets up the view menu
  */
+@SuppressWarnings("serial")
 public class ViewMenu extends JMenu {
 	private IEventPublisher eventPublisher;
 

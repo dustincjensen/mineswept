@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import models.statistics.AllStats;
 import models.statistics.LongTermStats;
 
+@SuppressWarnings("serial")
 public class StatisticsPanel extends JPanel {
     public StatisticsPanel() {
         setLayout(new GridLayout(3, 1));

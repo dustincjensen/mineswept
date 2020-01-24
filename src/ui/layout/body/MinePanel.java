@@ -11,6 +11,7 @@ import utils.ClassFactory;
 /**
  * Renders the the mine panel that allows the player to play the game.
  */
+@SuppressWarnings("serial")
 public class MinePanel extends JPanel {
 	private IEventSubscriber eventSubscriber;
 	private JPanel minePanel;

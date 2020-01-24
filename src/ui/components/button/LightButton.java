@@ -2,6 +2,7 @@ package ui.components.button;
 
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("serial")
 public class LightButton extends DefaultButton {
     private static final String foreground = "#212529";
     private static final String background = "#f8f9fa";

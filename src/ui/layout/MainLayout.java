@@ -5,6 +5,7 @@ import javax.swing.BoxLayout;
 import ui.layout.body.BodyLayout;
 import ui.layout.header.HeaderLayout;
 
+@SuppressWarnings("serial")
 public class MainLayout extends Box {
     public MainLayout(
         HeaderLayout header,

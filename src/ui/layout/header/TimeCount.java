@@ -16,6 +16,7 @@ import ui.utils.HexToRgb;
 /**
  * Renders the time count in the header.
  */
+@SuppressWarnings("serial")
 public class TimeCount extends JPanel {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;

@@ -13,6 +13,7 @@ import ui.ResourceLoader;
 /**
  * Renders the reset button in the header.
  */
+@SuppressWarnings("serial")
 public class ResetButton extends JPanel {
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;

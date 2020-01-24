@@ -3,7 +3,6 @@ package ui.statistics;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.Provides;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 

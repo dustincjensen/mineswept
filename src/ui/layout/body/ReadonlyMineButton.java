@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 /**
  * Used only to create a grid like view for the pause screen.
  */
+@SuppressWarnings("serial")
 public class ReadonlyMineButton extends JLabel {
     private static final int w = 48, h = 48;
     private Color backgroundColor = StylesModern.MINE_CLICKED_BACKGROUND_COLOR;

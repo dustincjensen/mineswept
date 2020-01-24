@@ -2,6 +2,7 @@ package ui.components.button;
 
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("serial")
 public class DangerButton extends DefaultButton {
     private static final String foreground = "#ffffff";
     private static final String background = "#dc3545";

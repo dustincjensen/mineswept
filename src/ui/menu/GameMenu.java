@@ -12,6 +12,7 @@ import javax.swing.KeyStroke;
 /**
  * Sets up the game menu.
  */
+@SuppressWarnings("serial")
 public class GameMenu extends JMenu {
 	private IEventPublisher eventPublisher;
 

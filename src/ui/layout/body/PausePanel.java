@@ -16,6 +16,7 @@ import ui.utils.FontChange;
 /**
  * Renders a pause screen and allows the user to restart the game.
  */
+@SuppressWarnings("serial")
 public class PausePanel extends JPanel {
 	private IEventPublisher eventPublisher;
 

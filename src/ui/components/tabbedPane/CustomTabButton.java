@@ -3,6 +3,7 @@ package ui.components.tabbedPane;
 import ui.components.button.DefaultButton;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("serial")
 public class CustomTabButton extends DefaultButton {
     private static final String selectedForeground = "#ffffff";
     private static final String selectedBackground = "#007bff";

@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class CustomTabbedPane extends JPanel {
     private ArrayList<String> names;
     private int selectedIndex;

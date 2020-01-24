@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import models.records.Record;
 
+@SuppressWarnings("serial")
 public class RecordsPanel extends JPanel {
 	private CustomReadonlyTable _table;
 	

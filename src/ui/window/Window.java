@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import ui.layout.MainLayout;
 import ui.menu.Menus;
 
+@SuppressWarnings("serial")
 public class Window extends JFrame {
     private IEventSubscriber eventSubscriber;
 

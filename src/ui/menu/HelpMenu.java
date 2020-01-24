@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 /**
  * Sets up the help menu.
  */
+@SuppressWarnings("serial")
 public class HelpMenu extends JMenu {
 	private IEventPublisher eventPublisher;
 

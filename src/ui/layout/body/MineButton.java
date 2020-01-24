@@ -22,6 +22,7 @@ import ui.utils.FontChange;
 /**
  * Setup a mine button.
  */
+@SuppressWarnings("serial")
 public class MineButton extends JLabel implements MouseListener {
 	private GameState gameState;
 	private OptionsService optionsService;

@@ -2,6 +2,7 @@ package models;
 
 import java.util.Vector;
 
+@SuppressWarnings("serial")
 public class Mines extends Vector<Mine> {
 	public Mines(int size) {
 		super(size);

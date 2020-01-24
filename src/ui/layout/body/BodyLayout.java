@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import ui.layout.body.MinePanel;
 import ui.layout.body.PausePanel;
 
+@SuppressWarnings("serial")
 public class BodyLayout extends Box {
 	private IEventSubscriber eventSubscriber;
 	private MinePanel minePanel;
