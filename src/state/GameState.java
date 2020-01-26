@@ -14,25 +14,26 @@ import services.OptionsService;
  */
 public class GameState {
 	private MinesFactory minesFactory;
+	private OptionsService optionsService;
 
 	private boolean gameStarted;
 	private boolean gameOver;
 	private boolean gamePaused;
 	private Difficulty currentPuzzleDifficulty;
-	private Difficulty nextPuzzleDifficulty;
 	private Map<Difficulty, Integer> puzzleWidths;
 	private Map<Difficulty, Integer> puzzleHeights;
 	private Map<Difficulty, Integer> puzzleMines;
 	private Mines gameMines;
 
 	public GameState(OptionsService options, MinesFactory mines) {
+		optionsService = options;
 		minesFactory = mines;
 
 		System.out.println("Creating new game state");
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
-		currentPuzzleDifficulty = nextPuzzleDifficulty = options.difficulty();
+		currentPuzzleDifficulty = options.difficulty();
 		puzzleWidths = Map.of(
 			Difficulty.easy, 9,
 			Difficulty.medium, 16,
@@ -149,28 +150,10 @@ public class GameState {
 	}
 
 	/**
-	 * Update the current puzzle difficulty to be the next puzzle difficulty.
+	 * Update the current puzzle difficulty to be the puzzle difficulty from options.
 	 */
 	public void setCurrentPuzzleToNextPuzzle() {
-		currentPuzzleDifficulty = nextPuzzleDifficulty;
-	}
-
-	/**
-	 * Returns the next puzzle difficulty.
-	 * 
-	 * @return the difficulty of the next puzzle.
-	 */
-	public Difficulty getNextPuzzleDifficulty() {
-		return nextPuzzleDifficulty;
-	}
-
-	/**
-	 * Set the next puzzle difficulty.
-	 * 
-	 * @param difficulty the difficulty of the next puzzle.
-	 */
-	public void setNextPuzzleDifficulty(Difficulty difficulty) {
-		nextPuzzleDifficulty = difficulty;
+		currentPuzzleDifficulty = optionsService.difficulty();
 	}
 
 	/**
@@ -179,7 +162,7 @@ public class GameState {
 	 * @return the height of the current puzzle.
 	 */
 	public int getCurrentPuzzleHeight() {
-		return puzzleHeights.get(getCurrentPuzzleDifficulty());
+		return puzzleHeights.get(currentPuzzleDifficulty);
 	}
 
 	/**
@@ -188,7 +171,7 @@ public class GameState {
 	 * @return the width of the current puzzle.
 	 */
 	public int getCurrentPuzzleWidth() {
-		return puzzleWidths.get(getCurrentPuzzleDifficulty());
+		return puzzleWidths.get(currentPuzzleDifficulty);
 	}
 
 	/**
@@ -197,7 +180,7 @@ public class GameState {
 	 * @return the number of mines in the current puzzle.
 	 */
 	public int getCurrentPuzzleMineCount() {
-		return puzzleMines.get(getCurrentPuzzleDifficulty());
+		return puzzleMines.get(currentPuzzleDifficulty);
 	}
 
 	/**

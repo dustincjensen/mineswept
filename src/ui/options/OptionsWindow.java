@@ -204,18 +204,10 @@ public class OptionsWindow {
 	private void setNewOptions() {
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
-			// TODO this should set the options service value...
-			// TODO this should not access game state directly, but set this through
-			// an event publish.
-			// TODO perhaps game state should not "know" the next puzzle difficulty?
-			// Perhaps it is just loaded from the options?
-			gameState.setNextPuzzleDifficulty(Difficulty.easy);
 			optionsService.setDifficulty(Difficulty.easy);
 		} else if (diff.equals(medium.getModel())) {
-			gameState.setNextPuzzleDifficulty(Difficulty.medium);
 			optionsService.setDifficulty(Difficulty.medium);
 		} else if (diff.equals(hard.getModel())) {
-			gameState.setNextPuzzleDifficulty(Difficulty.hard);
 			optionsService.setDifficulty(Difficulty.hard);
 		}
 	}
