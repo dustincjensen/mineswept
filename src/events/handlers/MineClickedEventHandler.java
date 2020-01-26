@@ -5,6 +5,7 @@ import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
 import events.ShowRecordsEvent;
 import events.StopClockTimerEvent;
+import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
 import ui.ClockTimer;
@@ -41,7 +42,6 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
 
     @Override
     public void execute(MineClickedEvent event) {
-        if (!event.isLeftMouseButton) return;
         if (gameState.isGameOver()) return;
 
         // Reset to the smiley icon, since we let go of the mouse...
@@ -59,7 +59,11 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             y = event.dragY;
         }
 
-        leftClicked(x, y);
+        if (event.isLeftMouseButton) {
+            leftClicked(x, y);
+        } else {
+            rightClicked(x, y);
+        }
 
         eventSubscriber.notify(new UpdateMinePanelEvent());
     }
@@ -106,6 +110,15 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             
             gameState.setGameOver(true);
             statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
+        }
+    }
+
+    private void rightClicked(int x, int y) {
+        var mine = gameState.getMine(x, y);
+        
+        if (!mine.uncovered() && !mine.isSpecialProtected()) {
+            mine.updateMineState();
+            eventSubscriber.notify(new UpdateMineCountEvent());
         }
     }
 }

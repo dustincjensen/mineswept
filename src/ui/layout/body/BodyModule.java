@@ -47,14 +47,12 @@ public class BodyModule extends AbstractModule {
         OptionsService options, 
         GameState gameState,
         ResourceLoader loader,
-        IEventPublisher publisher,
-        IEventSubscriber subscriber
+        IEventPublisher publisher
     ) {
         return new MineButton(
             gameState,
             options,
             publisher,
-            subscriber,
             loader.get(Resource.Mine),
             loader.get(Resource.MineWrong),
             loader.get(Resource.MineHint),

@@ -7,6 +7,7 @@ public class Mine {
 	private boolean isBomb;
 	private boolean uncovered;
 	private boolean protect;
+	private MineState mineState;
 	private boolean blewUp;
 	private boolean hint;
 	private boolean specialProtected;
@@ -17,6 +18,7 @@ public class Mine {
 		isBomb = false;
 		uncovered = false;
 		protect = false;
+		mineState = MineState.Empty;
 		blewUp = false;
 		hint = false;
 		spotValue = -1;
@@ -28,6 +30,24 @@ public class Mine {
 
 	public boolean isBomb() {
 		return isBomb;
+	}
+
+	// TODO re-evaluate
+	public MineState updateMineState() {
+		if (mineState == MineState.Empty) {
+			setProtected(true);
+			return mineState = MineState.Flag;
+		}
+
+		setProtected(false);
+		if (mineState == MineState.Flag) {
+			return mineState = MineState.QuestionMark;
+		}
+		return mineState = MineState.Empty;
+	}
+
+	public MineState getMineState() {
+		return mineState;
 	}
 
 	public void setProtected(boolean value) {
