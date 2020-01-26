@@ -59,7 +59,7 @@ public class MineCount extends JPanel {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(UpdateMineCountEvent.class, (event) -> {
+		eventSubscriber.subscribe(UpdateMineCountEvent.class, event -> {
 			mineCount.setText("" + gameState.getMineCount());
 		});
 	}

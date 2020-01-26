@@ -47,7 +47,7 @@ public class ResetButton extends JPanel {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(SetResetButtonIconEvent.class, (event) -> {
+		eventSubscriber.subscribe(SetResetButtonIconEvent.class, event -> {
 			smileButton.setIcon(resourceLoader.get(event.resource));
 		});
 	}

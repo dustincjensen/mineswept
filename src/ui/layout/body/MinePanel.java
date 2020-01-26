@@ -58,7 +58,7 @@ public class MinePanel extends JPanel {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(UpdateMinePanelEvent.class, (event) -> {
+		eventSubscriber.subscribe(UpdateMinePanelEvent.class, event -> {
 			for (int i = 0; i < mineButtons.size(); i++) {
 				mineButtons.get(i).decorate();
 			}
@@ -66,7 +66,7 @@ public class MinePanel extends JPanel {
 			repaint();
 		});
 
-		eventSubscriber.subscribe(ResetMinePanelEvent.class, (event) -> {
+		eventSubscriber.subscribe(ResetMinePanelEvent.class, event -> {
 			minePanelLayout.setRows(event.h);
 			minePanelLayout.setColumns(event.w);
 			addMines(event.h, event.w);

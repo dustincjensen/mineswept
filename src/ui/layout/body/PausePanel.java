@@ -83,7 +83,7 @@ public class PausePanel extends JPanel {
 	}
 
 	private void setupSubscriptions(IEventSubscriber eventSubscriber) {
-		eventSubscriber.subscribe(ResetMinePanelEvent.class, (event) -> {
+		eventSubscriber.subscribe(ResetMinePanelEvent.class, event -> {
 			var layout = (GridLayout)minePanel.getLayout();
 
 			layout.setRows(event.h);

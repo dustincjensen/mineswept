@@ -58,7 +58,7 @@ public class TimeCount extends JPanel {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(SetTimeCountEvent.class, (event) -> {
+		eventSubscriber.subscribe(SetTimeCountEvent.class, event -> {
 			var formattedTime = String.format("%03d", event.time);
 			clockCount.setText(formattedTime);
 		});

@@ -35,7 +35,7 @@ public class BodyLayout extends Box {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(PauseGameEvent.class, (event) -> {
+		eventSubscriber.subscribe(PauseGameEvent.class, event -> {
 			if (event.pause) {
 				swap(minePanel, pausePanel);
 			} else {
