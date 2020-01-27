@@ -13,9 +13,7 @@ import javax.swing.border.Border;
 import models.Mine;
 import models.MineState;
 import models.Resource;
-import services.OptionsService;
 import state.GameState;
-import ui.utils.ColorConverter;
 import ui.utils.FontChange;
 
 /**
@@ -24,7 +22,6 @@ import ui.utils.FontChange;
 @SuppressWarnings("serial")
 public class MineButton extends JLabel implements MouseListener {
 	private GameState gameState;
-	private OptionsService optionsService;
 	private IEventPublisher eventPublisher;
 	private ImageIcon mineIcon;
 	private ImageIcon mineWrongIcon;
@@ -33,14 +30,14 @@ public class MineButton extends JLabel implements MouseListener {
 	private ImageIcon flagHintIcon;
 
 	private int x, y;
-	private Color backgroundColor = StylesModern.MINE_BACKGROUND_COLOR;
-	private Color altBackgroundColor = StylesModern.MINE_ALT_BACKGROUND_COLOR;
-	private Color clickedBackgroundColor = StylesModern.MINE_CLICKED_BACKGROUND_COLOR;
-	private Color clickedAltBackgroundColor = StylesModern.MINE_CLICKED_ALT_BACKGROUND_COLOR;
-	private Color failedBackgroundColor = StylesModern.FAILED_MINE_CLICKED_BACKGROUND_COLOR;
-	private Border raisedBorder = StylesModern.RAISED_BORDER;
-	private Border loweredBorder = StylesModern.LOWERED_BORDER;
-	private Color[] mineColors = StylesModern.MINE_NUMBER_COLORS;
+	private Color backgroundColor;
+	private Color altBackgroundColor;
+	private Color clickedBackgroundColor;
+	private Color clickedAltBackgroundColor;
+	private Color failedBackgroundColor;
+	private Border raisedBorder;
+	private Border loweredBorder;
+	private Color[] mineColors;
 
 	// TODO address these statics....
 	private static int dragX, dragY;
@@ -60,7 +57,6 @@ public class MineButton extends JLabel implements MouseListener {
 
 	public MineButton(
 		GameState gameState,
-		OptionsService optionsService,
 		IEventPublisher eventPublisher,
 		ImageIcon mineIcon,
 		ImageIcon mineWrongIcon,
@@ -69,17 +65,12 @@ public class MineButton extends JLabel implements MouseListener {
 		ImageIcon flagHintIcon
 	) {
 		this.gameState = gameState;
-		this.optionsService = optionsService;
 		this.eventPublisher = eventPublisher;
 		this.mineIcon = mineIcon;
 		this.mineWrongIcon = mineWrongIcon;
 		this.mineHintIcon = mineHintIcon;
 		this.flagIcon = flagIcon;
 		this.flagHintIcon = flagHintIcon;
-
-		// TODO move this to some shared state?
-		// TODO set all properties from the options service / theme service?
-		//backgroundColor = ColorConverter.convert(optionsService.squareColor());
 
 		// TODO allow resizing?
 		// Font size 32 when w,h = 48
@@ -139,17 +130,11 @@ public class MineButton extends JLabel implements MouseListener {
 
 		// Still covered
 		else {
-			// TODO if we don't cache the options... this would read from file 16x30 times.
-			// TODO This is probably pretty heavy. Any time a mine is clicked, MinePanel handles the UpdateMinePanelEvent
-			// which redecorates each mine, and we are creating the color for 16x30 mines on each render.
-			// TODO these need to be used again... once I figure out how to support themes and options.
-			//backgroundColor = ColorConverter.convert(optionsService.squareColor());
-			//setBackground(backgroundColor);
+			// Might need to reset background color after a left click drag to a right click flagging.
+			setBackground(backgroundColor, altBackgroundColor);
+			setBorder(raisedBorder);
 
 			if (!gameState.isGameOver()) {
-				// Might need to reset background color after a left click drag to a right click flagging.
-				setBackground(backgroundColor, altBackgroundColor);
-
 				if (t.isHint()) {
 					setIcon(t.isSpecialProtected() ? flagHintIcon : mineHintIcon);
 					setText("");
@@ -172,6 +157,26 @@ public class MineButton extends JLabel implements MouseListener {
 		this.x = x;
 		this.y = y;
 		setBackground(backgroundColor, altBackgroundColor);
+	}
+
+	public void setColors(
+		Color bgColor,
+		Color altBgColor,
+		Color cBgColor,
+		Color cAltBgColor,
+		Color fBgColor,
+		Color[] mColors) {
+		backgroundColor = bgColor;
+		altBackgroundColor = altBgColor;
+		clickedBackgroundColor = cBgColor;
+		clickedAltBackgroundColor = cAltBgColor;
+		failedBackgroundColor = fBgColor;
+		mineColors = mColors;
+	}
+
+	public void setBorders(Border raised, Border lowered) {
+		raisedBorder = raised;
+		loweredBorder = lowered;
 	}
 
 	/**

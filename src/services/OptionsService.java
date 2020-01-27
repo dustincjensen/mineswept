@@ -20,31 +20,17 @@ public class OptionsService {
 	 * @return an object with the RGB color for the game board squares.
 	 */
 	public Color squareColor() {
-		if (_cachedOptions == null) {
-			_fileService.withFile(FILE_NAME, new Options(), file -> {
-				_cachedOptions = _fileService.readFile(file, Options.class);
-			});
-		}
-		return _cachedOptions.squareColor;
+		return options().squareColor;
 	}
 
 	/**
 	 * Sets the color that should be used to decorate the game board squares.
 	 * 
-	 * @param r the red component of the color.
-	 * @param g the green component of the color.
-	 * @param b the blue component of the color.
+	 * @param color the new color to use.
 	 */
-	public void setSquareColor(int r, int g, int b) {
-		_fileService.withFile(FILE_NAME, new Options(), file -> {
-			var options = _fileService.readFile(file, Options.class);
-			options.squareColor.r = r;
-			options.squareColor.g = g;
-			options.squareColor.b = b;
-			
-			_cachedOptions = options;
-			
-			_fileService.writeFile(file, _cachedOptions);
+	public void setSquareColor(Color color) {
+		setOptions(options -> {
+			options.squareColor = color;
 		});
 	}
 
@@ -54,31 +40,127 @@ public class OptionsService {
 	 * @return an object with the RGB color for the game board alt squares.
 	 */
 	public Color squareAltColor() {
-		if (_cachedOptions == null) {
-			_fileService.withFile(FILE_NAME, new Options(), file -> {
-				_cachedOptions = _fileService.readFile(file, Options.class);
-			});
-		}
-		return _cachedOptions.squareAltColor;
+		return options().squareAltColor;
 	}
 
 	/**
 	 * Sets the color that should be used to decorate the game board alt squares.
 	 * 
-	 * @param r the red component of the color.
-	 * @param g the green component of the color.
-	 * @param b the blue component of the color.
+	 * @param color the new color to use.
 	 */
-	public void setSquareAltColor(int r, int g, int b) {
-		_fileService.withFile(FILE_NAME, new Options(), file -> {
-			var options = _fileService.readFile(file, Options.class);
-			options.squareAltColor.r = r;
-			options.squareAltColor.g = g;
-			options.squareAltColor.b = b;
-			
-			_cachedOptions = options;
-			
-			_fileService.writeFile(file, _cachedOptions);
+	public void setSquareAltColor(Color color) {
+		setOptions(options -> {
+			options.squareAltColor = color;
+		});
+	}
+
+	public Color clickedColor() {
+		return options().clickedColor;
+	}
+
+	public void setClickedColor(Color color) {
+		setOptions(options -> {
+			options.clickedColor = color;
+		});
+	}
+
+	public Color clickedAltColor() {
+		return options().clickedAltColor;
+	}
+
+	public void setClickedAltColor(Color color) {
+		setOptions(options -> {
+			options.clickedAltColor = color;
+		});
+	}
+
+	public Color clickedFailColor() {
+		return options().clickedFailColor;
+	}
+
+	public void setClickedFailColor(Color color) {
+		setOptions(options -> {
+			options.clickedFailColor = color;
+		});
+	}
+
+	public Color mineNumOneColor() {
+		return options().mineNumOneColor;
+	}
+
+	public void setMineNumOneColor(Color color) {
+		setOptions(options -> {
+			options.mineNumOneColor = color;
+		});
+	}
+
+	public Color mineNumTwoColor() {
+		return options().mineNumTwoColor;
+	}
+
+	public void setMineNumTwoColor(Color color) {
+		setOptions(options -> {
+			options.mineNumTwoColor = color;
+		});
+	}
+
+	public Color mineNumThreeColor() {
+		return options().mineNumThreeColor;
+	}
+
+	public void setMineNumThreeColor(Color color) {
+		setOptions(options -> {
+			options.mineNumThreeColor = color;
+		});
+	}
+
+	public Color mineNumFourColor() {
+		return options().mineNumFourColor;
+	}
+
+	public void setMineNumFourColor(Color color) {
+		setOptions(options -> {
+			options.mineNumFourColor = color;
+		});
+	}
+
+	public Color mineNumFiveColor() {
+		return options().mineNumFiveColor;
+	}
+
+	public void setMineNumFiveColor(Color color) {
+		setOptions(options -> {
+			options.mineNumFiveColor = color;
+		});
+	}
+
+	public Color mineNumSixColor() {
+		return options().mineNumSixColor;
+	}
+
+	public void setMineNumSixColor(Color color) {
+		setOptions(options -> {
+			options.mineNumSixColor = color;
+		});
+	}
+
+	public Color mineNumSevenColor() {
+		return options().mineNumSevenColor;
+	}
+
+	public void setMineNumSevenColor(Color color) {
+		setOptions(options -> {
+			options.mineNumSevenColor = color;
+		});
+	}
+
+	public Color mineNumEightColor() {
+		return options().mineNumEightColor;
+	}
+
+	public void setMineNumEightColor(Color color) {
+		setOptions(options -> {
+			options.mineNumEightColor = color;
 		});
 	}
 
@@ -88,12 +170,8 @@ public class OptionsService {
 	 * @return the difficulty level.
 	 */
 	public Difficulty difficulty() {
-		if (_cachedOptions == null) {
-			_fileService.withFile(FILE_NAME, new Options(), file -> {
-				_cachedOptions = _fileService.readFile(file, Options.class);
-			});
-		}
-		return Difficulty.getDifficulty(_cachedOptions.difficulty.toLowerCase());
+		return Difficulty.getDifficulty(
+			options().difficulty.toLowerCase());
 	}
 
 	/**
@@ -102,9 +180,24 @@ public class OptionsService {
 	 * @param difficulty the difficulty level.
 	 */
 	public void setDifficulty(Difficulty difficulty) {
+		setOptions(options -> {
+			options.difficulty = difficulty.toString();
+		});
+	}
+
+	private Options options() {
+		if (_cachedOptions == null) {
+			_fileService.withFile(FILE_NAME, new Options(), file -> {
+				_cachedOptions = _fileService.readFile(file, Options.class);
+			});
+		}
+		return _cachedOptions;
+	}
+
+	private void setOptions(IOptionsHandler optionsHandler) {
 		_fileService.withFile(FILE_NAME, new Options(), file -> {
 			var options = _fileService.readFile(file, Options.class);
-			options.difficulty = difficulty.toString();
+			optionsHandler.handle(options);
 
 			_cachedOptions = options;
 

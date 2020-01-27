@@ -3,6 +3,9 @@ package ui.layout.body;
 import events.IEventSubscriber;
 import events.ResetMinePanelEvent;
 import events.UpdateMinePanelEvent;
+import services.OptionsService;
+import ui.utils.ColorConverter;
+
 import java.awt.*;
 import java.util.Vector;
 import javax.swing.*;
@@ -13,6 +16,7 @@ import utils.ClassFactory;
  */
 @SuppressWarnings("serial")
 public class MinePanel extends JPanel {
+	private OptionsService optionsService;
 	private IEventSubscriber eventSubscriber;
 	private JPanel minePanel;
 	private GridLayout minePanelLayout;
@@ -22,8 +26,10 @@ public class MinePanel extends JPanel {
 		int initialHeight,
 		int initialWidth,
 		int maximumPuzzleMineCount,
+		OptionsService options,
 		IEventSubscriber subscriber
 	) {
+		optionsService = options;
 		eventSubscriber = subscriber;
 
 		setLayout(new BorderLayout(0 , 0));
@@ -46,11 +52,33 @@ public class MinePanel extends JPanel {
 	private void addMines(int h, int w) {
 		minePanel.removeAll();
 		mineButtons.clear();
+
+		var bgColor = ColorConverter.convert(optionsService.squareColor());
+		var bgAltColor = ColorConverter.convert(optionsService.squareAltColor());
+		var clickedBgColor = ColorConverter.convert(optionsService.clickedColor());
+		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
+		var failBgColor = ColorConverter.convert(optionsService.clickedFailColor());
+
+		Color[] mineColors = {
+			ColorConverter.convert(optionsService.mineNumOneColor()),
+			ColorConverter.convert(optionsService.mineNumTwoColor()),
+			ColorConverter.convert(optionsService.mineNumThreeColor()),
+			ColorConverter.convert(optionsService.mineNumFourColor()),
+			ColorConverter.convert(optionsService.mineNumFiveColor()),
+			ColorConverter.convert(optionsService.mineNumSixColor()),
+			ColorConverter.convert(optionsService.mineNumSevenColor()),
+			ColorConverter.convert(optionsService.mineNumEightColor())
+		};
+
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				// TODO this is temporary for now... Need to figure out how to create mines. Perhaps this IS the best way.
 				MineButton mb = ClassFactory.create(MineButton.class);
 				mb.setPosition(x, y);
+				mb.setColors(bgColor, bgAltColor, clickedBgColor, clickedAltBgColor, failBgColor, mineColors);
+				// TODO add options to set these...
+				mb.setBorders(StylesModern.RAISED_BORDER, StylesModern.LOWERED_BORDER);
+				mb.decorate();
 				mineButtons.add(mb);
 				minePanel.add(mb);
 			}

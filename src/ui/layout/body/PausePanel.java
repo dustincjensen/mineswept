@@ -4,6 +4,8 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.ResetMinePanelEvent;
+import services.OptionsService;
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +13,7 @@ import java.awt.GridLayout;
 import java.util.Vector;
 import javax.swing.JPanel;
 import ui.components.button.PrimaryButton;
+import ui.utils.ColorConverter;
 import ui.utils.FontChange;
 
 /**
@@ -18,6 +21,7 @@ import ui.utils.FontChange;
  */
 @SuppressWarnings("serial")
 public class PausePanel extends JPanel {
+	private OptionsService optionsService;
 	private IEventPublisher eventPublisher;
 
 	private JPanel minePanel;
@@ -27,9 +31,11 @@ public class PausePanel extends JPanel {
 		int initialHeight,
 		int initialWidth,
 		int maximumPuzzleMineCount,
+		OptionsService optionsService,
 		IEventPublisher eventPublisher,
 		IEventSubscriber eventSubscriber
 	) {
+		this.optionsService = optionsService;
 		this.eventPublisher = eventPublisher;
 		mineButtons = new Vector<ReadonlyMineButton>(maximumPuzzleMineCount);
 
@@ -73,9 +79,13 @@ public class PausePanel extends JPanel {
 	private void addMines(int h, int w) {
 		minePanel.removeAll();
 		mineButtons.clear();
+
+		var clickedBgColor = ColorConverter.convert(optionsService.clickedColor());
+		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
+
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
-				var mb = new ReadonlyMineButton(x, y);
+				var mb = new ReadonlyMineButton(x, y, clickedBgColor, clickedAltBgColor);
 				mineButtons.add(mb);
 				minePanel.add(mb);
 			}

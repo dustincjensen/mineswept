@@ -22,6 +22,7 @@ public class BodyModule extends AbstractModule {
     @Provides
     public PausePanel providePausePanel(
         GameState state,
+        OptionsService options,
         IEventPublisher publisher,
         IEventSubscriber subscriber
     ) {
@@ -29,29 +30,29 @@ public class BodyModule extends AbstractModule {
             state.getCurrentPuzzleHeight(),
             state.getCurrentPuzzleWidth(),
             state.getCurrentPuzzleMineCount(),
+            options,
             publisher,
             subscriber);
     }
 
     @Provides
-    public MinePanel provideMinePanel(GameState state, IEventSubscriber subscriber) {
+    public MinePanel provideMinePanel(GameState state, OptionsService options, IEventSubscriber subscriber) {
         return new MinePanel(
             state.getCurrentPuzzleHeight(),
             state.getCurrentPuzzleWidth(),
             state.getCurrentPuzzleMineCount(),
+            options,
             subscriber);
     }
 
     @Provides
     public MineButton provideMineButton(
-        OptionsService options, 
         GameState gameState,
         ResourceLoader loader,
         IEventPublisher publisher
     ) {
         return new MineButton(
             gameState,
-            options,
             publisher,
             loader.get(Resource.Mine),
             loader.get(Resource.MineWrong),

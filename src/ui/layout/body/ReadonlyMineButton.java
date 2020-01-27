@@ -3,6 +3,7 @@ package ui.layout.body;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 /**
  * Used only to create a grid like view for the pause screen.
@@ -10,10 +11,13 @@ import javax.swing.JLabel;
 @SuppressWarnings("serial")
 public class ReadonlyMineButton extends JLabel {
     private static final int w = 48, h = 48;
-    private Color backgroundColor = StylesModern.MINE_CLICKED_BACKGROUND_COLOR;
-    private Color altBackgroundColor = StylesModern.MINE_CLICKED_ALT_BACKGROUND_COLOR;
+    private Border loweredBorder = StylesModern.LOWERED_BORDER;
 
-    public ReadonlyMineButton (int x, int y) {
+    public ReadonlyMineButton (
+        int x, int y, 
+        Color backgroundColor,
+        Color altBackgroundColor
+    ) {
         setOpaque(true);
 
         // Set all these the same to force the layout to behave...
@@ -21,6 +25,8 @@ public class ReadonlyMineButton extends JLabel {
 		setPreferredSize(size);
 		setMaximumSize(size);
         setMinimumSize(size);
+
+        setBorder(loweredBorder);
         
         if ((x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0)) {
 			setBackground(backgroundColor);

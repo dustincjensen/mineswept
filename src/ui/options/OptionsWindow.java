@@ -5,6 +5,8 @@ import events.ShowOptionsEvent;
 import events.UpdateMinePanelEvent;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
+import ui.options.styles.Material;
+import ui.options.styles.Classic;
 import ui.utils.ColorConverter;
 import ui.utils.HexToRgb;
 import java.awt.*;
@@ -23,6 +25,9 @@ public class OptionsWindow {
 	private boolean optionsHaveChanged;
 	private ButtonGroup difficultyRadioButtonGroup;
 	private JRadioButton easy, medium, hard;
+	private JLabel jSquareColor, jSquareAltColor, jClickedColor, jClickedAltColor, jClickedFailColor,
+		jMineNumOneColor, jMineNumTwoColor, jMineNumThreeColor, jMineNumFourColor, jMineNumFiveColor,
+		jMineNumSixColor, jMineNumSevenColor, jMineNumEightColor;
 
 	public OptionsWindow(
 		GameState gameState,
@@ -56,7 +61,9 @@ public class OptionsWindow {
 		var panel = new Box(BoxLayout.Y_AXIS);
 		panel.setOpaque(false);
 		panel.add(difficultyPanel());
-		panel.add(otherOptionsPanel());
+		panel.add(themePanel());
+		panel.add(minefieldColorsPanel());
+		panel.add(mineColorsPanel());
 		return panel;
 	}
 
@@ -106,10 +113,10 @@ public class OptionsWindow {
 		label.setForeground(HexToRgb.convert("#ffffff"));
 		label.setOpaque(false);
         return label;
-    }
-
+	}
+	
 	private Box difficultyPanel() {
-		var difficultyPanel = new JPanel(new GridLayout(3, 1));
+		var difficultyPanel = new JPanel(new GridLayout(0, 3));
 		difficultyPanel.setOpaque(false);
         
 		easy = new JRadioButton("<html>Easy<br/><i>10 mines<br/>9x9 grid</i></html>");
@@ -151,35 +158,196 @@ public class OptionsWindow {
 		hard.setSelected(currentPuzzle == Difficulty.hard);
 	}
 
-	private Box otherOptionsPanel() {
-		var colorPanel = new JPanel(new GridLayout(0, 1));
-		colorPanel.setOpaque(false);
+	private Box themePanel() {
+		var descriptionPanel = new JPanel();
+		descriptionPanel.setOpaque(false);
+		descriptionPanel.add(createJLabel("Choosing a theme will set all color options.", SwingConstants.LEFT));
 
-		var currentSquareColor = ColorConverter.convert(optionsService.squareColor());
-		colorPanel.add(individualColorPanel(currentSquareColor, "Square Color", newColor -> {
-			optionsService.setSquareColor(newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+		var buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel.setOpaque(false);
+		buttonPanel.add(new PrimaryButton("Material", evt -> {
+			optionsService.setSquareColor(ColorConverter.convertBack(Material.MINE_BACKGROUND_COLOR)); 
+			jSquareColor.setBackground(Material.MINE_BACKGROUND_COLOR);
+			optionsService.setSquareAltColor(ColorConverter.convertBack(Material.MINE_ALT_BACKGROUND_COLOR));
+			jSquareAltColor.setBackground(Material.MINE_ALT_BACKGROUND_COLOR);
+			optionsService.setClickedColor(ColorConverter.convertBack(Material.MINE_CLICKED_BACKGROUND_COLOR));
+			jClickedColor.setBackground(Material.MINE_CLICKED_BACKGROUND_COLOR);
+			optionsService.setClickedAltColor(ColorConverter.convertBack(Material.MINE_CLICKED_ALT_BACKGROUND_COLOR));
+			jClickedAltColor.setBackground(Material.MINE_CLICKED_ALT_BACKGROUND_COLOR);
+			optionsService.setClickedFailColor(ColorConverter.convertBack(Material.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
+			jClickedFailColor.setBackground(Material.FAILED_MINE_CLICKED_BACKGROUND_COLOR);
+			
+			optionsService.setMineNumOneColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[0]));
+			jMineNumOneColor.setBackground(Material.MINE_NUMBER_COLORS[0]);
+			optionsService.setMineNumTwoColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[1]));
+			jMineNumTwoColor.setBackground(Material.MINE_NUMBER_COLORS[1]);
+			optionsService.setMineNumThreeColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[2]));
+			jMineNumThreeColor.setBackground(Material.MINE_NUMBER_COLORS[2]);
+			optionsService.setMineNumFourColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[3]));
+			jMineNumFourColor.setBackground(Material.MINE_NUMBER_COLORS[3]);
+			optionsService.setMineNumFiveColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[4]));
+			jMineNumFiveColor.setBackground(Material.MINE_NUMBER_COLORS[4]);
+			optionsService.setMineNumSixColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[5]));
+			jMineNumSixColor.setBackground(Material.MINE_NUMBER_COLORS[5]);
+			optionsService.setMineNumSevenColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[6]));
+			jMineNumSevenColor.setBackground(Material.MINE_NUMBER_COLORS[6]);
+			optionsService.setMineNumEightColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[7]));
+			jMineNumEightColor.setBackground(Material.MINE_NUMBER_COLORS[7]);
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		}));
+		// buttonPanel.add(new PrimaryButton("Classic", evt -> {
+		// 	optionsService.setSquareColor(ColorConverter.convertBack(Classic.MINE_BACKGROUND_COLOR));
+		// 	optionsService.setSquareAltColor(ColorConverter.convertBack(Classic.MINE_ALT_BACKGROUND_COLOR));
+		// 	optionsService.setClickedColor(ColorConverter.convertBack(Classic.MINE_CLICKED_BACKGROUND_COLOR));
+		// 	optionsService.setClickedAltColor(ColorConverter.convertBack(Classic.MINE_CLICKED_ALT_BACKGROUND_COLOR));
+		// 	optionsService.setClickedFailColor(ColorConverter.convertBack(Classic.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
+			
+		// 	optionsService.setMineNumOneColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[0]));
+		// 	optionsService.setMineNumTwoColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[1]));
+		// 	optionsService.setMineNumThreeColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[2]));
+		// 	optionsService.setMineNumFourColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[3]));
+		// 	optionsService.setMineNumFiveColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[4]));
+		// 	optionsService.setMineNumSixColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[5]));
+		// 	optionsService.setMineNumSevenColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[6]));
+		// 	optionsService.setMineNumEightColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[7]));
+		// 	eventSubscriber.notify(new UpdateMinePanelEvent());
+		// }));
 
-		var currentSquareAltColor = ColorConverter.convert(optionsService.squareAltColor());
-		colorPanel.add(individualColorPanel(currentSquareAltColor, "Alt Square Color", newColor -> {
-			optionsService.setSquareAltColor(newColor.getRed(), newColor.getGreen(), newColor.getBlue());
-			eventSubscriber.notify(new UpdateMinePanelEvent());
-		}));
-		
 		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
 		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
-		headerWithColorPanel.add(header("Minefield Colors"));
-		headerWithColorPanel.add(colorPanel);
+		headerWithColorPanel.add(header("Themes"));
+		headerWithColorPanel.add(descriptionPanel);
+		headerWithColorPanel.add(buttonPanel);
 		return headerWithColorPanel;
 	}
 
-	private Box individualColorPanel(Color base, String colorName, IColorHandler colorHandler) {
-		var color = new JPanel();
-		color.setBorder(BorderFactory.createLineBorder(HexToRgb.convert("#444444"), 1));
-		color.setBackground(base);
+	private Box minefieldColorsPanel() {
+		var p1 = new JPanel(new GridLayout(0, 3));
+		p1.setOpaque(false);
 
-		var labelAndButton = new JPanel(new GridLayout(2, 1));
+		jSquareColor = new JLabel();
+		var currentSquareColor = ColorConverter.convert(optionsService.squareColor());
+		p1.add(individualColorPanel(currentSquareColor, "Square Color", jSquareColor, newColor -> {
+			optionsService.setSquareColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jSquareAltColor = new JLabel();
+		var currentSquareAltColor = ColorConverter.convert(optionsService.squareAltColor());
+		p1.add(individualColorPanel(currentSquareAltColor, "Alt Square Color", jSquareAltColor, newColor -> {
+			optionsService.setSquareAltColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+
+		var p2 = new JPanel(new GridLayout(0, 3));
+		p2.setOpaque(false);
+
+		jClickedColor = new JLabel();
+		var currentClickedColor = ColorConverter.convert(optionsService.clickedColor());
+		p2.add(individualColorPanel(currentClickedColor, "Clicked Color", jClickedColor, newColor -> {
+			optionsService.setClickedColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jClickedAltColor = new JLabel();
+		var currentClickedAltColor = ColorConverter.convert(optionsService.clickedAltColor());
+		p2.add(individualColorPanel(currentClickedAltColor, "Clicked Alt Color", jClickedAltColor, newColor -> {
+			optionsService.setClickedAltColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jClickedFailColor = new JLabel();
+		var currentClickedFailColor = ColorConverter.convert(optionsService.clickedFailColor());
+		p2.add(individualColorPanel(currentClickedFailColor, "Fail Color", jClickedFailColor, newColor -> {
+			optionsService.setClickedFailColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+
+		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
+		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
+		headerWithColorPanel.add(header("Minefield Colors"));
+		headerWithColorPanel.add(p1);
+		headerWithColorPanel.add(p2);
+		return headerWithColorPanel;
+	}
+
+	private Box mineColorsPanel() {
+		var p1 = new JPanel(new GridLayout(0, 3));
+		p1.setOpaque(false);
+
+		jMineNumOneColor = new JLabel();
+		var currentMineNumOneColor = ColorConverter.convert(optionsService.mineNumOneColor());
+		p1.add(individualColorPanel(currentMineNumOneColor, "1", jMineNumOneColor, newColor -> {
+			optionsService.setMineNumOneColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jMineNumTwoColor = new JLabel();
+		var currentMineNumTwoColor = ColorConverter.convert(optionsService.mineNumTwoColor());
+		p1.add(individualColorPanel(currentMineNumTwoColor, "2", jMineNumTwoColor, newColor -> {
+			optionsService.setMineNumTwoColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+
+		var p2 = new JPanel(new GridLayout(0, 3));
+		p2.setOpaque(false);
+
+		jMineNumThreeColor = new JLabel();
+		var currentMineNumThreeColor = ColorConverter.convert(optionsService.mineNumThreeColor());
+		p2.add(individualColorPanel(currentMineNumThreeColor, "3", jMineNumThreeColor, newColor -> {
+			optionsService.setMineNumThreeColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jMineNumFourColor = new JLabel();
+		var currentMineNumFourColor = ColorConverter.convert(optionsService.mineNumFourColor());
+		p2.add(individualColorPanel(currentMineNumFourColor, "4", jMineNumFourColor, newColor -> {
+			optionsService.setMineNumFourColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jMineNumFiveColor = new JLabel();
+		var currentMineNumFiveColor = ColorConverter.convert(optionsService.mineNumFiveColor());
+		p2.add(individualColorPanel(currentMineNumFiveColor, "5", jMineNumFiveColor, newColor -> {
+			optionsService.setMineNumFiveColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+
+		var p3 = new JPanel(new GridLayout(0, 3));
+		p3.setOpaque(false);
+
+		jMineNumSixColor = new JLabel();
+		var currentMineNumSixColor = ColorConverter.convert(optionsService.mineNumSixColor());
+		p3.add(individualColorPanel(currentMineNumSixColor, "6", jMineNumSixColor, newColor -> {
+			optionsService.setMineNumSixColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jMineNumSevenColor = new JLabel();
+		var currentMineNumSevenColor = ColorConverter.convert(optionsService.mineNumSevenColor());
+		p3.add(individualColorPanel(currentMineNumSevenColor, "7", jMineNumSevenColor, newColor -> {
+			optionsService.setMineNumSevenColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+		jMineNumEightColor = new JLabel();
+		var currentMineNumEightColor = ColorConverter.convert(optionsService.mineNumEightColor());
+		p3.add(individualColorPanel(currentMineNumEightColor, "8", jMineNumEightColor, newColor -> {
+			optionsService.setMineNumEightColor(ColorConverter.convertBack(newColor));
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+
+		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
+		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
+		headerWithColorPanel.add(header("Mine Number Colors"));
+		headerWithColorPanel.add(p1);
+		headerWithColorPanel.add(p2);
+		headerWithColorPanel.add(p3);
+		return headerWithColorPanel;
+	}
+
+	private Box individualColorPanel(Color base, String colorName, JLabel colorSwatch, IColorHandler colorHandler) {
+		colorSwatch.setPreferredSize(new Dimension(40, 40));
+		colorSwatch.setOpaque(true);
+		colorSwatch.setBackground(base);
+
+		var color = new JPanel(new GridLayout(0, 1));
+		color.add(colorSwatch);
+		color.setBorder(BorderFactory.createLineBorder(HexToRgb.convert("#444444"), 1));
+
+		var labelAndButton = new Box(BoxLayout.Y_AXIS);
 		labelAndButton.setOpaque(false);
 		labelAndButton.add(createJLabel(colorName, SwingConstants.LEFT));
 		labelAndButton.add(Box.createVerticalStrut(5));
@@ -187,8 +355,8 @@ public class OptionsWindow {
 		labelAndButton.add(new PrimaryButton("Select New Color", evt -> {
 			var newColor = JColorChooser.showDialog(null, "Select Base Color", base);
 			if (newColor != null) {
+				colorSwatch.setBackground(newColor);
 				colorHandler.handleSelectedColor(newColor);
-				color.setBackground(newColor);
 			}
 		}));
 
@@ -198,7 +366,6 @@ public class OptionsWindow {
 		panel.add(color);
 		panel.add(Box.createHorizontalStrut(5));
 		panel.add(labelAndButton);
-		panel.add(Box.createHorizontalGlue());
 		return panel;
 	}
 
@@ -206,6 +373,7 @@ public class OptionsWindow {
 		// System.out.println("Resetting current options...");
 	}
 
+	// TODO colors shouldn't set on the board immediately.
 	private void setNewOptions() {
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
