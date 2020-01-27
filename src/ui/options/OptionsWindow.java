@@ -155,8 +155,17 @@ public class OptionsWindow {
 		var colorPanel = new JPanel(new GridLayout(0, 1));
 		colorPanel.setOpaque(false);
 
-		var current = ColorConverter.convert(optionsService.squareColor());
-		colorPanel.add(individualColorPanel(current));
+		var currentSquareColor = ColorConverter.convert(optionsService.squareColor());
+		colorPanel.add(individualColorPanel(currentSquareColor, "Square Color", newColor -> {
+			optionsService.setSquareColor(newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
+
+		var currentSquareAltColor = ColorConverter.convert(optionsService.squareAltColor());
+		colorPanel.add(individualColorPanel(currentSquareAltColor, "Alt Square Color", newColor -> {
+			optionsService.setSquareAltColor(newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		}));
 		
 		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
 		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
@@ -165,26 +174,22 @@ public class OptionsWindow {
 		return headerWithColorPanel;
 	}
 
-	private Box individualColorPanel(Color base) {
+	private Box individualColorPanel(Color base, String colorName, IColorHandler colorHandler) {
 		var color = new JPanel();
 		color.setBorder(BorderFactory.createLineBorder(HexToRgb.convert("#444444"), 1));
 		color.setBackground(base);
 
 		var labelAndButton = new JPanel(new GridLayout(2, 1));
 		labelAndButton.setOpaque(false);
-		labelAndButton.add(createJLabel("Base Color", SwingConstants.LEFT));
+		labelAndButton.add(createJLabel(colorName, SwingConstants.LEFT));
 		labelAndButton.add(Box.createVerticalStrut(5));
 
-		// TODO this is hardcoded to one color... we need to build an interface to call another lambda when the color is executed.
 		labelAndButton.add(new PrimaryButton("Select New Color", evt -> {
-			var newMineColor = JColorChooser.showDialog(null, "Select Base Color", base);
-
-			if (newMineColor != null) {
-				optionsService.setSquareColor(newMineColor.getRed(), newMineColor.getGreen(), newMineColor.getBlue());
-				color.setBackground(newMineColor);
+			var newColor = JColorChooser.showDialog(null, "Select Base Color", base);
+			if (newColor != null) {
+				colorHandler.handleSelectedColor(newColor);
+				color.setBackground(newColor);
 			}
-
-			eventSubscriber.notify(new UpdateMinePanelEvent());
 		}));
 
 		var panel = new Box(BoxLayout.X_AXIS);

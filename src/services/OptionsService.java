@@ -49,6 +49,40 @@ public class OptionsService {
 	}
 
 	/**
+	 * Retrieves the color that should be used to decorate the game board alt squares.
+	 * 
+	 * @return an object with the RGB color for the game board alt squares.
+	 */
+	public Color squareAltColor() {
+		if (_cachedOptions == null) {
+			_fileService.withFile(FILE_NAME, new Options(), file -> {
+				_cachedOptions = _fileService.readFile(file, Options.class);
+			});
+		}
+		return _cachedOptions.squareAltColor;
+	}
+
+	/**
+	 * Sets the color that should be used to decorate the game board alt squares.
+	 * 
+	 * @param r the red component of the color.
+	 * @param g the green component of the color.
+	 * @param b the blue component of the color.
+	 */
+	public void setSquareAltColor(int r, int g, int b) {
+		_fileService.withFile(FILE_NAME, new Options(), file -> {
+			var options = _fileService.readFile(file, Options.class);
+			options.squareAltColor.r = r;
+			options.squareAltColor.g = g;
+			options.squareAltColor.b = b;
+			
+			_cachedOptions = options;
+			
+			_fileService.writeFile(file, _cachedOptions);
+		});
+	}
+
+	/**
 	 * Retrieves the difficulty that the game should be played at.
 	 * 
 	 * @return the difficulty level.
