@@ -6,13 +6,9 @@ import com.google.inject.Singleton;
 import state.GameState;
 
 public class ServicesModule extends AbstractModule {
-    @Override
-    public void configure() {
-    }
-
     @Provides
-    public HintService provideHintService(GameState gameState) {
-        return new HintService(gameState);
+    public HintService provideHintService(GameState gameState, MineRevealService mineRevealService) {
+        return new HintService(gameState, mineRevealService);
     }
 
     @Provides

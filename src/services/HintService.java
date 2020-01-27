@@ -7,10 +7,12 @@ import models.Mines;
 
 public class HintService {
 	private GameState gameState;
+	private MineRevealService _mineRevealService;
 
-	public HintService(GameState state) {
+	public HintService(GameState state, MineRevealService mineRevealService){
 		System.out.println("Creating new HINT SERVICE");
 		gameState = state;
+		_mineRevealService = mineRevealService;
 	}
 
     /**
@@ -24,8 +26,13 @@ public class HintService {
 		// Check empty spaces...
 		var empty = randomEmptySpace(mines);
 		if (empty != null) {
-			empty.setHint(true);
-			empty.setProtected(false);
+			var index = mines.indexOf(empty);
+
+			try {
+				_mineRevealService.uncover(index, mines, gameState.getCurrentPuzzleWidth());
+			}
+			catch (Exception ex) {}
+
 			return;
 		}
 
