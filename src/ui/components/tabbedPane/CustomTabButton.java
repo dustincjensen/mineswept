@@ -20,6 +20,7 @@ public class CustomTabButton extends DefaultButton {
             isSelected ? selectedBackground : background,
             isSelected ? selectedBackgroundHover : backgroundHover,
             radius,
+            false,
             actionListener
         );
     }

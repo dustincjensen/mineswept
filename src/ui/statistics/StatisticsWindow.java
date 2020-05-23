@@ -44,7 +44,7 @@ public class StatisticsWindow {
 		reset.setBackground(HexToRgb.convert("#333333"));
 		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 		reset.setLayout(new GridLayout(0, 1, 5, 5));
-		reset.add(new DangerButton("Reset", evt -> {
+		reset.add(new DangerButton("Reset", true, evt -> {
 			int answer = confirmDialog("Would you like to reset your statistics?");
 			if (answer == JOptionPane.YES_OPTION) {
 				eventPublisher.publish(new ResetStatisticsEvent());

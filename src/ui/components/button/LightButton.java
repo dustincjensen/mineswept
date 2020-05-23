@@ -10,6 +10,10 @@ public class LightButton extends DefaultButton {
     private static final int radius = 3;
 
     public LightButton(String buttonText, ActionListener actionListener) {
-        super(buttonText, foreground, background, backgroundHover, radius, actionListener);
+        super(buttonText, foreground, background, backgroundHover, radius, false, actionListener);
+    }
+
+    public LightButton(String buttonText, boolean isMinimal, ActionListener actionListener) {
+        super(buttonText, foreground, background, backgroundHover, radius, isMinimal, actionListener);
     }
 }

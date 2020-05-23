@@ -10,6 +10,10 @@ public class DangerButton extends DefaultButton {
     private static final int radius = 3;
 
     public DangerButton(String buttonText, ActionListener actionListener) {
-        super(buttonText, foreground, background, backgroundHover, radius, actionListener);
+        super(buttonText, foreground, background, backgroundHover, radius, false, actionListener);
+    }
+
+    public DangerButton(String buttonText, boolean isMinimal, ActionListener actionListener) {
+        super(buttonText, foreground, background, backgroundHover, radius, isMinimal, actionListener);
     }
 }

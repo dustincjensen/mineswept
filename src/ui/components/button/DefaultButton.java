@@ -14,6 +14,7 @@ public abstract class DefaultButton extends JButton {
         String background,
         String backgroundHover,
         int radius,
+        boolean isMinimal,
         ActionListener actionListener
     ) {
         super(buttonText);
@@ -22,7 +23,8 @@ public abstract class DefaultButton extends JButton {
             HexToRgb.convert(foreground),
             HexToRgb.convert(background),
             HexToRgb.convert(backgroundHover),
-            radius
+            radius,
+            isMinimal
         );
 
         setUI(buttonUi);
