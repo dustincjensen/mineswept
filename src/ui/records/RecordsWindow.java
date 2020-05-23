@@ -99,7 +99,12 @@ public class RecordsWindow {
 		});
 	}
 
+	// We make a specific option dialog so we can select "No" as the default.
+	// This is done by using options[1].
 	private int confirmDialog(String message) {
-		return JOptionPane.showConfirmDialog(frame, message, "Confirm?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		String[] options = { "Yes", "No" };
+		return JOptionPane.showOptionDialog(frame, message, "Confirm?", 
+			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]
+		);
 	}
 }
