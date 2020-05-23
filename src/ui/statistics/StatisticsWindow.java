@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 public class StatisticsWindow {
 	private IEventPublisher eventPublisher;
@@ -44,7 +45,10 @@ public class StatisticsWindow {
 		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 		reset.setLayout(new GridLayout(0, 1, 5, 5));
 		reset.add(new DangerButton("Reset", evt -> {
-			eventPublisher.publish(new ResetStatisticsEvent());
+			int answer = confirmDialog("Would you like to reset your statistics?");
+			if (answer == JOptionPane.YES_OPTION) {
+				eventPublisher.publish(new ResetStatisticsEvent());
+			}
 		}));
 		return reset;
 	}
@@ -61,5 +65,9 @@ public class StatisticsWindow {
 			panel.setStatistics(event.stats);
 			frame.pack();
 		});
+	}
+
+	private int confirmDialog(String message) {
+		return JOptionPane.showConfirmDialog(frame, message, "Confirm?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 	}
 }

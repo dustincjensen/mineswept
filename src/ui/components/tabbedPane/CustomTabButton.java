@@ -11,6 +11,7 @@ public class CustomTabButton extends DefaultButton {
     private static final String foreground = "#ffffff";
     private static final String background = "#333333";
     private static final String backgroundHover = "#222222";
+    private static final int radius = 0;
 
     public CustomTabButton(String buttonText, ActionListener actionListener, boolean isSelected) {
         super(
@@ -18,6 +19,7 @@ public class CustomTabButton extends DefaultButton {
             isSelected ? selectedForeground : foreground,
             isSelected ? selectedBackground : background,
             isSelected ? selectedBackgroundHover : backgroundHover,
+            radius,
             actionListener
         );
     }

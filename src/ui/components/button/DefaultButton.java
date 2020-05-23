@@ -13,6 +13,7 @@ public abstract class DefaultButton extends JButton {
         String foreground,
         String background,
         String backgroundHover,
+        int radius,
         ActionListener actionListener
     ) {
         super(buttonText);
@@ -20,10 +21,12 @@ public abstract class DefaultButton extends JButton {
         buttonUi = new DefaultButtonUi(
             HexToRgb.convert(foreground),
             HexToRgb.convert(background),
-            HexToRgb.convert(backgroundHover)
+            HexToRgb.convert(backgroundHover),
+            radius
         );
 
         setUI(buttonUi);
+        setContentAreaFilled(false);
         setBorderPainted(false);
         setFocusPainted(false);
         addActionListener(actionListener);

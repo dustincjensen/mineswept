@@ -6,7 +6,4 @@ import models.records.AllRecords;
 public class ShowRecordsEvent {
 	public AllRecords records;
 	public Difficulty difficulty;
-
-	public ShowRecordsEvent() {
-	}
 }

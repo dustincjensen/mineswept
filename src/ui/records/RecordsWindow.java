@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import models.Difficulty;
+import javax.swing.JOptionPane;
 
 public class RecordsWindow {
 	private IEventPublisher eventPublisher;
@@ -63,8 +64,12 @@ public class RecordsWindow {
 		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 		reset.setLayout(new GridLayout(0, 1, 5, 5));
 		reset.add(new DangerButton("Reset", evt -> {
-			var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
-			eventPublisher.publish(new ResetRecordsEvent(difficulty));
+			var difficultyName = Difficulty.getProperName(tabs.getSelectedIndex());
+			int answer = confirmDialog("Would you like to reset your '" + difficultyName + "' records?");
+			if (answer == JOptionPane.YES_OPTION) {
+				var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
+				eventPublisher.publish(new ResetRecordsEvent(difficulty));
+			}
 		}));
 		return reset;
 	}
@@ -92,5 +97,9 @@ public class RecordsWindow {
 				hard.setRecords(event.records);
 			}
 		});
+	}
+
+	private int confirmDialog(String message) {
+		return JOptionPane.showConfirmDialog(frame, message, "Confirm?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 	}
 }

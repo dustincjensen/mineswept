@@ -21,6 +21,14 @@ public enum Difficulty {
         ).get(value);
     }
 
+    public static String getProperName(int value) {
+        return Map.of(
+            0, "Easy",
+            1, "Medium",
+            2, "Hard"
+        ).get(value);
+    }
+
     public static String getProperName(Difficulty difficulty) {
         return Map.of(
             easy, "Easy",

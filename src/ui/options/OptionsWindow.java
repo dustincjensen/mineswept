@@ -79,7 +79,7 @@ public class OptionsWindow {
 	}
 
 	private JButton saveButton() {
-		return new PrimaryButton("Save", event -> {
+		var saveButton = new PrimaryButton("Save", event -> {
 			if (optionsHaveChanged) {
 				int answer = confirmDialog("Would you like to change the options?");
 				if (answer == JOptionPane.YES_OPTION) {
@@ -91,6 +91,8 @@ public class OptionsWindow {
 				frame.setVisible(false);
 			}
 		});
+		saveButton.setPreferredSize(new Dimension(0, 40));
+		return saveButton;
 	}
 
 	private JButton cancelButton() {
@@ -163,9 +165,7 @@ public class OptionsWindow {
 		descriptionPanel.setOpaque(false);
 		descriptionPanel.add(createJLabel("Choosing a theme will set all color options.", SwingConstants.LEFT));
 
-		var buttonPanel = new JPanel(new FlowLayout());
-		buttonPanel.setOpaque(false);
-		buttonPanel.add(new PrimaryButton("Material", evt -> {
+		var materialButton = new PrimaryButton("Material", evt -> {
 			optionsService.setSquareColor(ColorConverter.convertBack(Material.MINE_BACKGROUND_COLOR)); 
 			jSquareColor.setBackground(Material.MINE_BACKGROUND_COLOR);
 			optionsService.setSquareAltColor(ColorConverter.convertBack(Material.MINE_ALT_BACKGROUND_COLOR));
@@ -194,7 +194,13 @@ public class OptionsWindow {
 			optionsService.setMineNumEightColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[7]));
 			jMineNumEightColor.setBackground(Material.MINE_NUMBER_COLORS[7]);
 			eventSubscriber.notify(new UpdateMinePanelEvent());
-		}));
+		});
+		materialButton.setPreferredSize(new Dimension(100, 40));
+
+		var buttonPanel = new JPanel(new FlowLayout());
+		buttonPanel.setOpaque(false);
+		buttonPanel.add(materialButton);
+
 		// buttonPanel.add(new PrimaryButton("Classic", evt -> {
 		// 	optionsService.setSquareColor(ColorConverter.convertBack(Classic.MINE_BACKGROUND_COLOR));
 		// 	optionsService.setSquareAltColor(ColorConverter.convertBack(Classic.MINE_ALT_BACKGROUND_COLOR));
@@ -386,7 +392,7 @@ public class OptionsWindow {
 	}
 
 	private int confirmDialog(String message) {
-		return JOptionPane.showConfirmDialog(null, message, "Confirm?", JOptionPane.YES_NO_OPTION,
+		return JOptionPane.showConfirmDialog(frame, message, "Confirm?", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, confirmationIcon);
 	}
 
