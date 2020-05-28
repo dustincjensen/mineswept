@@ -105,9 +105,10 @@ public class OptionsWindow {
 	}
 
 	private JPanel header(String title) {
-        var header = new JPanel(new FlowLayout());
-        header.setBackground(HexToRgb.convert("#007bff"));
-        header.add(createJLabel(title, SwingConstants.LEFT));
+        var header = new JPanel(new BorderLayout());
+		header.setBackground(HexToRgb.convert("#111111"));
+		header.add(createJLabel(title, SwingConstants.LEFT), BorderLayout.LINE_START);
+		header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         return header;
 	}
 	

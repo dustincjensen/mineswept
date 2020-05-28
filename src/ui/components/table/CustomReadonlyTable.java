@@ -50,7 +50,7 @@ public class CustomReadonlyTable extends JPanel {
 
     private void createHeader() {
         var cellHandlers = header.cellHandlers;
-        renderRowCells(cellHandlers, 0, "#ffffff", "#007bff");
+        renderRowCells(cellHandlers, 0, "#ffffff", "#111111");
     }
 
     private void renderRowCells(
