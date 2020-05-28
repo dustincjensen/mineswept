@@ -33,7 +33,8 @@ public class OptionsWindow {
 		GameState gameState,
 		OptionsService optionsService,
 		IEventSubscriber eventSubscriber,
-		ImageIcon confirmationIcon
+		ImageIcon confirmationIcon,
+		Image windowIcon
 	) {
 		System.out.println("Creating new option window...");
 		this.gameState = gameState;
@@ -42,6 +43,7 @@ public class OptionsWindow {
 		this.confirmationIcon = confirmationIcon;
 
 		frame = new OptionsFrame(mainPanel());
+		frame.setIconImage(windowIcon);
 
 		optionsHaveChanged = false;
 

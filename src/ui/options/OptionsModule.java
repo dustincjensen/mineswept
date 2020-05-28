@@ -48,6 +48,7 @@ class OptionsWindowProvider implements Provider<OptionsWindow> {
             gameState,
             optionsService,
             eventSubscriber,
-            resourceLoader.get(Resource.SmileyHappy));
+            resourceLoader.get(Resource.SmileyHappy),
+            resourceLoader.get(Resource.SmileyCool).getImage());
     }
 }

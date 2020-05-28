@@ -4,14 +4,15 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.ResetStatisticsEvent;
 import events.ShowStatisticsEvent;
-import ui.components.button.DangerButton;
-import ui.utils.HexToRgb;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import ui.components.button.DangerButton;
+import ui.utils.HexToRgb;
 
 public class StatisticsWindow {
 	private IEventPublisher eventPublisher;
@@ -19,13 +20,18 @@ public class StatisticsWindow {
 	private StatisticsFrame frame;
 	private StatisticsPanel panel;
 
-	public StatisticsWindow(IEventPublisher	eventPublisher, IEventSubscriber eventSubscriber) {
+	public StatisticsWindow(
+		IEventPublisher	eventPublisher,
+		IEventSubscriber eventSubscriber,
+		Image windowIcon
+	) {
 		this.eventPublisher = eventPublisher;
 		this.eventSubscriber = eventSubscriber;
 		System.out.println("Creating: STATISTICS WINDOW");
 
 		panel = new StatisticsPanel();
 		frame = new StatisticsFrame(statisticsPanel());
+		frame.setIconImage(windowIcon);
 
 		setupSubscriptions();
 	}

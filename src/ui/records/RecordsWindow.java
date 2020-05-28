@@ -4,17 +4,18 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.ResetRecordsEvent;
 import events.ShowRecordsEvent;
-import ui.components.button.DangerButton;
-import ui.components.tabbedPane.CustomTabbedPane;
-import ui.utils.HexToRgb;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import models.Difficulty;
-import javax.swing.JOptionPane;
+import ui.components.button.DangerButton;
+import ui.components.tabbedPane.CustomTabbedPane;
+import ui.utils.HexToRgb;
 
 public class RecordsWindow {
 	private IEventPublisher eventPublisher;
@@ -26,7 +27,8 @@ public class RecordsWindow {
 
 	public RecordsWindow(
 		IEventPublisher publisher,
-		IEventSubscriber subscriber
+		IEventSubscriber subscriber,
+		Image windowIcon
 	) {
 		eventPublisher = publisher;
 		eventSubscriber = subscriber;
@@ -34,6 +36,7 @@ public class RecordsWindow {
 		System.out.println("Creating: RECORD WINDOW");
 		
 		frame = new RecordsFrame(recordPanel());
+		frame.setIconImage(windowIcon);
 
 		setupSubscriptions();
 	}

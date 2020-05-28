@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import events.IEventPublisher;
 import events.IEventSubscriber;
+import models.Resource;
+import ui.ResourceLoader;
 
 public class StatisticsModule extends AbstractModule {
     @Override
@@ -23,15 +25,24 @@ public class StatisticsModule extends AbstractModule {
 class StatisticsWindowProvider implements Provider<StatisticsWindow> {
     private IEventPublisher eventPublisher;
     private IEventSubscriber eventSubscriber;
+    private ResourceLoader resourceLoader;
 
     @Inject
-    public StatisticsWindowProvider(IEventPublisher eventPublisher, IEventSubscriber eventSubscriber) {
+    public StatisticsWindowProvider(
+        IEventPublisher eventPublisher,
+        IEventSubscriber eventSubscriber,
+        ResourceLoader resourceLoader
+    ) {
         this.eventPublisher = eventPublisher;
         this.eventSubscriber = eventSubscriber;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
     public StatisticsWindow get() {
-        return new StatisticsWindow(eventPublisher, eventSubscriber);
+        return new StatisticsWindow(
+            eventPublisher,
+            eventSubscriber,
+            resourceLoader.get(Resource.SmileyCool).getImage());
     }
 }

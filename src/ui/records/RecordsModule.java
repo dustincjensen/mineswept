@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import events.IEventPublisher;
 import events.IEventSubscriber;
+import models.Resource;
+import ui.ResourceLoader;
 
 public class RecordsModule extends AbstractModule {
     @Override
@@ -23,15 +25,24 @@ public class RecordsModule extends AbstractModule {
 class RecordsWindowProvider implements Provider<RecordsWindow> {
     private IEventPublisher eventPublisher;
     private IEventSubscriber eventSubscriber;
+    private ResourceLoader resourceLoader;
 
     @Inject
-    public RecordsWindowProvider(IEventPublisher publisher, IEventSubscriber subscriber) {
-        eventPublisher = publisher;
-        eventSubscriber = subscriber;
+    public RecordsWindowProvider(
+        IEventPublisher eventPublisher,
+        IEventSubscriber eventSubscriber,
+        ResourceLoader resourceLoader
+    ) {
+        this.eventPublisher = eventPublisher;
+        this.eventSubscriber = eventSubscriber;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
     public RecordsWindow get() {
-        return new RecordsWindow(eventPublisher, eventSubscriber);
+        return new RecordsWindow(
+            eventPublisher,
+            eventSubscriber,
+            resourceLoader.get(Resource.SmileyCool).getImage());
     }
 }
