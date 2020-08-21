@@ -12,7 +12,6 @@ TODO
       and conglomerate them like combineReducers.
 - Optimize Bomb clues to be near uncovered spaces.
 - Remove unnecessary resources.
-- Make Installable
 - Investigate com.google.common.eventbus.EventBus instead of rolling my own event bus.
 
 Working on

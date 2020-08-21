@@ -68,6 +68,8 @@
 	<!-- target RUN -->
 	<!-- runs the jar file with 1g of memory -->
 	<target name="run" depends="jar" description="Execute MineSwept">
+		<echo>Java/JVM version: ${ant.java.version}</echo> 
+		<echo>Java/JVM detail version: ${java.version}</echo> 
 		<java jar="build/jar/MineSwept.jar" fork="true" spawn="false" maxmemory="1g"/>
 	</target>
 
