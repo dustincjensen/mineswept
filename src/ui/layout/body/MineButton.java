@@ -87,6 +87,7 @@ public class MineButton extends JLabel implements MouseListener {
 		setHorizontalAlignment(JLabel.CENTER);
 		setOpaque(true);
 		setBorder(raisedBorder);
+		setFocusable(true);
 		addMouseListener(this);
 
 		dragX = dragY = -1;
@@ -234,6 +235,11 @@ public class MineButton extends JLabel implements MouseListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		// Request focus so the buttons in the header
+		// don't stay highlighted when they are not clicked
+		// on anymore.
+		this.requestFocusInWindow();
+
 		// Don't do anything when the game is over
 		if (gameState.isGameOver()) {
 			return;

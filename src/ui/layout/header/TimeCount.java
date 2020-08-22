@@ -4,14 +4,19 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetTimeCountEvent;
-import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Dimension;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import state.GameState;
+import ui.components.button.LightButton;
 import ui.utils.FontChange;
-import ui.utils.HexToRgb;
 
 /**
  * Renders the time count in the header.
@@ -22,7 +27,9 @@ public class TimeCount extends JPanel {
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
 	private ImageIcon clockIcon;
-	private JLabel clockCount;
+	private LightButton clockCountButton;
+	private int lastTime = 0;
+	private boolean isHovering = false;
 
 	public TimeCount(
 		GameState gameState,
@@ -35,32 +42,60 @@ public class TimeCount extends JPanel {
 		this.eventSubscriber = eventSubscriber;
 		this.clockIcon = clockIcon;
 		
-		setLayout(new FlowLayout(FlowLayout.TRAILING));
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setBackground(null);
 		setupPanel();
 		setupSubscriptions();
 	}
 
 	private void setupPanel() {
-		clockCount = new JLabel("000");
-		clockCount.setForeground(HexToRgb.convert("#ffffff"));
-		FontChange.setFont(clockCount, 24);
-		add(clockCount);
-
-		var button = new JButton(clockIcon);
-		button.setToolTipText("Pause or Continue");
-		button.setBorderPainted(false);
-		button.setContentAreaFilled(false);
-		button.addActionListener(evt -> {
+		clockCountButton = new LightButton(getFormattedTime(lastTime), true, evt -> {
 			eventPublisher.publish(new PauseGameEvent(!gameState.isGamePaused()));
 		});
-		add(button);
+		clockCountButton.setIcon(clockIcon);
+		clockCountButton.setIconTextGap(20);
+		clockCountButton.setHorizontalAlignment(SwingConstants.RIGHT);
+		clockCountButton.setHorizontalTextPosition(SwingConstants.LEFT);
+		clockCountButton.setPreferredSize(new Dimension(156, clockCountButton.getHeight()));
+
+		clockCountButton.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				clockCountButton.setText("Pause");
+			}
+		
+			public void focusLost(FocusEvent e) {
+				clockCountButton.setText(getFormattedTime(lastTime));
+			}
+		});
+		clockCountButton.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				isHovering = true;
+				clockCountButton.setText("Pause");
+			}
+		
+			public void mouseExited(MouseEvent evt) {
+				isHovering = false;
+				if (!clockCountButton.isFocusOwner()) {
+					clockCountButton.setText(getFormattedTime(lastTime));
+				}
+			}
+		});
+
+		FontChange.setFont(clockCountButton, 24);
+		add(clockCountButton, BorderLayout.LINE_END);
 	}
 
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(SetTimeCountEvent.class, event -> {
-			var formattedTime = String.format("%03d", event.time);
-			clockCount.setText(formattedTime);
+			lastTime = event.time;
+			if (!clockCountButton.isFocusOwner() && !isHovering) {
+				clockCountButton.setText(getFormattedTime(lastTime));
+			}
 		});
+	}
+
+	private String getFormattedTime(int time) {
+		return String.format("%-7s", String.format("%03d", time));
 	}
 }

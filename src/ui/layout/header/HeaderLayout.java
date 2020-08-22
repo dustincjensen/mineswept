@@ -1,6 +1,6 @@
 package ui.layout.header;
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import ui.utils.HexToRgb;
 
@@ -11,10 +11,10 @@ import ui.utils.HexToRgb;
 @SuppressWarnings("serial")
 public class HeaderLayout extends JPanel {
 	public HeaderLayout(MineCount mineCount, ResetButton resetButton, TimeCount timeCount) {
-		setLayout(new GridLayout(0, 3));
-		add(mineCount);
-		add(resetButton);
-		add(timeCount);
+		setLayout(new BorderLayout());
+		add(mineCount, BorderLayout.LINE_START);
+		add(resetButton, BorderLayout.CENTER);
+		add(timeCount, BorderLayout.LINE_END);
 
 		setBackground(HexToRgb.convert("#333333"));
 	}
