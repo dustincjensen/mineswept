@@ -4,6 +4,7 @@ import events.GetHintEvent;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.UpdateMineCountEvent;
+import events.StartClockTimerEvent;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.event.FocusAdapter;
@@ -49,6 +50,10 @@ public class MineCount extends JPanel {
 
 	private void setupPanel() {
 		mineCountButton = new LightButton(getFormattedMineCount(), true, evt -> {
+			// TODO this happens in mineButton as well, this should probably occur in the events
+			// But we don't use eventPublisher in the events currently.
+			gameState.setGameStarted(true);
+			eventPublisher.publish(new StartClockTimerEvent());
 			eventPublisher.publish(new GetHintEvent());
 		});
 		mineCountButton.setIcon(bombHintIcon);

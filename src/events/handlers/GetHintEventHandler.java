@@ -21,6 +21,7 @@ public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
     @Override
     public void execute(GetHintEvent event) {
         if (!gameState.isGameOver() && !gameState.isGamePaused()) {
+            gameState.setHintUsed(true);
             hintService.useHint();
             eventSubscriber.notify(new UpdateMineCountEvent());
             eventSubscriber.notify(new UpdateMinePanelEvent());

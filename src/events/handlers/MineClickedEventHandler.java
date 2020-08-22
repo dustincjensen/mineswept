@@ -87,8 +87,11 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 eventSubscriber.notify(new StopClockTimerEvent());
 
                 // Record a record if need be.
-                var recordSet = recordsService.checkAndSaveNewRecord(
-                    clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
+                boolean recordSet = false;
+                if (!gameState.wasHintUsed()) {
+                    recordSet = recordsService.checkAndSaveNewRecord(
+                        clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
+                }
 
                 // Add game played and won.
                 statisticsService.gameWon(gameState.getCurrentPuzzleDifficulty());

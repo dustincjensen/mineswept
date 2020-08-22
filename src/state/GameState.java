@@ -19,6 +19,7 @@ public class GameState {
 	private boolean gameStarted;
 	private boolean gameOver;
 	private boolean gamePaused;
+	private boolean hintUsed;
 	private Difficulty currentPuzzleDifficulty;
 	private Map<Difficulty, Integer> puzzleWidths;
 	private Map<Difficulty, Integer> puzzleHeights;
@@ -33,6 +34,7 @@ public class GameState {
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
+		hintUsed = false;
 		currentPuzzleDifficulty = options.difficulty();
 		puzzleWidths = Map.of(
 			Difficulty.easy, 9,
@@ -64,6 +66,7 @@ public class GameState {
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
+		hintUsed = false;
 
 		setCurrentPuzzleToNextPuzzle();
 		resetMines();
@@ -129,6 +132,24 @@ public class GameState {
 	 */
 	public void setGamePaused(boolean paused) {
 		gamePaused = paused;
+	}
+
+	/**
+	 * Returns if a hint has been used.
+	 * 
+	 * @return true if a hint has been used.
+	 */
+	public boolean wasHintUsed() {
+		return hintUsed;
+	}
+
+	/**
+	 * Set the hintUsed state.
+	 * 
+	 * @param used true if a hint was used.
+	 */
+	public void setHintUsed(boolean used) {
+		hintUsed = used;
 	}
 
 	/**
