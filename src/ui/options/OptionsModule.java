@@ -3,52 +3,56 @@ package ui.options;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import events.IEventSubscriber;
 import models.Resource;
 import services.OptionsService;
 import state.GameState;
 import ui.ResourceLoader;
+import ui.window.Window;
 
 public class OptionsModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(OptionsWindow.class)
-            .toProvider(OptionsWindowProvider.class)
+        bind(OptionsLoader.class)
+            .toProvider(OptionsLoaderProvider.class)
             .asEagerSingleton();
+    }
+
+    @Singleton
+    @Provides
+    public OptionsWindow provideOptionsWindow(
+        GameState gameState,
+        ResourceLoader resourceLoader,
+        OptionsService optionsService,
+        Window window
+    ) {
+        return new OptionsWindow(
+            gameState,
+            optionsService,
+            resourceLoader.get(Resource.SmileyHappy),
+            resourceLoader.get(Resource.SmileyCool).getImage(),
+            window);
     }
 }
 
 /**
- * Creates a provider for the option window so we can eager load it without anyone actually requiring the class.
- * We have to do this because we use event publish and subscribe, no one actually loads the option window as a
- * dependency.
+ * Creates a provider for the options loader so we can eager load it without anyone actually requiring the class.
+ * We have to do this because we use event publish and subscribe, no one actually loads the option loader as a
+ * dependency. We need the options loader to create the OptionsWindow dependency when it wants to be shown, instead
+ * of requiring it, because requiring would cause a circular dependency on the Window.
  */
-class OptionsWindowProvider implements Provider<OptionsWindow> {
-    private GameState gameState;
-    private ResourceLoader resourceLoader;
-    private OptionsService optionsService;
+class OptionsLoaderProvider implements Provider<OptionsLoader> {
     private IEventSubscriber eventSubscriber;
 
     @Inject
-    public OptionsWindowProvider(
-        GameState state,
-        ResourceLoader loader,
-        OptionsService options,
-		IEventSubscriber subscriber
-    ) {
-        gameState = state;
-        resourceLoader = loader;
-        optionsService = options;
-        eventSubscriber = subscriber;
+    public OptionsLoaderProvider(IEventSubscriber eventSubscriber) {
+        this.eventSubscriber = eventSubscriber;
     }
 
     @Override
-    public OptionsWindow get() {
-        return new OptionsWindow(
-            gameState,
-            optionsService,
-            eventSubscriber,
-            resourceLoader.get(Resource.SmileyHappy),
-            resourceLoader.get(Resource.SmileyCool).getImage());
+    public OptionsLoader get() {
+        return new OptionsLoader(eventSubscriber);
     }
 }

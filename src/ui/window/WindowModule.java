@@ -2,6 +2,7 @@ package ui.window;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import models.Resource;
@@ -11,6 +12,7 @@ import ui.ResourceLoader;
 
 public class WindowModule extends AbstractModule {
     @Provides
+    @Singleton
     public Window provideMainWindow(
         MainLayout mainLayout,
         Menus menus,

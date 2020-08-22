@@ -1,7 +1,6 @@
 package ui.options;
 
 import events.IEventSubscriber;
-import events.ShowOptionsEvent;
 import events.UpdateMinePanelEvent;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
@@ -14,12 +13,14 @@ import javax.swing.*;
 import models.Difficulty;
 import services.OptionsService;
 import state.GameState;
+import ui.window.Window;
 
 public class OptionsWindow {
 	private GameState gameState;
 	private OptionsService optionsService;
 	private IEventSubscriber eventSubscriber;
 	private ImageIcon confirmationIcon;
+	private Window window;
 
 	private OptionsFrame frame;
 	private boolean optionsHaveChanged;
@@ -32,22 +33,20 @@ public class OptionsWindow {
 	public OptionsWindow(
 		GameState gameState,
 		OptionsService optionsService,
-		IEventSubscriber eventSubscriber,
 		ImageIcon confirmationIcon,
-		Image windowIcon
+		Image windowIcon,
+		Window window
 	) {
 		System.out.println("Creating new option window...");
 		this.gameState = gameState;
 		this.optionsService = optionsService;
-		this.eventSubscriber = eventSubscriber;
 		this.confirmationIcon = confirmationIcon;
+		this.window = window;
 
 		frame = new OptionsFrame(mainPanel());
 		frame.setIconImage(windowIcon);
 
 		optionsHaveChanged = false;
-
-		setupSubscriptions();
 	}
 
 	private JPanel mainPanel() {
@@ -399,11 +398,9 @@ public class OptionsWindow {
 				JOptionPane.QUESTION_MESSAGE, confirmationIcon);
 	}
 
-	private void setupSubscriptions() {
-		eventSubscriber.subscribe(ShowOptionsEvent.class, event -> {
-			frame.pack();
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-		});
+	public void show() {
+		frame.pack();
+		frame.setLocationRelativeTo(window);
+		frame.setVisible(true);
 	}
 }
