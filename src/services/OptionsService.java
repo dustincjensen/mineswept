@@ -1,5 +1,6 @@
 package services;
 
+import java.util.function.Consumer;
 import models.Difficulty;
 import models.options.Color;
 import models.options.Options;
@@ -194,10 +195,10 @@ public class OptionsService {
 		return _cachedOptions;
 	}
 
-	private void setOptions(IOptionsHandler optionsHandler) {
+	private void setOptions(Consumer<Options> optionsHandler) {
 		_fileService.withFile(FILE_NAME, new Options(), file -> {
 			var options = _fileService.readFile(file, Options.class);
-			optionsHandler.handle(options);
+			optionsHandler.accept(options);
 
 			_cachedOptions = options;
 

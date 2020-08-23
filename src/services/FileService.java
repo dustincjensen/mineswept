@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class FileService {
 	private static final String USER_DIRECTORY = "user.home";
@@ -23,10 +25,10 @@ public class FileService {
 	 * @param method the method to invoke with the loaded file.
 	 * @return an object matching the expected type of the method invoked.
 	 */
-	public <T> T withFile(String fileName, Object defaults, IRequiresFileAndHasReturn<T> method) {
+	public <T> T withFile(String fileName, Object defaults, Function<File, T> method) {
 		try {
 			var file = getOrCreate(fileName, defaults);
-			return method.invoke(file);
+			return method.apply(file);
 		} catch (FileLoadException ex) {
 			System.err.println("Could not load the file: " + fileName);
 			return null;
@@ -40,10 +42,10 @@ public class FileService {
 	 * @param defaults the defaults if the file does not exist.
 	 * @param method the method to invoke with the loaded file.
 	 */
-	public void withFile(String fileName, Object defaults, IRequiresFile method) {
+	public void withFile(String fileName, Object defaults, Consumer<File> method) {
 		try {
 			var file = getOrCreate(fileName, defaults);
-			method.invoke(file);
+			method.accept(file);
 		} catch (FileLoadException ex) {
 			System.err.println("Could not load the file: " + fileName);
 		}
