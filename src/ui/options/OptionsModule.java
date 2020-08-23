@@ -10,6 +10,7 @@ import models.Resource;
 import services.OptionsService;
 import state.GameState;
 import ui.ResourceLoader;
+import ui.components.radioButton.RadioButtonFactory;
 import ui.window.Window;
 
 public class OptionsModule extends AbstractModule {
@@ -25,14 +26,16 @@ public class OptionsModule extends AbstractModule {
     public OptionsWindow provideOptionsWindow(
         GameState gameState,
         ResourceLoader resourceLoader,
+        RadioButtonFactory factory,
         OptionsService optionsService,
         Window window
     ) {
         return new OptionsWindow(
             gameState,
             optionsService,
+            factory,
             resourceLoader.get(Resource.SmileyHappy),
-            resourceLoader.get(Resource.SmileyCool).getImage(),
+            resourceLoader.get(Resource.SmileyCool),
             window);
     }
 }

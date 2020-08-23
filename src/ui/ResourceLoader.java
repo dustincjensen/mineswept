@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import models.Resource;
+import ui.utils.HexToRgb;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  * Loads all of the icons that the application will need.
@@ -14,6 +18,8 @@ public class ResourceLoader {
     public ResourceLoader() {
         try {
             iconMap = new HashMap<Resource, ImageIcon>();
+            iconMap.put(Resource.RadioButtonDefault, recolorBlackIcon("/icons/components/radioButtonDefault.png", "#444444"));
+            iconMap.put(Resource.RadioButtonSelected, recolorBlackIcon("/icons/components/radioButtonSelected.png", "#007bff"));
             iconMap.put(Resource.BombHint, imageIcon("/icons/bomb.png"));
             iconMap.put(Resource.Clock, imageIcon("/icons/clock.png"));
             iconMap.put(Resource.Flag, imageIcon("/icons/flag-24.png"));
@@ -45,5 +51,35 @@ public class ResourceLoader {
 
     private ImageIcon imageIcon(String path) {
         return new ImageIcon(getClass().getResource(path));
+    }
+
+    private ImageIcon recolorBlackIcon(String path, String hexCode) {
+        try {
+            var img = colorImage(
+                ImageIO.read(getClass().getResource(path)),
+                hexCode);
+            return new ImageIcon(img);
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
+    // https://stackoverflow.com/a/16054956/718285
+    private BufferedImage colorImage(BufferedImage image, String hexCode) {
+        var width = image.getWidth();
+        var height = image.getHeight();
+        var raster = image.getRaster();
+        var colorToUse = HexToRgb.convert(hexCode);
+
+        for (int xx = 0; xx < width; xx++) {
+            for (int yy = 0; yy < height; yy++) {
+                var pixels = raster.getPixel(xx, yy, (int[]) null);
+                pixels[0] = colorToUse.getRed();
+                pixels[1] = colorToUse.getGreen();
+                pixels[2] = colorToUse.getBlue();
+                raster.setPixel(xx, yy, pixels);
+            }
+        }
+        return image;
     }
 }

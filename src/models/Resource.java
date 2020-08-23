@@ -1,6 +1,8 @@
 package models;
 
 public enum Resource {
+    RadioButtonDefault,
+    RadioButtonSelected,
     BombHint,
     Clock,
     Flag,

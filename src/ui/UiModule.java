@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import events.IEventPublisher;
 import events.IEventSubscriber;
+import ui.components.ComponentModule;
 import ui.layout.LayoutModule;
 import ui.window.WindowModule;
 import ui.menu.MenuModule;
@@ -15,6 +16,7 @@ import ui.statistics.StatisticsModule;
 public class UiModule extends AbstractModule {
     @Override
     protected void configure() {
+        install(new ComponentModule());
         install(new LayoutModule());
         install(new WindowModule());
         install(new MenuModule());

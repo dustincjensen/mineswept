@@ -4,6 +4,7 @@ import events.IEventSubscriber;
 import events.UpdateMinePanelEvent;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
+import ui.components.radioButton.RadioButtonFactory;
 import ui.options.styles.Material;
 import ui.options.styles.Classic;
 import ui.utils.ColorConverter;
@@ -18,6 +19,7 @@ import ui.window.Window;
 public class OptionsWindow {
 	private GameState gameState;
 	private OptionsService optionsService;
+	private RadioButtonFactory radioButtonFactory;
 	private IEventSubscriber eventSubscriber;
 	private ImageIcon confirmationIcon;
 	private Window window;
@@ -33,18 +35,20 @@ public class OptionsWindow {
 	public OptionsWindow(
 		GameState gameState,
 		OptionsService optionsService,
+		RadioButtonFactory radioButtonFactory,
 		ImageIcon confirmationIcon,
-		Image windowIcon,
+		ImageIcon windowIcon,
 		Window window
 	) {
 		System.out.println("Creating new option window...");
 		this.gameState = gameState;
 		this.optionsService = optionsService;
+		this.radioButtonFactory = radioButtonFactory;
 		this.confirmationIcon = confirmationIcon;
 		this.window = window;
 
 		frame = new OptionsFrame(mainPanel());
-		frame.setIconImage(windowIcon);
+		frame.setIconImage(windowIcon.getImage());
 
 		optionsHaveChanged = false;
 	}
@@ -122,23 +126,20 @@ public class OptionsWindow {
 	private Box difficultyPanel() {
 		var difficultyPanel = new JPanel(new GridLayout(0, 3));
 		difficultyPanel.setOpaque(false);
-        
-		easy = new JRadioButton("<html>Easy<br/><i>10 mines<br/>9x9 grid</i></html>");
-		easy.setOpaque(false);
-		easy.setForeground(HexToRgb.convert("#ffffff"));
-		easy.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.easy);
+		
+		easy = radioButtonFactory.create(
+			"<html>Easy<br/><i>10 mines<br/>9x9 grid</i></html>",
+			evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.easy);
 		difficultyPanel.add(easy);
 
-		medium = new JRadioButton("<html>Medium<br/><i>40 mines<br/>16x16 grid</i></html>");
-		medium.setOpaque(false);
-		medium.setForeground(HexToRgb.convert("#ffffff"));
-		medium.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.medium);
+		medium = radioButtonFactory.create(
+			"<html>Medium<br/><i>40 mines<br/>16x16 grid</i></html>",
+			evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.medium);
 		difficultyPanel.add(medium);
 
-		hard = new JRadioButton("<html>Hard<br/><i>99 mines<br/>16x30 grid</i></html>");
-		hard.setOpaque(false);
-		hard.setForeground(HexToRgb.convert("#ffffff"));
-		hard.addActionListener(evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.hard);
+		hard = radioButtonFactory.create(
+			"<html>Hard<br/><i>99 mines<br/>16x30 grid</i></html>",
+			evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.hard);
 		difficultyPanel.add(hard);
 
 		difficultyRadioButtonGroup = new ButtonGroup();
