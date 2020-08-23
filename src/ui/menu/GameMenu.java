@@ -4,8 +4,6 @@ import events.IEventPublisher;
 import events.QuitGameEvent;
 import events.ResetGameEvent;
 import events.ShowOptionsEvent;
-
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -22,12 +20,8 @@ public class GameMenu extends JMenu {
 		super("Game");
 		eventPublisher = publisher;
 		add(newGame());
-		addSeparator();
 		add(options());
-		addSeparator();
 		add(quit());
-
-		setForeground(Color.white);
 	}
 
 	/**

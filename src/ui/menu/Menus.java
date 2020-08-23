@@ -1,9 +1,6 @@
 package ui.menu;
 
-import javax.swing.BorderFactory;
 import javax.swing.JMenuBar;
-
-import ui.utils.HexToRgb;
 
 /**
  * Sets up the menus for the JFrame.
@@ -14,8 +11,5 @@ public class Menus extends JMenuBar {
 		add(gameMenu);
 		add(viewMenu);
 		add(helpMenu);
-
-		setBackground(HexToRgb.convert("#333333"));
-		setBorder(BorderFactory.createEmptyBorder());
 	}
 }

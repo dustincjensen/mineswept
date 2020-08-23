@@ -2,7 +2,6 @@ package ui.menu;
 
 import events.AboutEvent;
 import events.IEventPublisher;
-import java.awt.Color;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -17,8 +16,6 @@ public class HelpMenu extends JMenu {
 		super("Help");
 		eventPublisher = publisher;
 		add(about());
-
-		setForeground(Color.white);
 	}
 
 	/**

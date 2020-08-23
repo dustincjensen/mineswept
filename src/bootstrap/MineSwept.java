@@ -1,5 +1,6 @@
 package bootstrap;
 
+import ui.window.CustomUiManager;
 import ui.window.Window;
 import utils.ClassFactory;
 
@@ -18,6 +19,7 @@ public class MineSwept {
 	 * Main entry point for the application.
 	 */
 	public static void main(String[] args) {
+		CustomUiManager.setup();
 		ClassFactory.create(MineSwept.class).start();
 	}
 }

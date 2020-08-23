@@ -4,7 +4,6 @@ import events.IEventPublisher;
 import events.ShowRecordsEvent;
 import events.ShowStatisticsEvent;
 import java.awt.event.KeyEvent;
-import java.awt.Color;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
@@ -21,8 +20,6 @@ public class ViewMenu extends JMenu {
 		eventPublisher = publisher;
 		add(showRecords());
 		add(showStatistics());
-
-		setForeground(Color.white);
 	}
 
 	/**
