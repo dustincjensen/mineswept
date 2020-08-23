@@ -2,18 +2,19 @@ package ui.options;
 
 import events.IEventSubscriber;
 import events.UpdateMinePanelEvent;
-import ui.components.button.LightButton;
-import ui.components.button.PrimaryButton;
-import ui.components.radioButton.RadioButtonFactory;
-import ui.options.styles.Material;
-import ui.options.styles.Classic;
-import ui.utils.ColorConverter;
-import ui.utils.HexToRgb;
 import java.awt.*;
+import java.util.function.Consumer;
 import javax.swing.*;
 import models.Difficulty;
 import services.OptionsService;
 import state.GameState;
+import ui.components.button.LightButton;
+import ui.components.button.PrimaryButton;
+import ui.components.radioButton.RadioButtonFactory;
+import ui.options.styles.Classic;
+import ui.options.styles.Material;
+import ui.utils.ColorConverter;
+import ui.utils.HexToRgb;
 import ui.window.Window;
 
 public class OptionsWindow {
@@ -36,6 +37,7 @@ public class OptionsWindow {
 		GameState gameState,
 		OptionsService optionsService,
 		RadioButtonFactory radioButtonFactory,
+		IEventSubscriber eventSubscriber,
 		ImageIcon confirmationIcon,
 		ImageIcon windowIcon,
 		Window window
@@ -44,6 +46,7 @@ public class OptionsWindow {
 		this.gameState = gameState;
 		this.optionsService = optionsService;
 		this.radioButtonFactory = radioButtonFactory;
+		this.eventSubscriber = eventSubscriber;
 		this.confirmationIcon = confirmationIcon;
 		this.window = window;
 
@@ -347,7 +350,7 @@ public class OptionsWindow {
 		return headerWithColorPanel;
 	}
 
-	private Box individualColorPanel(Color base, String colorName, JLabel colorSwatch, IColorHandler colorHandler) {
+	private Box individualColorPanel(Color base, String colorName, JLabel colorSwatch, Consumer<Color> colorHandler) {
 		colorSwatch.setPreferredSize(new Dimension(40, 40));
 		colorSwatch.setOpaque(true);
 		colorSwatch.setBackground(base);
@@ -365,7 +368,7 @@ public class OptionsWindow {
 			var newColor = JColorChooser.showDialog(null, "Select Base Color", base);
 			if (newColor != null) {
 				colorSwatch.setBackground(newColor);
-				colorHandler.handleSelectedColor(newColor);
+				colorHandler.accept(newColor);
 			}
 		}));
 

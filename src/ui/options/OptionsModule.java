@@ -28,12 +28,14 @@ public class OptionsModule extends AbstractModule {
         ResourceLoader resourceLoader,
         RadioButtonFactory factory,
         OptionsService optionsService,
+        IEventSubscriber eventSubscriber,
         Window window
     ) {
         return new OptionsWindow(
             gameState,
             optionsService,
             factory,
+            eventSubscriber,
             resourceLoader.get(Resource.SmileyHappy),
             resourceLoader.get(Resource.SmileyCool),
             window);
