@@ -14,9 +14,10 @@ public class BodyModule extends AbstractModule {
     public BodyLayout provideBodyLayout(
         MinePanel mine,
         PausePanel pause,
+        OptionsService options,
         IEventSubscriber subscriber
     ) {
-        return new BodyLayout(mine, pause, subscriber);
+        return new BodyLayout(mine, pause, options, subscriber);
     }
 
     @Provides
@@ -27,9 +28,7 @@ public class BodyModule extends AbstractModule {
         IEventSubscriber subscriber
     ) {
         return new PausePanel(
-            state.getCurrentPuzzleHeight(),
-            state.getCurrentPuzzleWidth(),
-            state.getCurrentPuzzleMineCount(),
+            state,
             options,
             publisher,
             subscriber);
@@ -38,9 +37,7 @@ public class BodyModule extends AbstractModule {
     @Provides
     public MinePanel provideMinePanel(GameState state, OptionsService options, IEventSubscriber subscriber) {
         return new MinePanel(
-            state.getCurrentPuzzleHeight(),
-            state.getCurrentPuzzleWidth(),
-            state.getCurrentPuzzleMineCount(),
+            state,
             options,
             subscriber);
     }

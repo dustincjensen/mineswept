@@ -20,11 +20,12 @@ Working on
 / Implement Options Saving / Loading
 / Implement Statistics and Statistics UI Window
 - Implement alternate color schemes, borders and such for the mines.
-- Make resize-able?
 / Refactor GUI folder
     / move files around, rename folders
     / better modules
 / Refactor MineCount and TimeCount?
+/ https://stackoverflow.com/a/9312222/718285 - resize font with component
++ Make resize-able
     
 Bugs
 ==========

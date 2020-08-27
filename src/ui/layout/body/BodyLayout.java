@@ -2,30 +2,33 @@ package ui.layout.body;
 
 import events.IEventSubscriber;
 import events.PauseGameEvent;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import events.RefreshMainWindowEvent;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.JComponent;
-import ui.layout.body.MinePanel;
-import ui.layout.body.PausePanel;
+import javax.swing.JPanel;
+import services.OptionsService;
+import ui.utils.ColorConverter;
 
 @SuppressWarnings("serial")
-public class BodyLayout extends Box {
-	private IEventSubscriber eventSubscriber;
+public class BodyLayout extends JPanel {
 	private MinePanel minePanel;
 	private PausePanel pausePanel;
+	private IEventSubscriber eventSubscriber;
 
 	public BodyLayout(
 		MinePanel minePanel,
 		PausePanel pausePanel,
+		OptionsService options,
 		IEventSubscriber eventSubscriber
 	) {
-		super(BoxLayout.Y_AXIS);
-		this.eventSubscriber = eventSubscriber;
+		super(new GridBagLayout());
 		this.minePanel = minePanel;
 		this.pausePanel = pausePanel;
+		this.eventSubscriber = eventSubscriber;
 		
-		add(minePanel);
-		
+		setBackground(ColorConverter.convert(options.clickedColor()));
+		add(minePanel, new GridBagConstraints());
 		setupSubscriptions();
 	}
 
@@ -41,8 +44,16 @@ public class BodyLayout extends Box {
 			} else {
 				swap(pausePanel, minePanel);
 			}
-			repaint();
 			revalidate();
+			repaint();
+		});
+
+		// TODO seems like we can remove this event.
+		// Going to keep it in for testing.
+		eventSubscriber.subscribe(RefreshMainWindowEvent.class, (event) -> {
+		// 	doResize();
+		// 	repaint();
+        //     getContentPane().repaint();
 		});
 	}
 }

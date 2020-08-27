@@ -4,6 +4,7 @@ import events.IEventSubscriber;
 import events.ResetMinePanelEvent;
 import events.UpdateMinePanelEvent;
 import services.OptionsService;
+import state.GameState;
 import ui.utils.ColorConverter;
 
 import java.awt.*;
@@ -16,6 +17,7 @@ import utils.ClassFactory;
  */
 @SuppressWarnings("serial")
 public class MinePanel extends JPanel {
+	private GameState gameState;
 	private OptionsService optionsService;
 	private IEventSubscriber eventSubscriber;
 	private JPanel minePanel;
@@ -23,19 +25,53 @@ public class MinePanel extends JPanel {
 	private Vector<MineButton> mineButtons;
 	
 	public MinePanel(
-		int initialHeight,
-		int initialWidth,
-		int maximumPuzzleMineCount,
+		GameState gameState,
 		OptionsService options,
 		IEventSubscriber subscriber
 	) {
+		this.gameState = gameState;
 		optionsService = options;
 		eventSubscriber = subscriber;
 
-		setLayout(new BorderLayout(0 , 0));
-		mineButtons = new Vector<MineButton>(maximumPuzzleMineCount);
-		setupInteriorMinePanel(initialHeight, initialWidth);
+		setLayout(new BorderLayout());
+		
+		mineButtons = new Vector<MineButton>(gameState.getCurrentPuzzleMineCount());
+		setupInteriorMinePanel(gameState.getCurrentPuzzleHeight(), gameState.getCurrentPuzzleWidth());
 		setupSubscriptions();
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		var parentSize = getParent().getSize();
+		var h = (int)parentSize.getHeight();
+		var w = (int)parentSize.getWidth();
+
+		if (h <= 0 || w <=0) {
+			return super.getPreferredSize();
+		}
+		return setNewSize(h, w);
+	}
+
+	// TODO put this in a shared location?
+	// TODO check todo notes for resizing fonts...
+	private Dimension setNewSize(int h, int w) {
+		var ratio = (double)gameState.getCurrentPuzzleWidth() / (double)gameState.getCurrentPuzzleHeight();
+
+		if (w > h) {
+            var newWidth = (int)(h*ratio);
+            var newHeight = h;
+            if (newWidth > w) {
+				// The width can't be larger than the container width,
+				// so cap it, and make the height match the width ratio.
+                newWidth = w;
+                newHeight = (int)(w / ratio);
+            }
+            return new Dimension(newWidth, newHeight);
+        } else if (w < h) {
+            return new Dimension(w,(int)(w/ratio));
+        } else {
+            return new Dimension(w, h);
+        }
 	}
 
 	private void setupInteriorMinePanel(int h, int w) {
@@ -44,6 +80,7 @@ public class MinePanel extends JPanel {
 		// GridLayout goes by row, column
 		minePanelLayout = new GridLayout(h, w);
 		minePanel.setLayout(minePanelLayout);
+		minePanel.setBackground(ColorConverter.convert(optionsService.clickedColor()));
 
 		addMines(h, w);
 		add(minePanel, BorderLayout.CENTER);

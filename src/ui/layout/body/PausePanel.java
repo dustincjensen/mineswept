@@ -5,8 +5,10 @@ import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.ResetMinePanelEvent;
 import services.OptionsService;
+import state.GameState;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -21,6 +23,7 @@ import ui.utils.FontChange;
  */
 @SuppressWarnings("serial")
 public class PausePanel extends JPanel {
+	private GameState gameState;
 	private OptionsService optionsService;
 	private IEventPublisher eventPublisher;
 
@@ -28,16 +31,15 @@ public class PausePanel extends JPanel {
 	private Vector<ReadonlyMineButton> mineButtons;
 
 	public PausePanel(
-		int initialHeight,
-		int initialWidth,
-		int maximumPuzzleMineCount,
+		GameState gameState,
 		OptionsService optionsService,
 		IEventPublisher eventPublisher,
 		IEventSubscriber eventSubscriber
 	) {
+		this.gameState = gameState;
 		this.optionsService = optionsService;
 		this.eventPublisher = eventPublisher;
-		mineButtons = new Vector<ReadonlyMineButton>(maximumPuzzleMineCount);
+		mineButtons = new Vector<ReadonlyMineButton>(gameState.getCurrentPuzzleMineCount());
 
 		// Allows us to layer components in the same grid cell.
 		setLayout(new GridBagLayout());
@@ -51,9 +53,41 @@ public class PausePanel extends JPanel {
 		add(continueButton(), c);
 		
         c.fill = GridBagConstraints.BOTH;
-		add(containerPanel(initialHeight, initialWidth), c);
+		add(containerPanel(gameState.getCurrentPuzzleHeight(), gameState.getCurrentPuzzleWidth()), c);
 
 		setupSubscriptions(eventSubscriber);
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		var parentSize = getParent().getSize();
+		var h = (int)parentSize.getHeight();
+		var w = (int)parentSize.getWidth();
+
+		if (h <= 0 || w <=0) {
+			return super.getPreferredSize();
+		}
+		return setNewSize(h, w);
+	}
+
+	private Dimension setNewSize(int h, int w) {
+		var ratio = (double)gameState.getCurrentPuzzleWidth() / (double)gameState.getCurrentPuzzleHeight();
+
+		if (w > h) {
+            var newWidth = (int)(h*ratio);
+            var newHeight = h;
+            if (newWidth > w) {
+				// The width can't be larger than the container width,
+				// so cap it, and make the height match the width ratio.
+                newWidth = w;
+                newHeight = (int)(w / ratio);
+            }
+            return new Dimension(newWidth, newHeight);
+        } else if (w < h) {
+            return new Dimension(w,(int)(w/ratio));
+        } else {
+            return new Dimension(w, h);
+        }
 	}
 
 	private PrimaryButton continueButton() {
@@ -69,6 +103,7 @@ public class PausePanel extends JPanel {
 
 		// GridLayout goes by row, column
 		minePanel.setLayout(new GridLayout(h, w));
+		minePanel.setBackground(ColorConverter.convert(optionsService.clickedColor()));
 
 		addMines(h, w);
 		container.add(minePanel, BorderLayout.CENTER);
