@@ -1,18 +1,18 @@
-package ui.layout.header.mineCount;
+package ui.layout.header.timeCount;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 
-public class MineCountButtonMouseAdapter extends MouseAdapter {
-    private MineCountButton button;
+public class TimeCountButtonMouseAdapter extends MouseAdapter {
+    private TimeCountButton button;
 
-    public MineCountButtonMouseAdapter(MineCountButton button) {
+    public TimeCountButtonMouseAdapter(TimeCountButton button) {
         this.button = button;
     }
 
     public void mouseEntered(MouseEvent evt) {
         button.setHovering(true);
-        button.setHintText();
+        button.setPauseText();
     }
 
     public void mouseExited(MouseEvent evt) {

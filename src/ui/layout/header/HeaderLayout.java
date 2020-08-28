@@ -3,6 +3,7 @@ package ui.layout.header;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import ui.layout.header.mineCount.MineCount;
+import ui.layout.header.timeCount.TimeCount;
 import ui.utils.HexToRgb;
 
 /**

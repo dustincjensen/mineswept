@@ -1,5 +1,6 @@
 package events.handlers;
 
+import events.GamePausedEvent;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.SetResetButtonIconEvent;
@@ -20,16 +21,17 @@ public class PauseGameEventHandler implements IEventHandler<PauseGameEvent> {
     @Override
     public void execute(PauseGameEvent event) {
         if (gameState.isGameStarted() && !gameState.isGameOver()) {
-            if (event.pause) {
-                eventSubscriber.notify(new StopClockTimerEvent());
-                eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyPaused));
-            } else {
+            var isPaused = gameState.isGamePaused();
+            if (isPaused) {
                 eventSubscriber.notify(new StartClockTimerEvent());
                 eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
+            } else {
+                eventSubscriber.notify(new StopClockTimerEvent());
+                eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyPaused));
             }
 
-            gameState.setGamePaused(event.pause);
-            eventSubscriber.notify(event);
+            gameState.setGamePaused(!isPaused);
+            eventSubscriber.notify(new GamePausedEvent(!isPaused));
         }
     }
 }

@@ -1,7 +1,7 @@
 package events.handlers;
 
+import events.GamePausedEvent;
 import events.IEventSubscriber;
-import events.PauseGameEvent;
 import events.ResetClockTimerEvent;
 import events.ResetGameEvent;
 import events.ResetMinePanelEvent;
@@ -32,6 +32,6 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         eventSubscriber.notify(new SetTimeCountEvent(0));
         eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
         eventSubscriber.notify(new UpdateMineCountEvent(gameState.getMineCount()));
-        eventSubscriber.notify(new PauseGameEvent(false));
+        eventSubscriber.notify(new GamePausedEvent(false));
     }
 }

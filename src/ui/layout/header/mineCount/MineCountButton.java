@@ -10,10 +10,12 @@ import ui.utils.FontChange;
 @SuppressWarnings("serial")
 public class MineCountButton extends LightButton {
     private int mineCount;
+    private boolean isHovering;
 
     public MineCountButton(int mineCount, ImageIcon bombHintIcon, ActionListener listener) {
         super("", true, listener);
         this.mineCount = mineCount;
+        this.isHovering = false;
 
         setFormattedText();
         setIcon(bombHintIcon);
@@ -34,12 +36,17 @@ public class MineCountButton extends LightButton {
         }
     }
 
+    public void setHovering(boolean value) {
+        isHovering = value;
+    }
+
     public void setHintText() {
         setText(String.format("%1$7s", "Hint"));
     }
 
     public void setFormattedText() {
-        setText(String.format("%1$8s", String.format("%02d", mineCount)));
+        if (!isFocusOwner() && !isHovering) {
+            setText(String.format("%1$8s", String.format("%02d", mineCount)));
+        }
     }
 }
-

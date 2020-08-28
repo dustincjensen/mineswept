@@ -1,7 +1,7 @@
 package ui.layout.body;
 
+import events.GamePausedEvent;
 import events.IEventSubscriber;
-import events.PauseGameEvent;
 import events.ResetMinePanelEvent;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -40,8 +40,8 @@ public class BodyLayout extends JPanel {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(PauseGameEvent.class, event -> {
-			if (event.pause) {
+		eventSubscriber.subscribe(GamePausedEvent.class, event -> {
+			if (event.gamePaused) {
 				swap(minePanel, pausePanel);
 			} else {
 				swap(pausePanel, minePanel);

@@ -91,7 +91,7 @@ public class PausePanel extends JPanel {
 	}
 
 	private PrimaryButton continueButton() {
-		var button = new PrimaryButton("Continue Playing", evt -> eventPublisher.publish(new PauseGameEvent(false)));
+		var button = new PrimaryButton("Continue Playing", evt -> eventPublisher.publish(new PauseGameEvent()));
 		FontChange.setFont(button, 24);
 		return button;
 	}

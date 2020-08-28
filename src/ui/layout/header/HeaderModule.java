@@ -9,6 +9,7 @@ import models.Resource;
 import state.GameState;
 import ui.ResourceLoader;
 import ui.layout.header.mineCount.MineCount;
+import ui.layout.header.timeCount.TimeCount;
 
 public class HeaderModule extends AbstractModule {
     @Override
@@ -41,7 +42,11 @@ public class HeaderModule extends AbstractModule {
     // TODO remove singleton when event subscribers are fully fleshed out
     @Singleton
     @Provides
-    public TimeCount provideTimeCount(GameState gameState, IEventPublisher publisher, IEventSubscriber subscriber, ResourceLoader loader) {
-        return new TimeCount(gameState, publisher, subscriber, loader.get(Resource.Clock));
+    public TimeCount provideTimeCount(
+        ResourceLoader loader,
+        IEventPublisher publisher, 
+        IEventSubscriber subscriber
+    ) {
+        return new TimeCount(loader.get(Resource.Clock), publisher, subscriber);
     }
 }
