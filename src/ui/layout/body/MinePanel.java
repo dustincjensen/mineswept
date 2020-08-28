@@ -80,7 +80,6 @@ public class MinePanel extends JPanel {
 		// GridLayout goes by row, column
 		minePanelLayout = new GridLayout(h, w);
 		minePanel.setLayout(minePanelLayout);
-		minePanel.setBackground(ColorConverter.convert(optionsService.clickedColor()));
 
 		addMines(h, w);
 		add(minePanel, BorderLayout.CENTER);
@@ -107,6 +106,10 @@ public class MinePanel extends JPanel {
 			ColorConverter.convert(optionsService.mineNumEightColor())
 		};
 
+		// Set the mine panel background, since this might change on refresh.
+		minePanel.setBackground(clickedBgColor);
+
+		// Add mines for each position
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				// TODO this is temporary for now... Need to figure out how to create mines. Perhaps this IS the best way.

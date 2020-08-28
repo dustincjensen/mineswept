@@ -25,8 +25,4 @@ Working on
     
 Bugs
 ==========
-- Area around mines does not change color when clicked/alt clicked colors are changed.
-    - mine panel
-    - pause panel
-    - most importantly bodyLayout panel
 - Pressing hint after game over starts the timer

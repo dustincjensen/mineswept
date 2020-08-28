@@ -103,7 +103,6 @@ public class PausePanel extends JPanel {
 
 		// GridLayout goes by row, column
 		minePanel.setLayout(new GridLayout(h, w));
-		minePanel.setBackground(ColorConverter.convert(optionsService.clickedColor()));
 
 		addMines(h, w);
 		container.add(minePanel, BorderLayout.CENTER);
@@ -118,6 +117,10 @@ public class PausePanel extends JPanel {
 		var clickedBgColor = ColorConverter.convert(optionsService.clickedColor());
 		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
 
+		// Set the mine panel background, since this might change on refresh.
+		minePanel.setBackground(clickedBgColor);
+
+		// Add mines for each position
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				var mb = new ReadonlyMineButton(x, y, clickedBgColor, clickedAltBgColor);

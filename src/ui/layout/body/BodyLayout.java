@@ -2,7 +2,7 @@ package ui.layout.body;
 
 import events.IEventSubscriber;
 import events.PauseGameEvent;
-import events.RefreshMainWindowEvent;
+import events.ResetMinePanelEvent;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JComponent;
@@ -14,6 +14,7 @@ import ui.utils.ColorConverter;
 public class BodyLayout extends JPanel {
 	private MinePanel minePanel;
 	private PausePanel pausePanel;
+	private OptionsService options;
 	private IEventSubscriber eventSubscriber;
 
 	public BodyLayout(
@@ -25,6 +26,7 @@ public class BodyLayout extends JPanel {
 		super(new GridBagLayout());
 		this.minePanel = minePanel;
 		this.pausePanel = pausePanel;
+		this.options = options;
 		this.eventSubscriber = eventSubscriber;
 		
 		setBackground(ColorConverter.convert(options.clickedColor()));
@@ -48,12 +50,9 @@ public class BodyLayout extends JPanel {
 			repaint();
 		});
 
-		// TODO seems like we can remove this event.
-		// Going to keep it in for testing.
-		eventSubscriber.subscribe(RefreshMainWindowEvent.class, (event) -> {
-		// 	doResize();
-		// 	repaint();
-        //     getContentPane().repaint();
+		eventSubscriber.subscribe(ResetMinePanelEvent.class, event -> {
+			// We refresh the colors on game reset. Options may have changd.
+			setBackground(ColorConverter.convert(options.clickedColor()));
 		});
 	}
 }
