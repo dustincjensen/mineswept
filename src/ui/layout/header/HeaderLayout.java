@@ -2,6 +2,7 @@ package ui.layout.header;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import ui.layout.header.mineCount.MineCount;
 import ui.utils.HexToRgb;
 
 /**

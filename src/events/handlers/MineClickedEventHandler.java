@@ -121,7 +121,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
         
         if (!mine.uncovered()) {
             mine.updateMineState();
-            eventSubscriber.notify(new UpdateMineCountEvent());
+            eventSubscriber.notify(new UpdateMineCountEvent(gameState.getMineCount()));
         }
     }
 }

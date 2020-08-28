@@ -3,7 +3,6 @@ package events.handlers;
 import events.GetHintEvent;
 import events.StartClockTimerEvent;
 import events.IEventSubscriber;
-import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
 import services.HintService;
 import state.GameState;
@@ -28,7 +27,6 @@ public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
             hintService.useHint();
 
 			eventSubscriber.notify(new StartClockTimerEvent());
-            eventSubscriber.notify(new UpdateMineCountEvent());
             eventSubscriber.notify(new UpdateMinePanelEvent());
         }
     }

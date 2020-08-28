@@ -31,7 +31,7 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
         eventSubscriber.notify(new ResetClockTimerEvent());
         eventSubscriber.notify(new SetTimeCountEvent(0));
         eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileyHappy));
-        eventSubscriber.notify(new UpdateMineCountEvent());
+        eventSubscriber.notify(new UpdateMineCountEvent(gameState.getMineCount()));
         eventSubscriber.notify(new PauseGameEvent(false));
     }
 }

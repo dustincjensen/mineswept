@@ -8,6 +8,7 @@ import events.IEventSubscriber;
 import models.Resource;
 import state.GameState;
 import ui.ResourceLoader;
+import ui.layout.header.mineCount.MineCount;
 
 public class HeaderModule extends AbstractModule {
     @Override
@@ -22,11 +23,11 @@ public class HeaderModule extends AbstractModule {
     @Provides
     public MineCount provideMineCount(
         GameState gameState,
+        ResourceLoader loader,
         IEventPublisher publisher,
-        IEventSubscriber subscriber,
-        ResourceLoader loader
+        IEventSubscriber subscriber
     ) {
-        return new MineCount(gameState, publisher, subscriber, loader.get(Resource.BombHint));
+        return new MineCount(gameState.getMineCount(), loader.get(Resource.BombHint), publisher, subscriber);
     }
 
     // TODO remove singleton when event subscribers are fully fleshed out
