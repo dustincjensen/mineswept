@@ -15,6 +15,7 @@ import java.awt.GridLayout;
 import java.util.Vector;
 import javax.swing.JPanel;
 import ui.components.button.PrimaryButton;
+import ui.utils.BorderConverter;
 import ui.utils.ColorConverter;
 import ui.utils.FontChange;
 
@@ -116,6 +117,7 @@ public class PausePanel extends JPanel {
 
 		var clickedBgColor = ColorConverter.convert(optionsService.clickedColor());
 		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
+		var loweredBorder = BorderConverter.convert(optionsService.loweredBorder());
 
 		// Set the mine panel background, since this might change on refresh.
 		minePanel.setBackground(clickedBgColor);
@@ -123,7 +125,7 @@ public class PausePanel extends JPanel {
 		// Add mines for each position
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
-				var mb = new ReadonlyMineButton(x, y, clickedBgColor, clickedAltBgColor);
+				var mb = new ReadonlyMineButton(x, y, loweredBorder, clickedBgColor, clickedAltBgColor);
 				mineButtons.add(mb);
 				minePanel.add(mb);
 			}

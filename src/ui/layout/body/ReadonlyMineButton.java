@@ -11,10 +11,10 @@ import javax.swing.border.Border;
 @SuppressWarnings("serial")
 public class ReadonlyMineButton extends JLabel {
     private static final int w = 48, h = 48;
-    private Border loweredBorder = StylesModern.LOWERED_BORDER;
 
     public ReadonlyMineButton (
-        int x, int y, 
+        int x, int y,
+        Border loweredBorder,
         Color backgroundColor,
         Color altBackgroundColor
     ) {

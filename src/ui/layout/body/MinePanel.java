@@ -5,6 +5,7 @@ import events.ResetMinePanelEvent;
 import events.UpdateMinePanelEvent;
 import services.OptionsService;
 import state.GameState;
+import ui.utils.BorderConverter;
 import ui.utils.ColorConverter;
 
 import java.awt.*;
@@ -95,6 +96,9 @@ public class MinePanel extends JPanel {
 		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
 		var failBgColor = ColorConverter.convert(optionsService.clickedFailColor());
 
+		var raisedBorder = BorderConverter.convert(optionsService.raisedBorder());
+		var loweredBorder = BorderConverter.convert(optionsService.loweredBorder());
+
 		Color[] mineColors = {
 			ColorConverter.convert(optionsService.mineNumOneColor()),
 			ColorConverter.convert(optionsService.mineNumTwoColor()),
@@ -116,8 +120,7 @@ public class MinePanel extends JPanel {
 				MineButton mb = ClassFactory.create(MineButton.class);
 				mb.setPosition(x, y);
 				mb.setColors(bgColor, bgAltColor, clickedBgColor, clickedAltBgColor, failBgColor, mineColors);
-				// TODO add options to set these...
-				mb.setBorders(StylesModern.RAISED_BORDER, StylesModern.LOWERED_BORDER);
+				mb.setBorders(raisedBorder, loweredBorder);
 				mb.decorate();
 				mineButtons.add(mb);
 				minePanel.add(mb);

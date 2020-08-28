@@ -6,10 +6,12 @@ import java.awt.*;
 import java.util.function.Consumer;
 import javax.swing.*;
 import models.Difficulty;
+import models.options.BorderType;
 import services.OptionsService;
 import state.GameState;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
+import ui.components.comboBox.DefaultComboBox;
 import ui.components.radioButton.RadioButtonFactory;
 import ui.options.styles.Classic;
 import ui.options.styles.Material;
@@ -32,6 +34,7 @@ public class OptionsWindow {
 	private JLabel jSquareColor, jSquareAltColor, jClickedColor, jClickedAltColor, jClickedFailColor,
 		jMineNumOneColor, jMineNumTwoColor, jMineNumThreeColor, jMineNumFourColor, jMineNumFiveColor,
 		jMineNumSixColor, jMineNumSevenColor, jMineNumEightColor;
+	private DefaultComboBox<BorderType> raisedBorder, loweredBorder;
 
 	public OptionsWindow(
 		GameState gameState,
@@ -72,6 +75,7 @@ public class OptionsWindow {
 		panel.add(themePanel());
 		panel.add(minefieldColorsPanel());
 		panel.add(mineColorsPanel());
+		panel.add(mineBorderPanel());
 		return panel;
 	}
 
@@ -381,12 +385,42 @@ public class OptionsWindow {
 		return panel;
 	}
 
+	private Box mineBorderPanel() {
+		var p1 = new JPanel(new GridLayout(0, 2, 10, 0));
+		p1.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		p1.setOpaque(false);
+
+		raisedBorder = new DefaultComboBox<BorderType>(new BorderType[] { BorderType.BEVEL_RAISED, BorderType.EMPTY });
+		raisedBorder.addActionListener(evt -> optionsHaveChanged = optionsService.raisedBorder() != raisedBorder.getSelectedItem());
+		var raisePanel = new JPanel(new GridLayout(0, 1));
+		raisePanel.setOpaque(false);
+		raisePanel.add(createJLabel("Default Border", SwingConstants.LEFT));
+		raisePanel.add(raisedBorder);
+
+		loweredBorder = new DefaultComboBox<BorderType>(new BorderType[] { BorderType.BEVEL_LOWERED, BorderType.EMPTY });
+		loweredBorder.addActionListener(evt -> optionsHaveChanged = optionsService.loweredBorder() != loweredBorder.getSelectedItem());
+		var lowerPanel = new JPanel(new GridLayout(0, 1));
+		lowerPanel.setOpaque(false);
+		lowerPanel.add(createJLabel("Clicked Border", SwingConstants.LEFT));
+		lowerPanel.add(loweredBorder);
+		
+		p1.add(raisePanel);
+		p1.add(lowerPanel);
+
+		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
+		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
+		headerWithColorPanel.add(header("Mine Border"));
+		headerWithColorPanel.add(p1);
+		return headerWithColorPanel;
+	}
+
 	private void resetOptions() {
 		// System.out.println("Resetting current options...");
 	}
 
 	// TODO colors shouldn't set on the board immediately.
 	private void setNewOptions() {
+		// Set difficulty
 		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
 		if (diff.equals(easy.getModel())) {
 			optionsService.setDifficulty(Difficulty.easy);
@@ -395,6 +429,13 @@ public class OptionsWindow {
 		} else if (diff.equals(hard.getModel())) {
 			optionsService.setDifficulty(Difficulty.hard);
 		}
+
+		// Set border types
+		var raisedType = (BorderType)raisedBorder.getSelectedItem();
+		optionsService.setRaisedBorder(raisedType);
+
+		var loweredType = (BorderType)loweredBorder.getSelectedItem();
+		optionsService.setLoweredBorder(loweredType);
 	}
 
 	private int confirmDialog(String message) {

@@ -16,7 +16,7 @@ Working on
 / Refactor UI Options Window
 / Implement Options Saving / Loading
 / Implement Statistics and Statistics UI Window
-- Implement alternate color schemes, borders and such for the mines.
+- Implement alternate color schemes and such for the mines.
 / Refactor GUI folder
     / move files around, rename folders
     / better modules
@@ -26,3 +26,4 @@ Working on
 Bugs
 ==========
 - fix hint to not find flagged squares
+    - possible solution is to unprotect the square you are trying to give as a hint

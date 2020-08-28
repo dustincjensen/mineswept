@@ -3,6 +3,9 @@ package models.options;
 import ui.utils.HexToRgb;
 
 public class Options {
+    public BorderType raisedBorder;
+    public BorderType loweredBorder;
+
     public Color squareColor;
     public Color squareAltColor;
     public Color clickedColor;
@@ -22,6 +25,9 @@ public class Options {
 
     // Populates the options with defaults.
     public Options() {
+        raisedBorder = BorderType.EMPTY;
+        loweredBorder = BorderType.EMPTY;
+
         squareColor = HexToRgb.toOptionsColor("#1565c0");
         squareAltColor = HexToRgb.toOptionsColor("#1F6FcA");
         clickedColor = HexToRgb.toOptionsColor("#212121");

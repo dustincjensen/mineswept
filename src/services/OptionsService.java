@@ -2,6 +2,7 @@ package services;
 
 import java.util.function.Consumer;
 import models.Difficulty;
+import models.options.BorderType;
 import models.options.Color;
 import models.options.Options;
 
@@ -183,6 +184,46 @@ public class OptionsService {
 	public void setDifficulty(Difficulty difficulty) {
 		setOptions(options -> {
 			options.difficulty = difficulty.toString();
+		});
+	}
+
+	/**
+	 * Retrieves the raised border type.
+	 * 
+	 * @return the raised border type.
+	 */
+	public BorderType raisedBorder() {
+		return options().raisedBorder;
+	}
+
+	/**
+	 * Sets the raised border type.
+	 * 
+	 * @param type the raised border type.
+	 */
+	public void setRaisedBorder(BorderType type) {
+		setOptions(options -> {
+			options.raisedBorder = type;
+		});
+	}
+
+	/**
+	 * Retrieves the lowered border type.
+	 * 
+	 * @return the lowered border type.
+	 */
+	public BorderType loweredBorder() {
+		return options().loweredBorder;
+	}
+
+	/**
+	 * Sets the lowered border type.
+	 * 
+	 * @param type the lowered border type.
+	 */
+	public void setLoweredBorder(BorderType type) {
+		setOptions(options -> {
+			options.loweredBorder = type;
 		});
 	}
 
