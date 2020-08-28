@@ -1,6 +1,7 @@
 package events.handlers;
 
 import events.GetHintEvent;
+import events.StartClockTimerEvent;
 import events.IEventSubscriber;
 import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
@@ -21,8 +22,12 @@ public class GetHintEventHandler implements IEventHandler<GetHintEvent> {
     @Override
     public void execute(GetHintEvent event) {
         if (!gameState.isGameOver() && !gameState.isGamePaused()) {
+            gameState.setGameStarted(true);
             gameState.setHintUsed(true);
+
             hintService.useHint();
+
+			eventSubscriber.notify(new StartClockTimerEvent());
             eventSubscriber.notify(new UpdateMineCountEvent());
             eventSubscriber.notify(new UpdateMinePanelEvent());
         }
