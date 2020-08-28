@@ -20,6 +20,7 @@ public class Options {
 
     public String difficulty;
 
+    // Populates the options with defaults.
     public Options() {
         squareColor = HexToRgb.toOptionsColor("#1565c0");
         squareAltColor = HexToRgb.toOptionsColor("#1F6FcA");

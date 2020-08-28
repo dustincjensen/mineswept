@@ -9,10 +9,10 @@ import utils.RandomGen;
  * Factory to create an instance of the models.Mines class.
  */
 public class MinesFactory {
-    private OctoCheckService octoCheckService;
+    private OctoCheckService octoService;
 
-    public MinesFactory(OctoCheckService octo) {
-        octoCheckService = octo;
+    public MinesFactory(OctoCheckService octoService) {
+        this.octoService = octoService;
     }
 
     /**
@@ -60,7 +60,7 @@ public class MinesFactory {
 				continue;
 			}
 
-            var count = octoCheckService.getPositionsToCheck(i, width, mines.size())
+            var count = octoService.getPositionsToCheck(i, width, mines.size())
 				.stream()
 				.map(position -> mines.get(position).isBomb())
 				.filter(isBomb -> isBomb)

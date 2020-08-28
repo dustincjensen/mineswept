@@ -6,21 +6,18 @@ public class Mine {
 	private int spotValue;
 	private boolean isBomb;
 	private boolean uncovered;
-	private boolean protect;
+	private boolean isProtected;
 	private MineState mineState;
 	private boolean blewUp;
-	private boolean hint;
-	private boolean specialProtected;
 
 	public Mine(int xPos, int yPos) {
 		x = xPos;
 		y = yPos;
 		isBomb = false;
 		uncovered = false;
-		protect = false;
+		isProtected = false;
 		mineState = MineState.Empty;
 		blewUp = false;
-		hint = false;
 		spotValue = -1;
 	}
 
@@ -51,11 +48,11 @@ public class Mine {
 	}
 
 	public void setProtected(boolean value) {
-		protect = value;
+		isProtected = value;
 	}
 
 	public boolean isProtected() {
-		return protect;
+		return isProtected;
 	}
 
 	public void setUncovered(boolean value) {
@@ -80,26 +77,6 @@ public class Mine {
 
 	public int getSpotValue() {
 		return spotValue;
-	}
-
-	public boolean isHint() {
-		return hint;
-	}
-
-	public void setHint(boolean value) {
-		hint = value;
-	}
-
-	public boolean isSpecialProtected() {
-		return specialProtected;
-	}
-
-	public void setSpecialProtected(boolean special) {
-		specialProtected = special;
-	}
-
-	public boolean getAnyProtected() {
-		return specialProtected || protect;
 	}
 
 	public int x() {

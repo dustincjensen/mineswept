@@ -25,9 +25,7 @@ public class MineButton extends JLabel implements MouseListener {
 	private IEventPublisher eventPublisher;
 	private ImageIcon mineIcon;
 	private ImageIcon mineWrongIcon;
-	private ImageIcon mineHintIcon;
 	private ImageIcon flagIcon;
-	private ImageIcon flagHintIcon;
 
 	private int x, y;
 	private Color backgroundColor;
@@ -60,17 +58,13 @@ public class MineButton extends JLabel implements MouseListener {
 		IEventPublisher eventPublisher,
 		ImageIcon mineIcon,
 		ImageIcon mineWrongIcon,
-		ImageIcon mineHintIcon,
-		ImageIcon flagIcon,
-		ImageIcon flagHintIcon
+		ImageIcon flagIcon
 	) {
 		this.gameState = gameState;
 		this.eventPublisher = eventPublisher;
 		this.mineIcon = mineIcon;
 		this.mineWrongIcon = mineWrongIcon;
-		this.mineHintIcon = mineHintIcon;
 		this.flagIcon = flagIcon;
-		this.flagHintIcon = flagHintIcon;
 
 		// TODO allow resizing?
 		// Font size 32 when w,h = 48
@@ -136,17 +130,12 @@ public class MineButton extends JLabel implements MouseListener {
 			setBorder(raisedBorder);
 
 			if (!gameState.isGameOver()) {
-				if (t.isHint()) {
-					setIcon(t.isSpecialProtected() ? flagHintIcon : mineHintIcon);
-					setText("");
-				} else {
-					var newState = t.getMineState();
-					setIcon(newState == MineState.Flag ? flagIcon : null);
-					setForeground(newState == MineState.QuestionMark ? Color.WHITE : null);
-					setText(newState == MineState.QuestionMark ? "?" : "");
-				}
+				var newState = t.getMineState();
+				setIcon(newState == MineState.Flag ? flagIcon : null);
+				setForeground(newState == MineState.QuestionMark ? Color.WHITE : null);
+				setText(newState == MineState.QuestionMark ? "?" : "");
 			} else {
-				if (t.isBomb() && !t.getAnyProtected()) {
+				if (t.isBomb() && !t.isProtected()) {
 					setIcon(mineIcon);
 					setText("");
 				}
@@ -207,7 +196,7 @@ public class MineButton extends JLabel implements MouseListener {
 			dragX = x;
 			dragY = y;
 			insideSquares = true;
-			if (!mineSpot.uncovered() && !mineSpot.getAnyProtected()) {
+			if (!mineSpot.uncovered() && !mineSpot.isProtected()) {
 				eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));
 				setBorder(loweredBorder);
 				setBackground(clickedBackgroundColor, clickedAltBackgroundColor);
@@ -256,7 +245,7 @@ public class MineButton extends JLabel implements MouseListener {
 			mousePressStartedInsideSquare = true;
 			insideSquares = true;
 			var mineSpot = gameState.getMine(x, y);
-			if (!mineSpot.uncovered() && !mineSpot.getAnyProtected()) {
+			if (!mineSpot.uncovered() && !mineSpot.isProtected()) {
 				setBorder(loweredBorder);
 				setBackground(clickedBackgroundColor, clickedAltBackgroundColor);
 				eventPublisher.publish(new SetResetButtonIconEvent(Resource.SmileySurprised));

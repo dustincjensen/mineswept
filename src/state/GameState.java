@@ -242,7 +242,7 @@ public class GameState {
 		int puzzleMineCount = getCurrentPuzzleMineCount();
 		long numberOfMinesProtected = gameMines
 			.stream()
-			.filter(mine -> mine.getAnyProtected())
+			.filter(mine -> mine.isProtected())
 			.count();
 
 		return puzzleMineCount - (int)numberOfMinesProtected;

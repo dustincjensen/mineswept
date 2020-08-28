@@ -1,24 +1,23 @@
 package services;
 
-import utils.RandomGen;
-import state.GameState;
+import exceptions.GameOverException;
+import java.util.function.Predicate;
 import models.Mine;
 import models.Mines;
-import java.util.function.Predicate;
+import state.GameState;
+import utils.RandomGen;
 
 public class HintService {
 	private GameState gameState;
-	private MineRevealService _mineRevealService;
+	private MineRevealService mineRevealService;
 
-	public HintService(GameState state, MineRevealService mineRevealService){
-		gameState = state;
-		_mineRevealService = mineRevealService;
+	public HintService(GameState gameState, MineRevealService mineRevealService){
+		this.gameState = gameState;
+		this.mineRevealService = mineRevealService;
 	}
 
     /**
      * Find a hint and modify the mine to show it.
-     * 
-     * @param mines the field of mines.
      */
     public void useHint() {
 		var mines = gameState.getMines();
@@ -29,9 +28,9 @@ public class HintService {
 			var index = mines.indexOf(empty);
 
 			try {
-				_mineRevealService.uncover(index, mines, gameState.getCurrentPuzzleWidth());
+				mineRevealService.uncover(index, mines, gameState.getCurrentPuzzleWidth());
 			}
-			catch (Exception ex) {}
+			catch (GameOverException ex) {}
 
 			return;
 		}
@@ -43,22 +42,39 @@ public class HintService {
 			var index = mines.indexOf(nonEmpty);
 
 			try {
-				_mineRevealService.uncover(index, mines, gameState.getCurrentPuzzleWidth());
+				mineRevealService.uncover(index, mines, gameState.getCurrentPuzzleWidth());
 			}
-			catch (Exception ex) {}
-
-			return;
+			catch (GameOverException ex) {}
 		}
 	}
 	
+	/**
+	 * Return a random empty space that isn't already uncovered.
+	 * 
+	 * @param mines the list of mines to search.
+	 * @return a random mine, or null if no mine matches the criteria.
+	 */
 	private Mine randomEmptySpace(Mines mines) {
-		return randomMine(mines, mine -> mine.getSpotValue() == 0 && !mine.uncovered() && !mine.isHint());
+		return randomMine(mines, mine -> mine.getSpotValue() == 0 && !mine.uncovered());
 	}
 
+	/**
+	 * Return a random numbered space that isn't already uncovered.
+	 * 
+	 * @param mines the list of mines to search.
+	 * @return a random mine, or null if no mine matches the criteria.
+	 */
 	private Mine randomNonMine(Mines mines) {
-		return randomMine(mines, mine -> mine.getSpotValue() > 0 && !mine.uncovered() && !mine.isHint());
+		return randomMine(mines, mine -> mine.getSpotValue() > 0 && !mine.uncovered());
 	}
 
+	/**
+	 * Helper method that finds a mine using the provided predicate.
+	 * 
+	 * @param mines the list of mines to search.
+	 * @param predicate the criteria to filter by.
+	 * @return a random mine, or null if no mine matches the criteria.
+	 */
 	private Mine randomMine(Mines mines, Predicate<Mine> predicate) {
 		var filteredMines = (Mine[]) mines.stream()
 			.filter(mine -> predicate.test(mine))

@@ -23,9 +23,7 @@ public class ResourceLoader {
             iconMap.put(Resource.BombHint, imageIcon("/icons/bomb.png"));
             iconMap.put(Resource.Clock, imageIcon("/icons/clock.png"));
             iconMap.put(Resource.Flag, imageIcon("/icons/flag-24.png"));
-			iconMap.put(Resource.FlagHint, imageIcon("/icons/flagHint-24.png"));
 			iconMap.put(Resource.Mine, imageIcon("/icons/mrBomb.png"));
-			iconMap.put(Resource.MineHint, imageIcon("/icons/smiley-wink-32.png"));
 			iconMap.put(Resource.MineWrong, imageIcon("/icons/mrBombWrong.png"));
             iconMap.put(Resource.SmileyCool, imageIcon("/icons/smiley-cool.png"));
             iconMap.put(Resource.SmileyHappy, imageIcon("/icons/smiley-happy.png"));

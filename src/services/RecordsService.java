@@ -13,10 +13,10 @@ public class RecordsService {
 	private static final String FILE_NAME = "records.json";
 	private static final int RECORD_LIMIT = 10;
 
-	private FileService _fileService;
+	private FileService fileService;
 
-	public RecordsService(FileService file) {
-		_fileService = file;
+	public RecordsService(FileService fileService) {
+		this.fileService = fileService;
 	}
 
 	/**
@@ -25,8 +25,8 @@ public class RecordsService {
 	 * @return the records from the file.
 	 */
 	public AllRecords getAllRecords() {
-		return _fileService.withFile(FILE_NAME, new AllRecords(), file -> {
-			var records = _fileService.readFile(file, AllRecords.class);
+		return fileService.withFile(FILE_NAME, new AllRecords(), file -> {
+			var records = fileService.readFile(file, AllRecords.class);
 			records.easy = sort(records.easy);
 			records.medium = sort(records.medium);
 			records.hard = sort(records.hard);
@@ -42,8 +42,8 @@ public class RecordsService {
 	 * @return true if the new time was a record for the difficulty, otherwise false.
 	 */
 	public boolean checkAndSaveNewRecord(int time, Difficulty level) {
-		return _fileService.withFile(FILE_NAME, new AllRecords(), file -> {
-			var records = _fileService.readFile(file, AllRecords.class);
+		return fileService.withFile(FILE_NAME, new AllRecords(), file -> {
+			var records = fileService.readFile(file, AllRecords.class);
 
 			AddRecord result = null;
 			if (level == Difficulty.easy) {
@@ -57,7 +57,7 @@ public class RecordsService {
 				records.hard = result.records;
 			}
 			
-			_fileService.writeFile(file, records);
+			fileService.writeFile(file, records);
 			
 			return result != null ? result.wasNewRecord : false;
 		});
@@ -70,8 +70,8 @@ public class RecordsService {
 	 * @return the new records that were saved to the file.
 	 */
 	public Record[] resetRecords(Difficulty level) {
-		return _fileService.withFile(FILE_NAME, new AllRecords(), file -> {
-			var records = _fileService.readFile(file, AllRecords.class);
+		return fileService.withFile(FILE_NAME, new AllRecords(), file -> {
+			var records = fileService.readFile(file, AllRecords.class);
 
 			// We can decide if resetting restores some computer default records...
 			var newRecords = new Record[0];
@@ -84,7 +84,7 @@ public class RecordsService {
 				records.hard = newRecords;
 			}
 
-			_fileService.writeFile(file, records);
+			fileService.writeFile(file, records);
 			
 			return newRecords;
 		});

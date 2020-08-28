@@ -4,10 +4,10 @@ import exceptions.GameOverException;
 import models.Mines;
 
 public class MineRevealService {
-    private OctoCheckService octoCheckService;
+    private OctoCheckService octoService;
 
     public MineRevealService(OctoCheckService octoService) {
-        octoCheckService = octoService;
+        this.octoService = octoService;
     }
 
     /**
@@ -21,7 +21,7 @@ public class MineRevealService {
     public void uncover(int index, Mines mines, int puzzleWidth) throws GameOverException {
         var currentMine = mines.get(index);
 		
-		if (currentMine.uncovered() || currentMine.getAnyProtected()) {
+		if (currentMine.uncovered() || currentMine.isProtected()) {
 			return;
 		}
 		
@@ -36,7 +36,7 @@ public class MineRevealService {
 
 		// If the current spot is 0, then in addition we must get the positions around this one and uncover them as well.
 		if (currentMine.getSpotValue() == 0) {
-			var positionsToCheck = octoCheckService.getPositionsToCheck(index, puzzleWidth, mines.size());
+			var positionsToCheck = octoService.getPositionsToCheck(index, puzzleWidth, mines.size());
 			for (var position : positionsToCheck) {
 				uncover(position, mines, puzzleWidth);
 			}
@@ -53,12 +53,12 @@ public class MineRevealService {
      */
     public void specialUncover(int index, Mines mines, int puzzleWidth) throws GameOverException {
 		// Retrieve the squares around this position on which we should check for flags.
-		var positionsToCheck = octoCheckService.getPositionsToCheck(index, puzzleWidth, mines.size());
+		var positionsToCheck = octoService.getPositionsToCheck(index, puzzleWidth, mines.size());
 
 		// Count the number of flags in the positions around the current.
 		var flagCount = positionsToCheck
 			.stream()
-			.map(position -> mines.get(position).getAnyProtected())
+			.map(position -> mines.get(position).isProtected())
 			.filter(isProtected -> isProtected)
 			.count();
 
@@ -79,8 +79,8 @@ public class MineRevealService {
     private void uncoverAll(Mines mines) {
         for (var i = 0; i < mines.size(); i++) {
 			var mine = mines.get(i);
-			var isBombAndNotProtected = mine.isBomb() && !mine.getAnyProtected();
-			var isNotBombAndIsProtected = mine.getAnyProtected() && !mine.isBomb();
+			var isBombAndNotProtected = mine.isBomb() && !mine.isProtected();
+			var isNotBombAndIsProtected = mine.isProtected() && !mine.isBomb();
 
 			if (isBombAndNotProtected || isNotBombAndIsProtected) {
 				mine.setUncovered(true);

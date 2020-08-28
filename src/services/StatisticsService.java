@@ -6,10 +6,10 @@ import models.statistics.AllStats;
 public class StatisticsService {
 	private static final String FILE_NAME = "statistics.json";
 
-	private FileService _fileService;
+	private FileService fileService;
 
 	public StatisticsService(FileService fileService) {
-		_fileService = fileService;
+		this.fileService = fileService;
 	}
 
 	/**
@@ -18,8 +18,8 @@ public class StatisticsService {
 	 * @return the statistics from the file.
 	 */
 	public AllStats getStatistics() {
-		return _fileService.withFile(FILE_NAME, new AllStats(), file -> { 
-			return _fileService.readFile(file, AllStats.class);
+		return fileService.withFile(FILE_NAME, new AllStats(), file -> { 
+			return fileService.readFile(file, AllStats.class);
 		});
 	}
 
@@ -29,9 +29,9 @@ public class StatisticsService {
 	 * @return the reset statistics.
 	 */
 	public AllStats resetStatistics() {
-		return _fileService.withFile(FILE_NAME, new AllStats(), file -> {
+		return fileService.withFile(FILE_NAME, new AllStats(), file -> {
 			var resetStats = new AllStats();
-			_fileService.writeFile(file, resetStats);
+			fileService.writeFile(file, resetStats);
 			return resetStats;
 		});
 	}
@@ -40,8 +40,8 @@ public class StatisticsService {
 	 * Increments the games played and games won counts.
 	 */
 	public void gameWon(Difficulty difficulty) {
-		_fileService.withFile(FILE_NAME, new AllStats(), file -> {
-			var stats = _fileService.readFile(file, AllStats.class);
+		fileService.withFile(FILE_NAME, new AllStats(), file -> {
+			var stats = fileService.readFile(file, AllStats.class);
 
 			// Set games played and won.
 			if (difficulty == Difficulty.easy) {
@@ -55,7 +55,7 @@ public class StatisticsService {
 				stats.hard.gamesWon++;
 			}
 
-			_fileService.writeFile(file, stats);
+			fileService.writeFile(file, stats);
 		});
 	}
 
@@ -63,8 +63,8 @@ public class StatisticsService {
 	 * Increments the games played and games lost counts.
 	 */
 	public void gameLost(Difficulty difficulty) {
-		_fileService.withFile(FILE_NAME, new AllStats(), file -> {
-			var stats = _fileService.readFile(file, AllStats.class);
+		fileService.withFile(FILE_NAME, new AllStats(), file -> {
+			var stats = fileService.readFile(file, AllStats.class);
 
 			// Set games played and lost.
 			if (difficulty == Difficulty.easy) {
@@ -78,7 +78,7 @@ public class StatisticsService {
 				stats.hard.gamesLost++;
 			}
 
-			_fileService.writeFile(file, stats);
+			fileService.writeFile(file, stats);
 		});
 	}
 }

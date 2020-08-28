@@ -119,7 +119,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
     private void rightClicked(int x, int y) {
         var mine = gameState.getMine(x, y);
         
-        if (!mine.uncovered() && !mine.isSpecialProtected()) {
+        if (!mine.uncovered()) {
             mine.updateMineState();
             eventSubscriber.notify(new UpdateMineCountEvent());
         }

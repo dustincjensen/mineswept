@@ -10,9 +10,6 @@ TODO
 - Refactor GameState
     - perhaps it is watching too much internally, and should delegate out to separate states 
       and conglomerate them like combineReducers.
-- Optimize Bomb clues to be near uncovered spaces.
-- Remove unnecessary resources.
-- Investigate com.google.common.eventbus.EventBus instead of rolling my own event bus.
 
 Working on
 ==========
@@ -25,8 +22,11 @@ Working on
     / better modules
 / Refactor MineCount and TimeCount?
 / https://stackoverflow.com/a/9312222/718285 - resize font with component
-+ Make resize-able
     
 Bugs
 ==========
-- Right click while holding down left click should not work.
+- Area around mines does not change color when clicked/alt clicked colors are changed.
+    - mine panel
+    - pause panel
+    - most importantly bodyLayout panel
+- Pressing hint after game over starts the timer

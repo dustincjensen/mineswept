@@ -53,8 +53,6 @@ public class BodyModule extends AbstractModule {
             publisher,
             loader.get(Resource.Mine),
             loader.get(Resource.MineWrong),
-            loader.get(Resource.MineHint),
-            loader.get(Resource.Flag),
-            loader.get(Resource.FlagHint));
+            loader.get(Resource.Flag));
     }
 }
