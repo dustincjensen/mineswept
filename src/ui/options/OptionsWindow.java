@@ -14,6 +14,7 @@ import ui.components.button.PrimaryButton;
 import ui.components.comboBox.DefaultComboBox;
 import ui.components.radioButton.RadioButtonFactory;
 import ui.options.styles.Classic;
+import ui.options.styles.Forest;
 import ui.options.styles.Material;
 import ui.utils.ColorConverter;
 import java.awt.Color;
@@ -251,10 +252,49 @@ public class OptionsWindow {
 		});
 		classicButton.setPreferredSize(new Dimension(100, 40));
 
+		var forestButton = new PrimaryButton("Forest", evt -> {
+			optionsService.setSquareColor(Forest.MINE_BACKGROUND_COLOR);
+			optionsService.setSquareAltColor(Forest.MINE_ALT_BACKGROUND_COLOR);
+			optionsService.setClickedColor(Forest.MINE_CLICKED_BACKGROUND_COLOR);
+			optionsService.setClickedAltColor(Forest.MINE_CLICKED_ALT_BACKGROUND_COLOR);
+			optionsService.setClickedFailColor(Forest.FAILED_MINE_CLICKED_BACKGROUND_COLOR);
+			jSquareColor.setBackground(Color.decode(Forest.MINE_BACKGROUND_COLOR));
+			jSquareAltColor.setBackground(Color.decode(Forest.MINE_ALT_BACKGROUND_COLOR));
+			jClickedColor.setBackground(Color.decode(Forest.MINE_CLICKED_BACKGROUND_COLOR));
+			jClickedAltColor.setBackground(Color.decode(Forest.MINE_CLICKED_ALT_BACKGROUND_COLOR));
+			jClickedFailColor.setBackground(Color.decode(Forest.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
+			
+			optionsService.setMineNumOneColor(Forest.MINE_NUMBER_COLORS[0]);
+			optionsService.setMineNumTwoColor(Forest.MINE_NUMBER_COLORS[1]);
+			optionsService.setMineNumThreeColor(Forest.MINE_NUMBER_COLORS[2]);
+			optionsService.setMineNumFourColor(Forest.MINE_NUMBER_COLORS[3]);
+			optionsService.setMineNumFiveColor(Forest.MINE_NUMBER_COLORS[4]);
+			optionsService.setMineNumSixColor(Forest.MINE_NUMBER_COLORS[5]);
+			optionsService.setMineNumSevenColor(Forest.MINE_NUMBER_COLORS[6]);
+			optionsService.setMineNumEightColor(Forest.MINE_NUMBER_COLORS[7]);
+			jMineNumOneColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[0]));
+			jMineNumTwoColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[1]));
+			jMineNumThreeColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[2]));
+			jMineNumFourColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[3]));
+			jMineNumFiveColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[4]));
+			jMineNumSixColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[5]));
+			jMineNumSevenColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[6]));
+			jMineNumEightColor.setBackground(Color.decode(Forest.MINE_NUMBER_COLORS[7]));
+
+			optionsService.setRaisedBorder(Forest.RAISED_BORDER);
+			optionsService.setLoweredBorder(Forest.LOWERED_BORDER);
+			raisedBorder.setSelectedItem(Forest.RAISED_BORDER);
+			loweredBorder.setSelectedItem(Forest.LOWERED_BORDER);
+
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		});
+		forestButton.setPreferredSize(new Dimension(100, 40));
+
 		var buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.setOpaque(false);
-		buttonPanel.add(materialButton);
 		buttonPanel.add(classicButton);
+		buttonPanel.add(materialButton);
+		buttonPanel.add(forestButton);
 
 		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
 		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));

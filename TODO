@@ -20,9 +20,13 @@ Working on
     / move files around, rename folders
     / better modules
 / https://stackoverflow.com/a/9312222/718285 - resize font with component
-- Implement alternate color schemes and such for the mines.
     
 Bugs
 ==========
 - fix hint to not find flagged squares
     - possible solution is to unprotect the square you are trying to give as a hint
+
+
+Future Features
+===============
+- Theme picker/creator in options (separate menu);

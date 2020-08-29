@@ -10,8 +10,8 @@ public class Classic {
         "#4a004a",
         "#800000",
         "#41e0d1",
-        "#a15bf0",
-        "#000000"
+        "#000000",
+        "#444444",
     };
     public static final String MINE_BACKGROUND_COLOR = "#dddddd";
     public static final String MINE_ALT_BACKGROUND_COLOR = "#dddddd";
