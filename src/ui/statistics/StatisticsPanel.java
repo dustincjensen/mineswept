@@ -1,7 +1,7 @@
 package ui.statistics;
 
 //import models.statistics.ShortTermStats;
-import ui.utils.HexToRgb;
+import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,7 +21,7 @@ import models.statistics.LongTermStats;
 public class StatisticsPanel extends JPanel {
     public StatisticsPanel() {
         setLayout(new GridLayout(3, 1));
-        setBackground(HexToRgb.convert("#333333"));
+        setBackground(Color.decode("#333333"));
     }
 
     public void setStatistics(AllStats allStats) {
@@ -41,7 +41,7 @@ public class StatisticsPanel extends JPanel {
 
     private JPanel header(String title) {
         var header = new JPanel(new BorderLayout());
-        header.setBackground(HexToRgb.convert("#111111"));
+        header.setBackground(Color.decode("#111111"));
 		header.add(createJLabel(title, SwingConstants.LEFT), BorderLayout.LINE_START);
 		header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         return header;
@@ -94,7 +94,7 @@ public class StatisticsPanel extends JPanel {
     private JLabel createJLabel(String text, int alignment) {
         var label = new JLabel(text);
         label.setHorizontalAlignment(alignment);
-        label.setForeground(HexToRgb.convert("#ffffff"));
+        label.setForeground(Color.decode("#ffffff"));
         return label;
     }
 }

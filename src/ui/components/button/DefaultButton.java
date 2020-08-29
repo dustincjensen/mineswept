@@ -1,6 +1,6 @@
 package ui.components.button;
 
-import ui.utils.HexToRgb;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
@@ -20,9 +20,9 @@ public abstract class DefaultButton extends JButton {
         super(buttonText);
 
         buttonUi = new DefaultButtonUi(
-            HexToRgb.convert(foreground),
-            HexToRgb.convert(background),
-            HexToRgb.convert(backgroundHover),
+            Color.decode(foreground),
+            Color.decode(background),
+            Color.decode(backgroundHover),
             radius,
             isMinimal
         );
@@ -40,9 +40,9 @@ public abstract class DefaultButton extends JButton {
         String backgroundHoverHexValue
     ) {
         buttonUi.setColors(
-            HexToRgb.convert(foregroundHexValue),
-            HexToRgb.convert(backgroundHexValue),
-            HexToRgb.convert(backgroundHoverHexValue)
+            Color.decode(foregroundHexValue),
+            Color.decode(backgroundHexValue),
+            Color.decode(backgroundHoverHexValue)
         );
 
         // Since we are updating outside of normal behaviour, we need to

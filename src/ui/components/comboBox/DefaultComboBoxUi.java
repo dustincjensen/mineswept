@@ -6,17 +6,17 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
-import ui.utils.HexToRgb;
+import java.awt.Color;
 
 public class DefaultComboBoxUi extends BasicComboBoxUI {
     @Override
     protected JButton createArrowButton() {
         var button = new BasicArrowButtonModified(
             BasicArrowButton.SOUTH, 
-            HexToRgb.convert("#333333"), 
-            HexToRgb.convert("#333333"),
-            HexToRgb.convert("#666666"),
-            HexToRgb.convert("#333333"));
+            Color.decode("#333333"), 
+            Color.decode("#333333"),
+            Color.decode("#666666"),
+            Color.decode("#333333"));
         button.setName("ComboBox.arrowButton");
         return button;
     }
@@ -24,11 +24,11 @@ public class DefaultComboBoxUi extends BasicComboBoxUI {
     @Override
     protected ComboPopup createPopup() {
         var popup = new BasicComboPopup(comboBox);
-        popup.setBorder(BorderFactory.createLineBorder(HexToRgb.convert("#444444")));
+        popup.setBorder(BorderFactory.createLineBorder(Color.decode("#444444")));
         
         var list = popup.getList();
-        list.setSelectionBackground(HexToRgb.convert("#444444"));
-        list.setSelectionForeground(HexToRgb.convert("#ffffff"));
+        list.setSelectionBackground(Color.decode("#444444"));
+        list.setSelectionForeground(Color.decode("#ffffff"));
 
         return popup;
     }

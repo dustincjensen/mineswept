@@ -4,19 +4,18 @@ import events.IEventPublisher;
 import events.IEventSubscriber;
 import events.PauseGameEvent;
 import events.ResetMinePanelEvent;
-import services.OptionsService;
-import state.GameState;
-
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.Vector;
 import javax.swing.JPanel;
+import services.OptionsService;
+import state.GameState;
 import ui.components.button.PrimaryButton;
 import ui.utils.BorderConverter;
-import ui.utils.ColorConverter;
 import ui.utils.FontChange;
 
 /**
@@ -115,8 +114,8 @@ public class PausePanel extends JPanel {
 		minePanel.removeAll();
 		mineButtons.clear();
 
-		var clickedBgColor = ColorConverter.convert(optionsService.clickedColor());
-		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
+		var clickedBgColor = Color.decode(optionsService.clickedColor());
+		var clickedAltBgColor = Color.decode(optionsService.clickedAltColor());
 		var loweredBorder = BorderConverter.convert(optionsService.loweredBorder());
 
 		// Set the mine panel background, since this might change on refresh.

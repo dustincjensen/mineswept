@@ -3,12 +3,12 @@ package ui.layout.body;
 import events.GamePausedEvent;
 import events.IEventSubscriber;
 import events.ResetMinePanelEvent;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import services.OptionsService;
-import ui.utils.ColorConverter;
 
 @SuppressWarnings("serial")
 public class BodyLayout extends JPanel {
@@ -29,7 +29,7 @@ public class BodyLayout extends JPanel {
 		this.options = options;
 		this.eventSubscriber = eventSubscriber;
 		
-		setBackground(ColorConverter.convert(options.clickedColor()));
+		setBackground(Color.decode(options.clickedColor()));
 		add(minePanel, new GridBagConstraints());
 		setupSubscriptions();
 	}
@@ -52,7 +52,7 @@ public class BodyLayout extends JPanel {
 
 		eventSubscriber.subscribe(ResetMinePanelEvent.class, event -> {
 			// We refresh the colors on game reset. Options may have changd.
-			setBackground(ColorConverter.convert(options.clickedColor()));
+			setBackground(Color.decode(options.clickedColor()));
 		});
 	}
 }

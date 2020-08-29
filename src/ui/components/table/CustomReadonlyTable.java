@@ -1,6 +1,6 @@
 package ui.components.table;
 
-import ui.utils.HexToRgb;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class CustomReadonlyTable extends JPanel {
     public CustomReadonlyTable(TableRow header) {
         this.header = header;
         setLayout(new GridBagLayout());
-        setBackground(HexToRgb.convert("#333333"));
+        setBackground(Color.decode("#333333"));
         createContentPanel();
         createHeader();
     }
@@ -35,7 +35,7 @@ public class CustomReadonlyTable extends JPanel {
     private void createContentPanel() {
         content = new JPanel();
         content.setLayout(new GridBagLayout());
-        content.setBackground(HexToRgb.convert("#333333"));
+        content.setBackground(Color.decode("#333333"));
 
         var c = new GridBagConstraints();
         c.gridx = 0;
@@ -74,8 +74,8 @@ public class CustomReadonlyTable extends JPanel {
     ) {
         var label = new JLabel();
         label.setText(text);
-        label.setForeground(HexToRgb.convert(foregroundHexColor));
-        label.setBackground(HexToRgb.convert(backgroundHexColor));
+        label.setForeground(Color.decode(foregroundHexColor));
+        label.setBackground(Color.decode(backgroundHexColor));
         label.setOpaque(true);
         label.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         return label;

@@ -16,12 +16,11 @@ Working on
 / Refactor UI Options Window
 / Implement Options Saving / Loading
 / Implement Statistics and Statistics UI Window
-- Implement alternate color schemes and such for the mines.
 / Refactor GUI folder
     / move files around, rename folders
     / better modules
 / https://stackoverflow.com/a/9312222/718285 - resize font with component
-- setBackground(new Color(0x92f442));
+- Implement alternate color schemes and such for the mines.
     
 Bugs
 ==========

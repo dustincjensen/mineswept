@@ -1,6 +1,6 @@
 package ui.components.tabbedPane;
 
-import ui.utils.HexToRgb;
+import java.awt.Color;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -51,7 +51,7 @@ public class CustomTabbedPane extends JPanel {
 
     private JPanel tabHeader() {
         tabHeader = new JPanel();
-        tabHeader.setBackground(HexToRgb.convert("#333333"));
+        tabHeader.setBackground(Color.decode("#333333"));
         tabHeader.setLayout(new GridLayout(1, 0));
         tabHeader.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         tabHeader.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));

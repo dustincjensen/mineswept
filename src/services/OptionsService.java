@@ -3,7 +3,6 @@ package services;
 import java.util.function.Consumer;
 import models.Difficulty;
 import models.options.BorderType;
-import models.options.Color;
 import models.options.Options;
 
 public class OptionsService {
@@ -21,7 +20,7 @@ public class OptionsService {
 	 * 
 	 * @return an object with the RGB color for the game board squares.
 	 */
-	public Color squareColor() {
+	public String squareColor() {
 		return options().squareColor;
 	}
 
@@ -30,7 +29,7 @@ public class OptionsService {
 	 * 
 	 * @param color the new color to use.
 	 */
-	public void setSquareColor(Color color) {
+	public void setSquareColor(String color) {
 		setOptions(options -> {
 			options.squareColor = color;
 		});
@@ -41,7 +40,7 @@ public class OptionsService {
 	 * 
 	 * @return an object with the RGB color for the game board alt squares.
 	 */
-	public Color squareAltColor() {
+	public String squareAltColor() {
 		return options().squareAltColor;
 	}
 
@@ -50,117 +49,117 @@ public class OptionsService {
 	 * 
 	 * @param color the new color to use.
 	 */
-	public void setSquareAltColor(Color color) {
+	public void setSquareAltColor(String color) {
 		setOptions(options -> {
 			options.squareAltColor = color;
 		});
 	}
 
-	public Color clickedColor() {
+	public String clickedColor() {
 		return options().clickedColor;
 	}
 
-	public void setClickedColor(Color color) {
+	public void setClickedColor(String color) {
 		setOptions(options -> {
 			options.clickedColor = color;
 		});
 	}
 
-	public Color clickedAltColor() {
+	public String clickedAltColor() {
 		return options().clickedAltColor;
 	}
 
-	public void setClickedAltColor(Color color) {
+	public void setClickedAltColor(String color) {
 		setOptions(options -> {
 			options.clickedAltColor = color;
 		});
 	}
 
-	public Color clickedFailColor() {
+	public String clickedFailColor() {
 		return options().clickedFailColor;
 	}
 
-	public void setClickedFailColor(Color color) {
+	public void setClickedFailColor(String color) {
 		setOptions(options -> {
 			options.clickedFailColor = color;
 		});
 	}
 
-	public Color mineNumOneColor() {
+	public String mineNumOneColor() {
 		return options().mineNumOneColor;
 	}
 
-	public void setMineNumOneColor(Color color) {
+	public void setMineNumOneColor(String color) {
 		setOptions(options -> {
 			options.mineNumOneColor = color;
 		});
 	}
 
-	public Color mineNumTwoColor() {
+	public String mineNumTwoColor() {
 		return options().mineNumTwoColor;
 	}
 
-	public void setMineNumTwoColor(Color color) {
+	public void setMineNumTwoColor(String color) {
 		setOptions(options -> {
 			options.mineNumTwoColor = color;
 		});
 	}
 
-	public Color mineNumThreeColor() {
+	public String mineNumThreeColor() {
 		return options().mineNumThreeColor;
 	}
 
-	public void setMineNumThreeColor(Color color) {
+	public void setMineNumThreeColor(String color) {
 		setOptions(options -> {
 			options.mineNumThreeColor = color;
 		});
 	}
 
-	public Color mineNumFourColor() {
+	public String mineNumFourColor() {
 		return options().mineNumFourColor;
 	}
 
-	public void setMineNumFourColor(Color color) {
+	public void setMineNumFourColor(String color) {
 		setOptions(options -> {
 			options.mineNumFourColor = color;
 		});
 	}
 
-	public Color mineNumFiveColor() {
+	public String mineNumFiveColor() {
 		return options().mineNumFiveColor;
 	}
 
-	public void setMineNumFiveColor(Color color) {
+	public void setMineNumFiveColor(String color) {
 		setOptions(options -> {
 			options.mineNumFiveColor = color;
 		});
 	}
 
-	public Color mineNumSixColor() {
+	public String mineNumSixColor() {
 		return options().mineNumSixColor;
 	}
 
-	public void setMineNumSixColor(Color color) {
+	public void setMineNumSixColor(String color) {
 		setOptions(options -> {
 			options.mineNumSixColor = color;
 		});
 	}
 
-	public Color mineNumSevenColor() {
+	public String mineNumSevenColor() {
 		return options().mineNumSevenColor;
 	}
 
-	public void setMineNumSevenColor(Color color) {
+	public void setMineNumSevenColor(String color) {
 		setOptions(options -> {
 			options.mineNumSevenColor = color;
 		});
 	}
 
-	public Color mineNumEightColor() {
+	public String mineNumEightColor() {
 		return options().mineNumEightColor;
 	}
 
-	public void setMineNumEightColor(Color color) {
+	public void setMineNumEightColor(String color) {
 		setOptions(options -> {
 			options.mineNumEightColor = color;
 		});

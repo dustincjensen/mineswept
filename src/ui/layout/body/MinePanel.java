@@ -6,7 +6,6 @@ import events.UpdateMinePanelEvent;
 import services.OptionsService;
 import state.GameState;
 import ui.utils.BorderConverter;
-import ui.utils.ColorConverter;
 
 import java.awt.*;
 import java.util.Vector;
@@ -90,24 +89,24 @@ public class MinePanel extends JPanel {
 		minePanel.removeAll();
 		mineButtons.clear();
 
-		var bgColor = ColorConverter.convert(optionsService.squareColor());
-		var bgAltColor = ColorConverter.convert(optionsService.squareAltColor());
-		var clickedBgColor = ColorConverter.convert(optionsService.clickedColor());
-		var clickedAltBgColor = ColorConverter.convert(optionsService.clickedAltColor());
-		var failBgColor = ColorConverter.convert(optionsService.clickedFailColor());
+		var bgColor = Color.decode(optionsService.squareColor());
+		var bgAltColor = Color.decode(optionsService.squareAltColor());
+		var clickedBgColor = Color.decode(optionsService.clickedColor());
+		var clickedAltBgColor = Color.decode(optionsService.clickedAltColor());
+		var failBgColor = Color.decode(optionsService.clickedFailColor());
 
 		var raisedBorder = BorderConverter.convert(optionsService.raisedBorder());
 		var loweredBorder = BorderConverter.convert(optionsService.loweredBorder());
 
 		Color[] mineColors = {
-			ColorConverter.convert(optionsService.mineNumOneColor()),
-			ColorConverter.convert(optionsService.mineNumTwoColor()),
-			ColorConverter.convert(optionsService.mineNumThreeColor()),
-			ColorConverter.convert(optionsService.mineNumFourColor()),
-			ColorConverter.convert(optionsService.mineNumFiveColor()),
-			ColorConverter.convert(optionsService.mineNumSixColor()),
-			ColorConverter.convert(optionsService.mineNumSevenColor()),
-			ColorConverter.convert(optionsService.mineNumEightColor())
+			Color.decode(optionsService.mineNumOneColor()),
+			Color.decode(optionsService.mineNumTwoColor()),
+			Color.decode(optionsService.mineNumThreeColor()),
+			Color.decode(optionsService.mineNumFourColor()),
+			Color.decode(optionsService.mineNumFiveColor()),
+			Color.decode(optionsService.mineNumSixColor()),
+			Color.decode(optionsService.mineNumSevenColor()),
+			Color.decode(optionsService.mineNumEightColor())
 		};
 
 		// Set the mine panel background, since this might change on refresh.

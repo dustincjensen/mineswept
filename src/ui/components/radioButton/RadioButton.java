@@ -3,7 +3,7 @@ package ui.components.radioButton;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
-import ui.utils.HexToRgb;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class RadioButton extends JRadioButton {
@@ -11,7 +11,7 @@ public class RadioButton extends JRadioButton {
         super(text);
         setOpaque(false);
         setFocusPainted(false);
-        setForeground(HexToRgb.convert("#ffffff"));
+        setForeground(Color.decode("#ffffff"));
         setIcon(defaultIcon);
         setSelectedIcon(selectedIcon);
         addActionListener(actionListener);

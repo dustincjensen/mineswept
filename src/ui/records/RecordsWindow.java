@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import models.Difficulty;
 import ui.components.button.DangerButton;
 import ui.components.tabbedPane.CustomTabbedPane;
-import ui.utils.HexToRgb;
+import java.awt.Color;
 
 public class RecordsWindow {
 	private IEventPublisher eventPublisher;
@@ -63,7 +63,7 @@ public class RecordsWindow {
 	private JPanel reset() {
 		var reset = new JPanel();
 		reset.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		reset.setBackground(HexToRgb.convert("#333333"));
+		reset.setBackground(Color.decode("#333333"));
 		reset.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
 		reset.setLayout(new GridLayout(0, 1, 5, 5));
 		reset.add(new DangerButton("Reset", true, evt -> {

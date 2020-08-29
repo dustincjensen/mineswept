@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import models.Resource;
-import ui.utils.HexToRgb;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -67,7 +67,7 @@ public class ResourceLoader {
         var width = image.getWidth();
         var height = image.getHeight();
         var raster = image.getRaster();
-        var colorToUse = HexToRgb.convert(hexCode);
+        var colorToUse = Color.decode(hexCode);
 
         for (int xx = 0; xx < width; xx++) {
             for (int yy = 0; yy < height; yy++) {

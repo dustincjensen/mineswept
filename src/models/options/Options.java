@@ -1,47 +1,47 @@
 package models.options;
 
-import ui.utils.HexToRgb;
+import ui.options.styles.Material;
 
 public class Options {
     public BorderType raisedBorder;
     public BorderType loweredBorder;
 
-    public Color squareColor;
-    public Color squareAltColor;
-    public Color clickedColor;
-    public Color clickedAltColor;
-    public Color clickedFailColor;
+    public String squareColor;
+    public String squareAltColor;
+    public String clickedColor;
+    public String clickedAltColor;
+    public String clickedFailColor;
 
-    public Color mineNumOneColor;
-    public Color mineNumTwoColor;
-    public Color mineNumThreeColor;
-    public Color mineNumFourColor;
-    public Color mineNumFiveColor;
-    public Color mineNumSixColor;
-    public Color mineNumSevenColor;
-    public Color mineNumEightColor;
+    public String mineNumOneColor;
+    public String mineNumTwoColor;
+    public String mineNumThreeColor;
+    public String mineNumFourColor;
+    public String mineNumFiveColor;
+    public String mineNumSixColor;
+    public String mineNumSevenColor;
+    public String mineNumEightColor;
 
     public String difficulty;
 
     // Populates the options with defaults.
     public Options() {
-        raisedBorder = BorderType.EMPTY;
-        loweredBorder = BorderType.EMPTY;
+        raisedBorder = Material.RAISED_BORDER;
+        loweredBorder = Material.LOWERED_BORDER;
 
-        squareColor = HexToRgb.toOptionsColor("#1565c0");
-        squareAltColor = HexToRgb.toOptionsColor("#1F6FcA");
-        clickedColor = HexToRgb.toOptionsColor("#212121");
-        clickedAltColor = HexToRgb.toOptionsColor("#2B2B2B");
-        clickedFailColor = HexToRgb.toOptionsColor("#b71c1c");
+        squareColor = Material.MINE_BACKGROUND_COLOR;
+        squareAltColor = Material.MINE_ALT_BACKGROUND_COLOR;
+        clickedColor = Material.MINE_CLICKED_BACKGROUND_COLOR;
+        clickedAltColor = Material.MINE_CLICKED_ALT_BACKGROUND_COLOR;
+        clickedFailColor = Material.FAILED_MINE_CLICKED_BACKGROUND_COLOR;
 
-        mineNumOneColor = HexToRgb.toOptionsColor("#2196f3");
-        mineNumTwoColor = HexToRgb.toOptionsColor("#4caf50");
-        mineNumThreeColor = HexToRgb.toOptionsColor("#f44336");
-        mineNumFourColor = HexToRgb.toOptionsColor("#9c27b0");
-        mineNumFiveColor = HexToRgb.toOptionsColor("#e91e63");
-        mineNumSixColor = HexToRgb.toOptionsColor("#00bcd4");
-        mineNumSevenColor = HexToRgb.toOptionsColor("#ff5722");
-        mineNumEightColor = HexToRgb.toOptionsColor("#ffffff");
+        mineNumOneColor = Material.MINE_NUMBER_COLORS[0];
+        mineNumTwoColor = Material.MINE_NUMBER_COLORS[1];
+        mineNumThreeColor = Material.MINE_NUMBER_COLORS[2];
+        mineNumFourColor = Material.MINE_NUMBER_COLORS[3];
+        mineNumFiveColor = Material.MINE_NUMBER_COLORS[4];
+        mineNumSixColor = Material.MINE_NUMBER_COLORS[5];
+        mineNumSevenColor = Material.MINE_NUMBER_COLORS[6];
+        mineNumEightColor = Material.MINE_NUMBER_COLORS[7];
 
         difficulty = "easy";
     }

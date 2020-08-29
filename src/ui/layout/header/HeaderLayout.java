@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import ui.layout.header.mineCount.MineCount;
 import ui.layout.header.timeCount.TimeCount;
-import ui.utils.HexToRgb;
+import java.awt.Color;
 
 /**
  * Renders the header for the application which includes things like the hints,
@@ -18,6 +18,6 @@ public class HeaderLayout extends JPanel {
 		add(resetButton, BorderLayout.CENTER);
 		add(timeCount, BorderLayout.LINE_END);
 
-		setBackground(HexToRgb.convert("#333333"));
+		setBackground(Color.decode("#333333"));
 	}
 }
