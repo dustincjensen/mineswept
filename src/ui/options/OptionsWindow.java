@@ -203,31 +203,58 @@ public class OptionsWindow {
 			jMineNumSevenColor.setBackground(Material.MINE_NUMBER_COLORS[6]);
 			optionsService.setMineNumEightColor(ColorConverter.convertBack(Material.MINE_NUMBER_COLORS[7]));
 			jMineNumEightColor.setBackground(Material.MINE_NUMBER_COLORS[7]);
+			
+			optionsService.setRaisedBorder(Material.RAISED_BORDER);
+			raisedBorder.setSelectedItem(Material.RAISED_BORDER);
+			optionsService.setLoweredBorder(Material.LOWERED_BORDER);
+			loweredBorder.setSelectedItem(Material.LOWERED_BORDER);
+
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		});
 		materialButton.setPreferredSize(new Dimension(100, 40));
 
+		var classicButton = new PrimaryButton("Classic", evt -> {
+			optionsService.setSquareColor(ColorConverter.convertBack(Classic.MINE_BACKGROUND_COLOR));
+			jSquareColor.setBackground(Classic.MINE_BACKGROUND_COLOR);
+			optionsService.setSquareAltColor(ColorConverter.convertBack(Classic.MINE_ALT_BACKGROUND_COLOR));
+			jSquareAltColor.setBackground(Classic.MINE_ALT_BACKGROUND_COLOR);
+			optionsService.setClickedColor(ColorConverter.convertBack(Classic.MINE_CLICKED_BACKGROUND_COLOR));
+			jClickedColor.setBackground(Classic.MINE_CLICKED_BACKGROUND_COLOR);
+			optionsService.setClickedAltColor(ColorConverter.convertBack(Classic.MINE_CLICKED_ALT_BACKGROUND_COLOR));
+			jClickedAltColor.setBackground(Classic.MINE_CLICKED_ALT_BACKGROUND_COLOR);
+			optionsService.setClickedFailColor(ColorConverter.convertBack(Classic.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
+			jClickedFailColor.setBackground(Classic.FAILED_MINE_CLICKED_BACKGROUND_COLOR);
+			
+			optionsService.setMineNumOneColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[0]));
+			jMineNumOneColor.setBackground(Classic.MINE_NUMBER_COLORS[0]);
+			optionsService.setMineNumTwoColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[1]));
+			jMineNumTwoColor.setBackground(Classic.MINE_NUMBER_COLORS[1]);
+			optionsService.setMineNumThreeColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[2]));
+			jMineNumThreeColor.setBackground(Classic.MINE_NUMBER_COLORS[2]);
+			optionsService.setMineNumFourColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[3]));
+			jMineNumFourColor.setBackground(Classic.MINE_NUMBER_COLORS[3]);
+			optionsService.setMineNumFiveColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[4]));
+			jMineNumFiveColor.setBackground(Classic.MINE_NUMBER_COLORS[4]);
+			optionsService.setMineNumSixColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[5]));
+			jMineNumSixColor.setBackground(Classic.MINE_NUMBER_COLORS[5]);
+			optionsService.setMineNumSevenColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[6]));
+			jMineNumSevenColor.setBackground(Classic.MINE_NUMBER_COLORS[6]);
+			optionsService.setMineNumEightColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[7]));
+			jMineNumEightColor.setBackground(Classic.MINE_NUMBER_COLORS[7]);
+
+			optionsService.setRaisedBorder(Classic.RAISED_BORDER);
+			raisedBorder.setSelectedItem(Classic.RAISED_BORDER);
+			optionsService.setLoweredBorder(Classic.LOWERED_BORDER);
+			loweredBorder.setSelectedItem(Classic.LOWERED_BORDER);
+
+			eventSubscriber.notify(new UpdateMinePanelEvent());
+		});
+		classicButton.setPreferredSize(new Dimension(100, 40));
+
 		var buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.setOpaque(false);
 		buttonPanel.add(materialButton);
-
-		// buttonPanel.add(new PrimaryButton("Classic", evt -> {
-		// 	optionsService.setSquareColor(ColorConverter.convertBack(Classic.MINE_BACKGROUND_COLOR));
-		// 	optionsService.setSquareAltColor(ColorConverter.convertBack(Classic.MINE_ALT_BACKGROUND_COLOR));
-		// 	optionsService.setClickedColor(ColorConverter.convertBack(Classic.MINE_CLICKED_BACKGROUND_COLOR));
-		// 	optionsService.setClickedAltColor(ColorConverter.convertBack(Classic.MINE_CLICKED_ALT_BACKGROUND_COLOR));
-		// 	optionsService.setClickedFailColor(ColorConverter.convertBack(Classic.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
-			
-		// 	optionsService.setMineNumOneColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[0]));
-		// 	optionsService.setMineNumTwoColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[1]));
-		// 	optionsService.setMineNumThreeColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[2]));
-		// 	optionsService.setMineNumFourColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[3]));
-		// 	optionsService.setMineNumFiveColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[4]));
-		// 	optionsService.setMineNumSixColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[5]));
-		// 	optionsService.setMineNumSevenColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[6]));
-		// 	optionsService.setMineNumEightColor(ColorConverter.convertBack(Classic.MINE_NUMBER_COLORS[7]));
-		// 	eventSubscriber.notify(new UpdateMinePanelEvent());
-		// }));
+		buttonPanel.add(classicButton);
 
 		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
 		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
@@ -390,15 +417,25 @@ public class OptionsWindow {
 		p1.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		p1.setOpaque(false);
 
-		raisedBorder = new DefaultComboBox<BorderType>(new BorderType[] { BorderType.BEVEL_RAISED, BorderType.EMPTY });
+		raisedBorder = new DefaultComboBox<BorderType>(new BorderType[] { 
+			BorderType.BEVEL_RAISED,
+			BorderType.CLASSIC_BEVEL_RAISED,
+			BorderType.EMPTY
+		});
 		raisedBorder.addActionListener(evt -> optionsHaveChanged = optionsService.raisedBorder() != raisedBorder.getSelectedItem());
+		raisedBorder.setSelectedItem(optionsService.raisedBorder());
 		var raisePanel = new JPanel(new GridLayout(0, 1));
 		raisePanel.setOpaque(false);
 		raisePanel.add(createJLabel("Default Border", SwingConstants.LEFT));
 		raisePanel.add(raisedBorder);
 
-		loweredBorder = new DefaultComboBox<BorderType>(new BorderType[] { BorderType.BEVEL_LOWERED, BorderType.EMPTY });
+		loweredBorder = new DefaultComboBox<BorderType>(new BorderType[] {
+			BorderType.BEVEL_LOWERED,
+			BorderType.CLASSIC_BEVEL_LOWERED,
+			BorderType.EMPTY
+		});
 		loweredBorder.addActionListener(evt -> optionsHaveChanged = optionsService.loweredBorder() != loweredBorder.getSelectedItem());
+		loweredBorder.setSelectedItem(optionsService.loweredBorder());
 		var lowerPanel = new JPanel(new GridLayout(0, 1));
 		lowerPanel.setOpaque(false);
 		lowerPanel.add(createJLabel("Clicked Border", SwingConstants.LEFT));

@@ -1,7 +1,7 @@
 package ui.options.styles;
 
 import java.awt.Color;
-import javax.swing.border.BevelBorder;
+import models.options.BorderType;
 
 public class Classic {
     public static final Color[] MINE_NUMBER_COLORS = { 
@@ -22,6 +22,6 @@ public class Classic {
     public static final Color MINE_CLICKED_ALT_BACKGROUND_COLOR = new Color(0xeeeeee);
     public static final Color FAILED_MINE_CLICKED_BACKGROUND_COLOR = Color.RED;
     
-    public static final BevelBorder RAISED_BORDER = new BevelBorder(BevelBorder.RAISED, Color.WHITE, Color.GRAY);
-    public static final BevelBorder LOWERED_BORDER = new BevelBorder(BevelBorder.LOWERED, Color.WHITE, Color.GRAY);
+    public static final BorderType RAISED_BORDER = BorderType.CLASSIC_BEVEL_RAISED;
+    public static final BorderType LOWERED_BORDER = BorderType.CLASSIC_BEVEL_LOWERED;
 }

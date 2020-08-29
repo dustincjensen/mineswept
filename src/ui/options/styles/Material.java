@@ -1,6 +1,7 @@
 package ui.options.styles;
 
 import java.awt.Color;
+import models.options.BorderType;
 import ui.utils.HexToRgb;
 
 public class Material {
@@ -20,6 +21,6 @@ public class Material {
     public static final Color MINE_CLICKED_ALT_BACKGROUND_COLOR = HexToRgb.convert("#2B2B2B");
     public static final Color FAILED_MINE_CLICKED_BACKGROUND_COLOR = HexToRgb.convert("#b71c1c");
     
-    // public static final Border RAISED_BORDER = BorderFactory.createEmptyBorder();
-    // public static final Border LOWERED_BORDER = BorderFactory.createEmptyBorder();
+    public static final BorderType RAISED_BORDER = BorderType.EMPTY;
+    public static final BorderType LOWERED_BORDER = BorderType.EMPTY;
 }
