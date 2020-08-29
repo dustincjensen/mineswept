@@ -1,12 +1,11 @@
 package ui.components.tabbedPane;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -21,9 +20,10 @@ public class CustomTabbedPane extends JPanel {
         names = new ArrayList<String>();
         selectedIndex = 0;
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(tabHeader());
-        add(tabBody());
+        setLayout(new BorderLayout());
+        setOpaque(false);
+        add(tabHeader(), BorderLayout.NORTH);
+        add(tabBody(), BorderLayout.CENTER);
     }
 
     public void add(String tabName, JComponent component) {
@@ -51,8 +51,8 @@ public class CustomTabbedPane extends JPanel {
 
     private JPanel tabHeader() {
         tabHeader = new JPanel();
-        tabHeader.setBackground(Color.decode("#333333"));
         tabHeader.setLayout(new GridLayout(1, 0));
+        tabHeader.setOpaque(false);
         tabHeader.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         tabHeader.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         return tabHeader;
@@ -61,6 +61,7 @@ public class CustomTabbedPane extends JPanel {
     private JComponent tabBody() {
         tabBody = new JPanel();
         tabBody.setLayout(new CardLayout());
+        tabBody.setOpaque(false);
         return tabBody;
     }
 }

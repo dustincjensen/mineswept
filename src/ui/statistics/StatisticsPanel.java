@@ -1,75 +1,88 @@
 package ui.statistics;
 
-//import models.statistics.ShortTermStats;
-import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import models.statistics.AllStats;
 import models.statistics.LongTermStats;
 
 @SuppressWarnings("serial")
 public class StatisticsPanel extends JPanel {
+    private JLabel gamesWon, gamesLost, gamesPlayed, gamesWonPercent, gamesLostPercent;
+    private DecimalFormat formatter;
+
     public StatisticsPanel() {
-        setLayout(new GridLayout(3, 1));
-        setBackground(Color.decode("#333333"));
+        formatter = new DecimalFormat("#00.0");
+        
+        setLayout(new BorderLayout());
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder(5,15,5,15));
+        setupPanel();
+        setPreferredSize(new Dimension(200, getHeight()));
     }
 
-    public void setStatistics(AllStats allStats) {
-        removeAll();
-        add(difficultyPanel("Easy", allStats.easy));
-        add(difficultyPanel("Medium", allStats.medium));
-        add(difficultyPanel("Hard", allStats.hard));
+    public void setStatistics(LongTermStats stats) {
+        var gw = stats.gamesWon;
+        var gl = stats.gamesLost;
+        var gp = stats.gamesPlayed;
+        var winPercent = getValueOrDefault((double)gw / gp * 100, 0.0);
+        var losePercent = getValueOrDefault((double)gl / gp * 100, 0.0);
+
+        gamesWon.setText("" + gw);
+        gamesLost.setText("" + gl);
+        gamesPlayed.setText("" + gp);
+        gamesWonPercent.setText(String.format(" (%s%%)", formatter.format(winPercent)));
+        gamesLostPercent.setText(String.format(" (%s%%)", formatter.format(losePercent)));
     }
 
-    private Box difficultyPanel(String title, LongTermStats stats) {
-        var panel = new Box(BoxLayout.Y_AXIS);
-        panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        panel.add(header(title));
-        panel.add(content(stats));
-        return panel;
+    private double getValueOrDefault(double value, double defaultValue) {
+        return Double.isNaN(value) ? defaultValue : value; 
     }
 
-    private JPanel header(String title) {
-        var header = new JPanel(new BorderLayout());
-        header.setBackground(Color.decode("#111111"));
-		header.add(createJLabel(title, SwingConstants.LEFT), BorderLayout.LINE_START);
-		header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        return header;
-    }
-
-    private JPanel content(LongTermStats stats) {
+    private void setupPanel() {
         var content = new JPanel(new GridBagLayout());
         content.setOpaque(false);
         
+        var playedLabel = createJLabel("Played:");
+        gamesPlayed = createJLabel("");
+        var playedPercent = createJLabel("");
+        var wonLabel = createJLabel("Won:");
+        gamesWon = createJLabel("");
+        gamesWonPercent = createJLabel("");
+        var lostLabel = createJLabel("Lost:");
+        gamesLost = createJLabel("");
+        gamesLostPercent = createJLabel("");
+
         var labelList = List.of(
-            contentLabel("Won:"),
-            contentValue("" + stats.gamesWon),
-            contentLabel("Lost:"),
-            contentValue("" + stats.gamesLost),
-            contentLabel("Played:"),
-            contentValue("" + stats.gamesPlayed)
+            playedLabel, 
+            gamesPlayed,
+            playedPercent,
+            wonLabel, 
+            gamesWon, 
+            gamesWonPercent, 
+            lostLabel, 
+            gamesLost, 
+            gamesLostPercent
         );
 
         var count = 0;
-        for (var y = 0; y < labelList.size() / 2; y++) {
-            for (var x = 0; x < 2; x++) {
+        for (var y = 0; y < labelList.size() / 3; y++) {
+            for (var x = 0; x < 3; x++) {
                 var c = createContentConstraints(x, y);
                 content.add(labelList.get(count), c);
                 count++;
             }
         }
 
-        return content;
+        add(content, BorderLayout.NORTH);
     }
 
     private GridBagConstraints createContentConstraints(int x, int y) {
@@ -77,23 +90,15 @@ public class StatisticsPanel extends JPanel {
         c.gridx = x;
         c.gridy = y;
         c.weightx = x == 1 ? 1.0 : 0.0;
-        c.weighty = 1.0;
+        c.weighty = 0.0;
         c.insets = new Insets(5,5,0,5);
         c.fill = GridBagConstraints.HORIZONTAL;
         return c;
     }
 
-    private JLabel contentLabel(String text) {
-        return createJLabel(text, SwingConstants.RIGHT);
-    }
-
-    private JLabel contentValue(String text) {
-        return createJLabel(text, SwingConstants.LEFT);
-    }
-
-    private JLabel createJLabel(String text, int alignment) {
+    private JLabel createJLabel(String text) {
         var label = new JLabel(text);
-        label.setHorizontalAlignment(alignment);
+        label.setHorizontalAlignment(SwingConstants.RIGHT);
         label.setForeground(Color.decode("#ffffff"));
         return label;
     }

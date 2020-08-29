@@ -3,7 +3,7 @@ package events.handlers;
 import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
-import events.ShowRecordsEvent;
+import events.ShowStatisticsEvent;
 import events.StopClockTimerEvent;
 import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
@@ -98,10 +98,11 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
 
                 // Show the records window if a record was set.
                 if (recordSet) {
-                    var showRecords = new ShowRecordsEvent();
-                    showRecords.records = recordsService.getAllRecords();
-                    showRecords.difficulty = gameState.getCurrentPuzzleDifficulty();
-                    eventSubscriber.notify(showRecords);
+                    var showStats = new ShowStatisticsEvent();
+                    showStats.stats = statisticsService.getStatistics();
+                    showStats.records = recordsService.getAllRecords();
+                    showStats.difficulty = gameState.getCurrentPuzzleDifficulty();
+                    eventSubscriber.notify(showStats);
                 }
 
                 eventSubscriber.notify(new SetResetButtonIconEvent(

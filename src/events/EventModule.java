@@ -37,12 +37,10 @@ public class EventModule extends AbstractModule {
         PauseGameEventHandler pauseGame,
         QuitGameEventHandler quitGame,
         ResetGameEventHandler resetGame,
-        ResetRecordsEventHandler resetRecords,
         ResetStatisticsEventHandler resetStatistics,
         SetResetButtonIconEventHandler setResetButtonIcon,
         SetTimeCountEventHandler setTimeCount,
         ShowOptionsEventHandler showOptions,
-        ShowRecordsEventHandler showRecords,
         ShowStatisticsEventHandler showStatistics,
         StartClockTimerEventHandler startClockTimer,
         StopClockTimerEventHandler stopClockTimer
@@ -54,12 +52,10 @@ public class EventModule extends AbstractModule {
             pauseGame,
             quitGame,
             resetGame,
-            resetRecords,
             resetStatistics,
             setResetButtonIcon,
             setTimeCount,
             showOptions,
-            showRecords,
             showStatistics,
             startClockTimer,
             stopClockTimer
@@ -100,13 +96,12 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public ResetRecordsEventHandler provideResetRecordsEventHandler(RecordsService records, IEventSubscriber subscriber) {
-        return new ResetRecordsEventHandler(records, subscriber);
-    }
-
-    @Provides
-    public ResetStatisticsEventHandler provideResetStatisticsEventHandler(StatisticsService statisticsService, IEventSubscriber eventSubscriber) {
-        return new ResetStatisticsEventHandler(statisticsService, eventSubscriber);
+    public ResetStatisticsEventHandler provideResetStatisticsEventHandler(
+        StatisticsService statisticsService,
+        RecordsService recordsService,
+        IEventSubscriber eventSubscriber
+    ) {
+        return new ResetStatisticsEventHandler(statisticsService, recordsService, eventSubscriber);
     }
 
     @Provides
@@ -125,13 +120,12 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
-    public ShowRecordsEventHandler provideShowRecordsEventHandler(RecordsService records, IEventSubscriber subscriber) {
-        return new ShowRecordsEventHandler(records, subscriber);
-    }
-
-    @Provides
-    public ShowStatisticsEventHandler provideShowStatisticsEventHandler(StatisticsService statisticsService, IEventSubscriber subscriber) {
-        return new ShowStatisticsEventHandler(statisticsService, subscriber);
+    public ShowStatisticsEventHandler provideShowStatisticsEventHandler(
+        StatisticsService statisticsService,
+        RecordsService recordsService,
+        IEventSubscriber subscriber
+    ) {
+        return new ShowStatisticsEventHandler(statisticsService, recordsService, subscriber);
     }
 
     @Provides

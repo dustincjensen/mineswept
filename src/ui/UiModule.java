@@ -10,7 +10,6 @@ import ui.layout.LayoutModule;
 import ui.window.WindowModule;
 import ui.menu.MenuModule;
 import ui.options.OptionsModule;
-import ui.records.RecordsModule;
 import ui.statistics.StatisticsModule;
 
 public class UiModule extends AbstractModule {
@@ -21,7 +20,6 @@ public class UiModule extends AbstractModule {
         install(new WindowModule());
         install(new MenuModule());
         install(new OptionsModule());
-        install(new RecordsModule());
         install(new StatisticsModule());
     }
 

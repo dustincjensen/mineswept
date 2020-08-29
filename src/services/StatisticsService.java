@@ -2,6 +2,7 @@ package services;
 
 import models.Difficulty;
 import models.statistics.AllStats;
+import models.statistics.LongTermStats;
 
 public class StatisticsService {
 	private static final String FILE_NAME = "statistics.json";
@@ -28,11 +29,21 @@ public class StatisticsService {
 	 * 
 	 * @return the reset statistics.
 	 */
-	public AllStats resetStatistics() {
+	public AllStats resetStatistics(Difficulty level) {
 		return fileService.withFile(FILE_NAME, new AllStats(), file -> {
-			var resetStats = new AllStats();
-			fileService.writeFile(file, resetStats);
-			return resetStats;
+			var stats = fileService.readFile(file, AllStats.class);
+
+			// We can decide if resetting restores some computer default stats...
+			if (level == Difficulty.easy) {
+				stats.easy = new LongTermStats();
+			} else if (level == Difficulty.medium) {
+				stats.medium = new LongTermStats();
+			} else if (level == Difficulty.hard) {
+				stats.hard = new LongTermStats();
+			}
+
+			fileService.writeFile(file, stats);
+			return stats;
 		});
 	}
 

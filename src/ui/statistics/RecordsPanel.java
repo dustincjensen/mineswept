@@ -1,4 +1,4 @@
-package ui.records;
+package ui.statistics;
 
 import ui.components.table.Cell;
 import ui.components.table.CustomReadonlyTable;
@@ -14,6 +14,7 @@ public class RecordsPanel extends JPanel {
 	
 	public RecordsPanel() {
 		setLayout(new GridLayout(0, 1));
+		setOpaque(false);
 		
 		var header = new TableRow();
 		header.add((r, c) -> new Cell("Time", true));

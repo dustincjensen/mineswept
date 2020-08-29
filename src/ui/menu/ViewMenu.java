@@ -1,7 +1,6 @@
 package ui.menu;
 
 import events.IEventPublisher;
-import events.ShowRecordsEvent;
 import events.ShowStatisticsEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
@@ -18,20 +17,7 @@ public class ViewMenu extends JMenu {
 	public ViewMenu(IEventPublisher publisher) {
 		super("View");
 		eventPublisher = publisher;
-		add(showRecords());
 		add(showStatistics());
-	}
-
-	/**
-	 * Return a menu item that shows the records window.
-	 * 
-	 * @return the records menu item.
-	 */
-	private JMenuItem showRecords() {
-		var records = new JMenuItem("Records");
-		records.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 2));
-		records.addActionListener(evt -> eventPublisher.publish(new ShowRecordsEvent()));
-		return records;
 	}
 
 	/**

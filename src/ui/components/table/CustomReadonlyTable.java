@@ -10,13 +10,18 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class CustomReadonlyTable extends JPanel {
+    private static final String rowBackgroundColor = "#333333";
+    private static final String rowAltBackgroundColor = "#212529";
+    private static final String rowForegroundColor = "#ffffff";
+    private static final String headerBackgroundColor = "#111111";
+
     private TableRow header;
     private JPanel content;
 
     public CustomReadonlyTable(TableRow header) {
         this.header = header;
         setLayout(new GridBagLayout());
-        setBackground(Color.decode("#333333"));
+        setOpaque(false);
         createContentPanel();
         createHeader();
     }
@@ -26,8 +31,10 @@ public class CustomReadonlyTable extends JPanel {
         createHeader();
         
         for (var row = 0; row < rows.length; row++) {
-            var rowColor = row % 2 == 0 ? "#333333" : "#212529";
-            renderRowCells(rows[row].cellHandlers, row + 1, "#ffffff", rowColor);
+            var rowColor = row % 2 == 0 
+                ? rowBackgroundColor 
+                : rowAltBackgroundColor;
+            renderRowCells(rows[row].cellHandlers, row + 1, rowForegroundColor, rowColor);
         }
         revalidate();
     }
@@ -35,7 +42,7 @@ public class CustomReadonlyTable extends JPanel {
     private void createContentPanel() {
         content = new JPanel();
         content.setLayout(new GridBagLayout());
-        content.setBackground(Color.decode("#333333"));
+        content.setOpaque(false);
 
         var c = new GridBagConstraints();
         c.gridx = 0;
@@ -50,7 +57,7 @@ public class CustomReadonlyTable extends JPanel {
 
     private void createHeader() {
         var cellHandlers = header.cellHandlers;
-        renderRowCells(cellHandlers, 0, "#ffffff", "#111111");
+        renderRowCells(cellHandlers, 0, rowForegroundColor, headerBackgroundColor);
     }
 
     private void renderRowCells(
