@@ -4,10 +4,8 @@ import factories.MinesFactory;
 import models.Difficulty;
 import models.Mine;
 import models.Mines;
-import java.util.Map;
+import models.Puzzle;
 import services.OptionsService;
-
-// TODO clock timer's time part of game state?
 
 /**
  * The state of the game.
@@ -21,58 +19,24 @@ public class GameState {
 	private boolean gamePaused;
 	private boolean hintUsed;
 	private Difficulty currentPuzzleDifficulty;
-	private Map<Difficulty, Integer> puzzleWidths;
-	private Map<Difficulty, Integer> puzzleHeights;
-	private Map<Difficulty, Integer> puzzleMines;
 	private Mines gameMines;
 
-	public GameState(OptionsService options, MinesFactory mines) {
-		optionsService = options;
-		minesFactory = mines;
-
-		System.out.println("Creating new game state");
-		gameStarted = false;
-		gameOver = false;
-		gamePaused = false;
-		hintUsed = false;
-		currentPuzzleDifficulty = options.difficulty();
-		puzzleWidths = Map.of(
-			Difficulty.easy, 9,
-			Difficulty.medium, 16,
-			Difficulty.hard, 30
-		);
-		puzzleHeights = Map.of(
-			Difficulty.easy, 9,
-			Difficulty.medium, 16,
-			Difficulty.hard, 16
-		);
-		puzzleMines = Map.of(
-			Difficulty.easy, 10,
-			Difficulty.medium, 40,
-			Difficulty.hard, 99
-		);
-
-		gameMines = minesFactory.create(
-			getCurrentPuzzleWidth(),
-			getCurrentPuzzleHeight(),
-			getCurrentPuzzleMineCount()
-		);
+	public GameState(OptionsService optionsService, MinesFactory minesFactory) {
+		this.optionsService = optionsService;
+		this.minesFactory = minesFactory;
+		init();
 	}
 
 	/**
-	 * Reset the game state.
+	 * Initialize the game state.
 	 */
-	public void reset() {
+	public void init() {
 		gameStarted = false;
 		gameOver = false;
 		gamePaused = false;
 		hintUsed = false;
-
-		setCurrentPuzzleToNextPuzzle();
-		resetMines();
-	}
-
-	private void resetMines() {
+		currentPuzzleDifficulty = optionsService.difficulty();
+		
 		gameMines = minesFactory.create(
 			getCurrentPuzzleWidth(),
 			getCurrentPuzzleHeight(),
@@ -90,12 +54,10 @@ public class GameState {
 	}
 
 	/**
-	 * Set the gameStarted state.
-	 * 
-	 * @param started true if the game has started.
+	 * Set gameStarted to true.
 	 */
-	public void setGameStarted(boolean started) {
-		gameStarted = started;
+	public void setGameStarted() {
+		gameStarted = true;
 	}
 
 	/**
@@ -108,12 +70,10 @@ public class GameState {
 	}
 
 	/**
-	 * Set the gameOver state.
-	 * 
-	 * @param over true if the player received game over.
+	 * Set gameOver to true.
 	 */
-	public void setGameOver(boolean over) {
-		gameOver = over;
+	public void setGameOver() {
+		gameOver = true;
 	}
 
 	/**
@@ -144,12 +104,10 @@ public class GameState {
 	}
 
 	/**
-	 * Set the hintUsed state.
-	 * 
-	 * @param used true if a hint was used.
+	 * Set hintUsed to true.
 	 */
-	public void setHintUsed(boolean used) {
-		hintUsed = used;
+	public void setHintUsed() {
+		hintUsed = true;
 	}
 
 	/**
@@ -162,28 +120,12 @@ public class GameState {
 	}
 
 	/**
-	 * Set the current puzzle difficulty.
-	 * 
-	 * @param difficulty the difficulty of the current puzzle.
-	 */
-	public void setCurrentPuzzleDifficulty(Difficulty difficulty) {
-		currentPuzzleDifficulty = difficulty;
-	}
-
-	/**
-	 * Update the current puzzle difficulty to be the puzzle difficulty from options.
-	 */
-	public void setCurrentPuzzleToNextPuzzle() {
-		currentPuzzleDifficulty = optionsService.difficulty();
-	}
-
-	/**
 	 * Get the current puzzle height.
 	 * 
 	 * @return the height of the current puzzle.
 	 */
 	public int getCurrentPuzzleHeight() {
-		return puzzleHeights.get(currentPuzzleDifficulty);
+		return Puzzle.heights.get(currentPuzzleDifficulty);
 	}
 
 	/**
@@ -192,7 +134,7 @@ public class GameState {
 	 * @return the width of the current puzzle.
 	 */
 	public int getCurrentPuzzleWidth() {
-		return puzzleWidths.get(currentPuzzleDifficulty);
+		return Puzzle.widths.get(currentPuzzleDifficulty);
 	}
 
 	/**
@@ -201,16 +143,7 @@ public class GameState {
 	 * @return the number of mines in the current puzzle.
 	 */
 	public int getCurrentPuzzleMineCount() {
-		return puzzleMines.get(currentPuzzleDifficulty);
-	}
-
-	/**
-	 * Get the maximum number of mine field squares.
-	 * 
-	 * @return the maximum number of mine field squares.
-	 */
-	public int getMaxNumberOfMineFieldSquares() {
-		return puzzleWidths.get(Difficulty.hard) * puzzleHeights.get(Difficulty.hard);
+		return Puzzle.mines.get(currentPuzzleDifficulty);
 	}
 
 	/**
@@ -276,7 +209,7 @@ public class GameState {
 		int maxUncoverablePieces = width * height - numMines;
 
 		if (uncoveredPieces == maxUncoverablePieces && !bombBlew) {
-			setGameOver(true);
+			setGameOver();
 			return true;
 		}
 

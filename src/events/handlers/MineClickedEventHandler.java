@@ -111,7 +111,7 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             eventSubscriber.notify(new StopClockTimerEvent());
 			eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileySad));
             
-            gameState.setGameOver(true);
+            gameState.setGameOver();
             statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
         }
     }

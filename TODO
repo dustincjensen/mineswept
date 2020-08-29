@@ -1,5 +1,6 @@
 TODO
 ========
+- Theme picker/creator in options (separate menu);
 - Refactor MineButton to remove all statics?
     - Some form of shared state is needed to know:
         - dragging position
@@ -7,9 +8,6 @@ TODO
         - if the click started inside the mine buttons.
         - if the click ended inside the mine buttons.
 - Refactor MineButton to simplify rendering.
-- Refactor GameState
-    - perhaps it is watching too much internally, and should delegate out to separate states 
-      and conglomerate them like combineReducers.
 
 Working on
 ==========
@@ -25,8 +23,3 @@ Bugs
 ==========
 - fix hint to not find flagged squares
     - possible solution is to unprotect the square you are trying to give as a hint
-
-
-Future Features
-===============
-- Theme picker/creator in options (separate menu);

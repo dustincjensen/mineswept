@@ -236,7 +236,7 @@ public class MineButton extends JLabel implements MouseListener {
 
 		// Mouse was pressed, start the game if it hasn't already been.
 		if (!gameState.isGameStarted()) {
-			gameState.setGameStarted(true);
+			gameState.setGameStarted();
 			eventPublisher.publish(new StartClockTimerEvent());
 		}
 

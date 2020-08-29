@@ -22,7 +22,7 @@ public class ResetGameEventHandler implements IEventHandler<ResetGameEvent> {
 
     @Override
     public void execute(ResetGameEvent event) {
-        gameState.reset();
+        gameState.init();
 
         eventSubscriber.notify(new ResetMinePanelEvent(
             gameState.getCurrentPuzzleHeight(),
