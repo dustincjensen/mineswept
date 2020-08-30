@@ -36,7 +36,6 @@ public class OptionsModule extends AbstractModule {
             optionsService,
             factory,
             eventSubscriber,
-            resourceLoader.get(Resource.SmileyHappy),
             resourceLoader.get(Resource.SmileyCool),
             window);
     }

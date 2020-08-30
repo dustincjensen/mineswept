@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 import events.IEventPublisher;
 import events.IEventSubscriber;
 import models.Resource;
-import ui.about.AboutDialog;
 import ui.menu.Menus;
 import ui.layout.MainLayout;
 import ui.ResourceLoader;
@@ -19,7 +18,6 @@ public class WindowModule extends AbstractModule {
         Menus menus,
         WindowHandler mainWindowHandler,
         ResourceLoader loader,
-        AboutDialog aboutDialog,
         IEventSubscriber subscriber
     ) {
         return new Window(
@@ -27,7 +25,6 @@ public class WindowModule extends AbstractModule {
             menus,
             mainWindowHandler,
             loader.get(Resource.SmileyCool).getImage(),
-            aboutDialog,
             subscriber);
     }
 

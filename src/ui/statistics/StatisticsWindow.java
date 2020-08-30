@@ -10,10 +10,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import models.Difficulty;
 import ui.components.button.DangerButton;
+import ui.components.dialog.CustomDialog;
 import ui.components.tabbedPane.CustomTabbedPane;
 
 public class StatisticsWindow {
@@ -24,6 +24,7 @@ public class StatisticsWindow {
 	private CustomTabbedPane tabs;
 	private RecordsPanel easyRecordPanel, mediumRecordPanel, hardRecordPanel;
 	private StatisticsPanel easyStatsPanel, mediumStatsPanel, hardStatsPanel;
+	private CustomDialog resetStatsDialog;
 
 	public StatisticsWindow(
 		IEventPublisher	eventPublisher,
@@ -36,6 +37,8 @@ public class StatisticsWindow {
 
 		frame = new StatisticsFrame(tabbedPanel());
 		frame.setIconImage(windowIcon);
+
+		resetStatsDialog = new CustomDialog(frame, CustomDialog.Type.YES_NO);
 
 		setupSubscriptions();
 	}
@@ -80,8 +83,9 @@ public class StatisticsWindow {
 		reset.setLayout(new GridLayout(0, 1, 5, 5));
 		reset.add(new DangerButton("Reset", true, evt -> {
 			var difficultyName = Difficulty.getProperName(tabs.getSelectedIndex());
-			int answer = confirmDialog("Would you like to reset your '" + difficultyName + "' statistics?");
-			if (answer == JOptionPane.YES_OPTION) {
+
+			resetStatsDialog.show("Confirm?", "Would you like to reset your '" + difficultyName + "' statistics?");
+			if (resetStatsDialog.getAnswer() == CustomDialog.Answer.YES) {
 				var difficulty = Difficulty.getDifficulty(tabs.getSelectedIndex());
 				eventPublisher.publish(new ResetStatisticsEvent(difficulty));
 			}
@@ -122,14 +126,5 @@ public class StatisticsWindow {
 				hardRecordPanel.setRecords(event.records);
 			}
 		});
-	}
-
-	// We make a specific option dialog so we can select "No" as the default.
-	// This is done by using options[1].
-	private int confirmDialog(String message) {
-		String[] options = { "Yes", "No" };
-		return JOptionPane.showOptionDialog(frame, message, "Confirm?", 
-			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]
-		);
 	}
 }

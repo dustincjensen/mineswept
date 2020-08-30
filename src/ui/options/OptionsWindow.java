@@ -12,6 +12,7 @@ import state.GameState;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
 import ui.components.comboBox.DefaultComboBox;
+import ui.components.dialog.CustomDialog;
 import ui.components.radioButton.RadioButtonFactory;
 import ui.options.styles.Classic;
 import ui.options.styles.Forest;
@@ -25,7 +26,6 @@ public class OptionsWindow {
 	private OptionsService optionsService;
 	private RadioButtonFactory radioButtonFactory;
 	private IEventSubscriber eventSubscriber;
-	private ImageIcon confirmationIcon;
 	private Window window;
 
 	private OptionsFrame frame;
@@ -36,13 +36,13 @@ public class OptionsWindow {
 		jMineNumOneColor, jMineNumTwoColor, jMineNumThreeColor, jMineNumFourColor, jMineNumFiveColor,
 		jMineNumSixColor, jMineNumSevenColor, jMineNumEightColor;
 	private DefaultComboBox<BorderType> raisedBorder, loweredBorder;
+	private CustomDialog changeOptionsDialog;
 
 	public OptionsWindow(
 		GameState gameState,
 		OptionsService optionsService,
 		RadioButtonFactory radioButtonFactory,
 		IEventSubscriber eventSubscriber,
-		ImageIcon confirmationIcon,
 		ImageIcon windowIcon,
 		Window window
 	) {
@@ -51,13 +51,13 @@ public class OptionsWindow {
 		this.optionsService = optionsService;
 		this.radioButtonFactory = radioButtonFactory;
 		this.eventSubscriber = eventSubscriber;
-		this.confirmationIcon = confirmationIcon;
 		this.window = window;
 
 		frame = new OptionsFrame(mainPanel());
 		frame.setIconImage(windowIcon.getImage());
 
 		optionsHaveChanged = false;
+		changeOptionsDialog = new CustomDialog(frame, CustomDialog.Type.YES_NO);
 	}
 
 	private JPanel mainPanel() {
@@ -94,8 +94,8 @@ public class OptionsWindow {
 	private JButton saveButton() {
 		var saveButton = new PrimaryButton("Save", event -> {
 			if (optionsHaveChanged) {
-				int answer = confirmDialog("Would you like to change the options?");
-				if (answer == JOptionPane.YES_OPTION) {
+				changeOptionsDialog.show("Confirm?", "Would you like to change the options?");
+				if (changeOptionsDialog.getAnswer() == CustomDialog.Answer.YES) {
 					setNewOptions();
 					optionsHaveChanged = false;
 					frame.setVisible(false);
@@ -513,11 +513,6 @@ public class OptionsWindow {
 
 		var loweredType = (BorderType)loweredBorder.getSelectedItem();
 		optionsService.setLoweredBorder(loweredType);
-	}
-
-	private int confirmDialog(String message) {
-		return JOptionPane.showConfirmDialog(frame, message, "Confirm?", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, confirmationIcon);
 	}
 
 	public void show() {
