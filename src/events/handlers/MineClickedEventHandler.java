@@ -94,16 +94,9 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 }
 
                 // Add game played and won.
+                // And update the statistics window, as it may be open.
                 statisticsService.gameWon(gameState.getCurrentPuzzleDifficulty());
-
-                // Show the records window if a record was set.
-                if (recordSet) {
-                    var showStats = new ShowStatisticsEvent();
-                    showStats.stats = statisticsService.getStatistics();
-                    showStats.records = recordsService.getAllRecords();
-                    showStats.difficulty = gameState.getCurrentPuzzleDifficulty();
-                    eventSubscriber.notify(showStats);
-                }
+                showStats(recordSet);
 
                 eventSubscriber.notify(new SetResetButtonIconEvent(
                     recordSet ? Resource.SmileyRecord : Resource.SmileyCool));
@@ -114,7 +107,18 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             
             gameState.setGameOver();
             statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
+            showStats(false);
         }
+    }
+
+    private void showStats(boolean recordSet) {
+        var showStats = new ShowStatisticsEvent();
+        showStats.stats = statisticsService.getStatistics();
+        showStats.records = recordsService.getAllRecords();
+        showStats.difficulty = gameState.getCurrentPuzzleDifficulty();
+        // Show the records window if a record was set.
+        showStats.showWindow = recordSet;
+        eventSubscriber.notify(showStats);
     }
 
     private void rightClicked(int x, int y) {

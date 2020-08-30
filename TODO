@@ -22,5 +22,7 @@ Bugs
 ==========
 - fix hint to not find flagged squares
     - possible solution is to unprotect the square you are trying to give as a hint
-- If stats window is open, losing a game does not update the stats.
-    - Also if you don't get a record on a win, the stats do not update.
+- Stats window should open over the middle of the window
+- About dialog should open over the middle of the window
+- Should main window require stats, options and about and subscribe to events to show them?
+    - This would solve the problem of the dependency injection and centering the windows over the main window.

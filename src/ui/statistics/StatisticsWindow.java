@@ -91,8 +91,10 @@ public class StatisticsWindow {
 
 	private void setupSubscriptions() {
 		eventSubscriber.subscribe(ShowStatisticsEvent.class, event -> {
-			frame.setVisible(true);
-			
+			if (event.showWindow) {
+				frame.setVisible(true);
+			}
+						
 			var allStats = event.stats;
 			easyStatsPanel.setStatistics(allStats.easy);
 			mediumStatsPanel.setStatistics(allStats.medium);

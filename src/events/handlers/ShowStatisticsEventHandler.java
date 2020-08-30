@@ -22,6 +22,7 @@ public class ShowStatisticsEventHandler implements IEventHandler<ShowStatisticsE
 
     @Override
     public void execute(ShowStatisticsEvent event) {
+        event.showWindow = true;
         event.stats = statisticsService.getStatistics();
         event.records = recordsService.getAllRecords();
         eventSubscriber.notify(event);
