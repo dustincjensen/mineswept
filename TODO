@@ -1,6 +1,7 @@
 TODO
 ========
 - Theme picker/creator in options (separate menu);
+- Custom color picker (jtextfield that the background updates to be the color that you've hex typed?)
 - Refactor MineButton to remove all statics?
     - Some form of shared state is needed to know:
         - dragging position
@@ -17,12 +18,12 @@ Working on
     / move files around, rename folders
     / better modules
 / https://stackoverflow.com/a/9312222/718285 - resize font with component
+- Update yes/no modals to use custom dialog.
     
 Bugs
 ==========
 - fix hint to not find flagged squares
     - possible solution is to unprotect the square you are trying to give as a hint
 - Stats window should open over the middle of the window
-- About dialog should open over the middle of the window
 - Should main window require stats, options and about and subscribe to events to show them?
     - This would solve the problem of the dependency injection and centering the windows over the main window.

@@ -63,6 +63,11 @@ public class EventModule extends AbstractModule {
     }
 
     @Provides
+    public AboutEventHandler provideAboutEventHandler(IEventSubscriber subscriber) {
+        return new AboutEventHandler(subscriber);
+    }
+
+    @Provides
     public GetHintEventHandler provideGetHintEventHandler(GameState gameState, HintService hintService, IEventSubscriber subscriber) {
         return new GetHintEventHandler(gameState, hintService, subscriber);
     }

@@ -4,7 +4,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import events.IEventPublisher;
+import events.IEventSubscriber;
 import models.Resource;
+import ui.about.AboutDialog;
 import ui.menu.Menus;
 import ui.layout.MainLayout;
 import ui.ResourceLoader;
@@ -16,13 +18,17 @@ public class WindowModule extends AbstractModule {
         MainLayout mainLayout,
         Menus menus,
         WindowHandler mainWindowHandler,
-        ResourceLoader loader
+        ResourceLoader loader,
+        AboutDialog aboutDialog,
+        IEventSubscriber subscriber
     ) {
         return new Window(
             mainLayout,
             menus,
             mainWindowHandler,
-            loader.get(Resource.SmileyCool).getImage());
+            loader.get(Resource.SmileyCool).getImage(),
+            aboutDialog,
+            subscriber);
     }
 
     @Provides
