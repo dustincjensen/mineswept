@@ -15,10 +15,12 @@ import models.Difficulty;
 import ui.components.button.DangerButton;
 import ui.components.dialog.CustomDialog;
 import ui.components.tabbedPane.CustomTabbedPane;
+import ui.window.Window;
 
 public class StatisticsWindow {
 	private IEventPublisher eventPublisher;
 	private IEventSubscriber eventSubscriber;
+	private Window window;
 	
 	private StatisticsFrame frame;
 	private CustomTabbedPane tabs;
@@ -29,18 +31,42 @@ public class StatisticsWindow {
 	public StatisticsWindow(
 		IEventPublisher	eventPublisher,
 		IEventSubscriber eventSubscriber,
-		Image windowIcon
+		Image windowIcon,
+		Window window
 	) {
 		this.eventPublisher = eventPublisher;
 		this.eventSubscriber = eventSubscriber;
-		System.out.println("Creating: STATISTICS WINDOW");
+		this.window = window;
 
 		frame = new StatisticsFrame(tabbedPanel());
 		frame.setIconImage(windowIcon);
-
 		resetStatsDialog = new CustomDialog(frame, CustomDialog.Type.YES_NO);
 
 		setupSubscriptions();
+	}
+
+	public void show(ShowStatisticsEvent event) {
+		if (event.showWindow) {
+			if (!frame.isVisible()) {
+				frame.pack();
+				frame.setLocationRelativeTo(window);
+			}
+			frame.setVisible(true);
+		}
+					
+		var allStats = event.stats;
+		easyStatsPanel.setStatistics(allStats.easy);
+		mediumStatsPanel.setStatistics(allStats.medium);
+		hardStatsPanel.setStatistics(allStats.hard);
+		
+		var allRecords = event.records;
+		easyRecordPanel.setRecords(allRecords.easy);
+		mediumRecordPanel.setRecords(allRecords.medium);
+		hardRecordPanel.setRecords(allRecords.hard);
+
+		if (event.difficulty != null) {
+			tabs.setSelectedIndex(Difficulty.getProperName(event.difficulty));
+		}
 	}
 
 	private JPanel tabbedPanel() {
@@ -94,30 +120,11 @@ public class StatisticsWindow {
 	}
 
 	private void setupSubscriptions() {
-		eventSubscriber.subscribe(ShowStatisticsEvent.class, event -> {
-			if (event.showWindow) {
-				frame.setVisible(true);
-			}
-						
-			var allStats = event.stats;
-			easyStatsPanel.setStatistics(allStats.easy);
-			mediumStatsPanel.setStatistics(allStats.medium);
-			hardStatsPanel.setStatistics(allStats.hard);
-			
-			var allRecords = event.records;
-			easyRecordPanel.setRecords(allRecords.easy);
-			mediumRecordPanel.setRecords(allRecords.medium);
-			hardRecordPanel.setRecords(allRecords.hard);
-
-			if (event.difficulty != null) {
-				tabs.setSelectedIndex(Difficulty.getProperName(event.difficulty));
-			}
-		});
-
 		eventSubscriber.subscribe(ResetStatisticsEvent.class, event -> {
 			easyStatsPanel.setStatistics(event.stats.easy);
 			mediumStatsPanel.setStatistics(event.stats.medium);
 			hardStatsPanel.setStatistics(event.stats.hard);
+			
 			if (event.difficulty == Difficulty.easy) {
 				easyRecordPanel.setRecords(event.records);
 			} else if (event.difficulty == Difficulty.medium) {

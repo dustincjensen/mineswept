@@ -46,7 +46,6 @@ public class OptionsWindow {
 		ImageIcon windowIcon,
 		Window window
 	) {
-		System.out.println("Creating new option window...");
 		this.gameState = gameState;
 		this.optionsService = optionsService;
 		this.radioButtonFactory = radioButtonFactory;
@@ -516,8 +515,10 @@ public class OptionsWindow {
 	}
 
 	public void show() {
-		frame.pack();
-		frame.setLocationRelativeTo(window);
+		if (!frame.isVisible()) {
+			frame.pack();
+			frame.setLocationRelativeTo(window);
+		}
 		frame.setVisible(true);
 	}
 }
