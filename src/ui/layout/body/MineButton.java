@@ -14,13 +14,14 @@ import models.Mine;
 import models.MineState;
 import models.Resource;
 import state.GameState;
+import ui.components.resizableLabel.ResizableLabel;
 import ui.utils.FontChange;
 
 /**
  * Setup a mine button.
  */
 @SuppressWarnings("serial")
-public class MineButton extends JLabel implements MouseListener {
+public class MineButton extends ResizableLabel implements MouseListener {
 	private GameState gameState;
 	private IEventPublisher eventPublisher;
 	private ImageIcon mineIcon;
@@ -60,6 +61,7 @@ public class MineButton extends JLabel implements MouseListener {
 		ImageIcon mineWrongIcon,
 		ImageIcon flagIcon
 	) {
+		super("");
 		this.gameState = gameState;
 		this.eventPublisher = eventPublisher;
 		this.mineIcon = mineIcon;
