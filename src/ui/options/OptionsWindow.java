@@ -11,7 +11,6 @@ import services.OptionsService;
 import state.GameState;
 import ui.components.button.LightButton;
 import ui.components.button.PrimaryButton;
-import ui.components.comboBox.DefaultComboBox;
 import ui.components.dialog.CustomDialog;
 import ui.components.radioButton.RadioButtonFactory;
 import ui.options.styles.Classic;
@@ -30,11 +29,12 @@ public class OptionsWindow {
 
 	private OptionsFrame frame;
 	private DifficultyPanel difficultyPanel;
+	private BorderPanel borderPanel;
+	private CustomDialog changeOptionsDialog;
+
 	private JLabel jSquareColor, jSquareAltColor, jClickedColor, jClickedAltColor, jClickedFailColor,
 		jMineNumOneColor, jMineNumTwoColor, jMineNumThreeColor, jMineNumFourColor, jMineNumFiveColor,
 		jMineNumSixColor, jMineNumSevenColor, jMineNumEightColor;
-	private DefaultComboBox<BorderType> raisedBorder, loweredBorder;
-	private CustomDialog changeOptionsDialog;
 
 	public OptionsWindow(
 		GameState gameState,
@@ -57,22 +57,15 @@ public class OptionsWindow {
 	}
 
 	private JPanel mainPanel() {
-		var mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		mainPanel.setBackground(Color.decode("#333333"));
-		mainPanel.add(subPanePanel());
-		mainPanel.add(saveCancel());
-		return mainPanel;
-	}
-
-	private Box subPanePanel() {
-		var panel = new Box(BoxLayout.Y_AXIS);
-		panel.setOpaque(false);
+		var panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.decode("#333333"));
 		panel.add(difficultyPanel());
 		panel.add(themePanel());
 		panel.add(minefieldColorsPanel());
 		panel.add(mineColorsPanel());
 		panel.add(mineBorderPanel());
+		panel.add(saveCancel());
 		return panel;
 	}
 
@@ -110,13 +103,13 @@ public class OptionsWindow {
 		});
 	}
 	
-	private Box difficultyPanel() {
+	private TitledPanel difficultyPanel() {
 		var currentPuzzle = gameState.getCurrentPuzzleDifficulty();
 		difficultyPanel = new DifficultyPanel(radioButtonFactory, currentPuzzle);
 		return new TitledPanel("Difficulty", difficultyPanel);
 	}
 
-	private Box themePanel() {
+	private TitledPanel themePanel() {
 		var descriptionPanel = new JPanel();
 		descriptionPanel.setOpaque(false);
 		descriptionPanel.add(JLabelFactory.create("Choosing a theme will set all color options."));
@@ -152,8 +145,8 @@ public class OptionsWindow {
 			
 			optionsService.setRaisedBorder(Material.RAISED_BORDER);
 			optionsService.setLoweredBorder(Material.LOWERED_BORDER);
-			raisedBorder.setSelectedItem(Material.RAISED_BORDER);
-			loweredBorder.setSelectedItem(Material.LOWERED_BORDER);
+			borderPanel.setRaisedBorder(Material.RAISED_BORDER);
+			borderPanel.setLoweredBorder(Material.LOWERED_BORDER);
 
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		});
@@ -190,8 +183,8 @@ public class OptionsWindow {
 
 			optionsService.setRaisedBorder(Classic.RAISED_BORDER);
 			optionsService.setLoweredBorder(Classic.LOWERED_BORDER);
-			raisedBorder.setSelectedItem(Classic.RAISED_BORDER);
-			loweredBorder.setSelectedItem(Classic.LOWERED_BORDER);
+			borderPanel.setRaisedBorder(Classic.RAISED_BORDER);
+			borderPanel.setLoweredBorder(Classic.LOWERED_BORDER);
 
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		});
@@ -228,8 +221,8 @@ public class OptionsWindow {
 
 			optionsService.setRaisedBorder(Forest.RAISED_BORDER);
 			optionsService.setLoweredBorder(Forest.LOWERED_BORDER);
-			raisedBorder.setSelectedItem(Forest.RAISED_BORDER);
-			loweredBorder.setSelectedItem(Forest.LOWERED_BORDER);
+			borderPanel.setRaisedBorder(Forest.RAISED_BORDER);
+			borderPanel.setLoweredBorder(Forest.LOWERED_BORDER);
 
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		});
@@ -244,7 +237,7 @@ public class OptionsWindow {
 		return new TitledPanel("Themes", descriptionPanel, buttonPanel);
 	}
 
-	private Box minefieldColorsPanel() {
+	private TitledPanel minefieldColorsPanel() {
 		var p1 = new JPanel(new GridLayout(0, 3));
 		p1.setOpaque(false);
 
@@ -286,7 +279,7 @@ public class OptionsWindow {
 		return new TitledPanel("Minefield Colors", p1, p2);
 	}
 
-	private Box mineColorsPanel() {
+	private TitledPanel mineColorsPanel() {
 		var p1 = new JPanel(new GridLayout(0, 3));
 		p1.setOpaque(false);
 
@@ -381,37 +374,9 @@ public class OptionsWindow {
 		return panel;
 	}
 
-	private Box mineBorderPanel() {
-		var p1 = new JPanel(new GridLayout(0, 2, 10, 0));
-		p1.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
-		p1.setOpaque(false);
-
-		raisedBorder = new DefaultComboBox<BorderType>(new BorderType[] { 
-			BorderType.BEVEL_RAISED,
-			BorderType.CLASSIC_BEVEL_RAISED,
-			BorderType.EMPTY
-		});
-		raisedBorder.setSelectedItem(optionsService.raisedBorder());
-		var raisePanel = new JPanel(new GridLayout(0, 1));
-		raisePanel.setOpaque(false);
-		raisePanel.add(JLabelFactory.create("Default Border"));
-		raisePanel.add(raisedBorder);
-
-		loweredBorder = new DefaultComboBox<BorderType>(new BorderType[] {
-			BorderType.BEVEL_LOWERED,
-			BorderType.CLASSIC_BEVEL_LOWERED,
-			BorderType.EMPTY
-		});
-		loweredBorder.setSelectedItem(optionsService.loweredBorder());
-		var lowerPanel = new JPanel(new GridLayout(0, 1));
-		lowerPanel.setOpaque(false);
-		lowerPanel.add(JLabelFactory.create("Clicked Border"));
-		lowerPanel.add(loweredBorder);
-		
-		p1.add(raisePanel);
-		p1.add(lowerPanel);
-
-		return new TitledPanel("Mine Border", p1);
+	private TitledPanel mineBorderPanel() {
+		borderPanel = new BorderPanel(optionsService.raisedBorder(), optionsService.loweredBorder());
+		return new TitledPanel("Mine Border", borderPanel);
 	}
 
 	private void resetOptions() {
@@ -421,8 +386,8 @@ public class OptionsWindow {
 	private boolean haveOptionsChanged() {
 		return 
 		 	optionsService.difficulty() != difficultyPanel.getSelectedDifficulty() ||
-			optionsService.raisedBorder() != raisedBorder.getSelectedItem() ||
-			optionsService.loweredBorder() != loweredBorder.getSelectedItem();
+			optionsService.raisedBorder() != borderPanel.getRaisedBorder() ||
+			optionsService.loweredBorder() != borderPanel.getLoweredBorder();
 	}
 
 	// TODO colors shouldn't set on the board immediately.
@@ -432,10 +397,10 @@ public class OptionsWindow {
 		optionsService.setDifficulty(selectedDifficulty);
 
 		// Set border types
-		var raisedType = (BorderType)raisedBorder.getSelectedItem();
+		var raisedType = (BorderType)borderPanel.getRaisedBorder();
 		optionsService.setRaisedBorder(raisedType);
 
-		var loweredType = (BorderType)loweredBorder.getSelectedItem();
+		var loweredType = (BorderType)borderPanel.getLoweredBorder();
 		optionsService.setLoweredBorder(loweredType);
 	}
 
