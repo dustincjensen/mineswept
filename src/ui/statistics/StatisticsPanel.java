@@ -1,7 +1,6 @@
 package ui.statistics;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import models.statistics.LongTermStats;
+import ui.utils.JLabelFactory;
 
 @SuppressWarnings("serial")
 public class StatisticsPanel extends JPanel {
@@ -51,15 +51,15 @@ public class StatisticsPanel extends JPanel {
         var content = new JPanel(new GridBagLayout());
         content.setOpaque(false);
         
-        var playedLabel = createJLabel("Played:");
-        gamesPlayed = createJLabel("");
-        var playedPercent = createJLabel("");
-        var wonLabel = createJLabel("Won:");
-        gamesWon = createJLabel("");
-        gamesWonPercent = createJLabel("");
-        var lostLabel = createJLabel("Lost:");
-        gamesLost = createJLabel("");
-        gamesLostPercent = createJLabel("");
+        var playedLabel = create("Played:");
+        gamesPlayed = create("");
+        var playedPercent = create("");
+        var wonLabel = create("Won:");
+        gamesWon = create("");
+        gamesWonPercent = create("");
+        var lostLabel = create("Lost:");
+        gamesLost = create("");
+        gamesLostPercent = create("");
 
         var labelList = List.of(
             playedLabel, 
@@ -96,10 +96,7 @@ public class StatisticsPanel extends JPanel {
         return c;
     }
 
-    private JLabel createJLabel(String text) {
-        var label = new JLabel(text);
-        label.setHorizontalAlignment(SwingConstants.RIGHT);
-        label.setForeground(Color.decode("#ffffff"));
-        return label;
+    private JLabel create(String text) {
+        return JLabelFactory.create(text, SwingConstants.RIGHT);
     }
 }

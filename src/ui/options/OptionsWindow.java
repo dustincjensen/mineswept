@@ -3,6 +3,7 @@ package ui.options;
 import events.IEventSubscriber;
 import events.UpdateMinePanelEvent;
 import java.awt.*;
+import java.awt.Color;
 import java.util.function.Consumer;
 import javax.swing.*;
 import models.Difficulty;
@@ -18,7 +19,7 @@ import ui.options.styles.Classic;
 import ui.options.styles.Forest;
 import ui.options.styles.Material;
 import ui.utils.ColorConverter;
-import java.awt.Color;
+import ui.utils.JLabelFactory;
 import ui.window.Window;
 
 public class OptionsWindow {
@@ -113,22 +114,6 @@ public class OptionsWindow {
 			resetOptions();
 		});
 	}
-
-	private JPanel header(String title) {
-        var header = new JPanel(new BorderLayout());
-		header.setBackground(Color.decode("#111111"));
-		header.add(createJLabel(title, SwingConstants.LEFT), BorderLayout.LINE_START);
-		header.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        return header;
-	}
-	
-	private JLabel createJLabel(String text, int alignment) {
-        var label = new JLabel(text);
-        label.setHorizontalAlignment(alignment);
-		label.setForeground(Color.decode("#ffffff"));
-		label.setOpaque(false);
-        return label;
-	}
 	
 	private Box difficultyPanel() {
 		var difficultyPanel = new JPanel(new GridLayout(0, 3));
@@ -156,11 +141,7 @@ public class OptionsWindow {
 
 		chooseSelectedDifficulty();
 
-		var headerWithDifficultyPanel = new Box(BoxLayout.Y_AXIS);
-		headerWithDifficultyPanel.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
-		headerWithDifficultyPanel.add(header("Difficulty"));
-		headerWithDifficultyPanel.add(difficultyPanel);
-		return headerWithDifficultyPanel;
+		return new TitledPanel("Difficulty", difficultyPanel);
 	}
 
 	private void chooseSelectedDifficulty() {
@@ -173,7 +154,7 @@ public class OptionsWindow {
 	private Box themePanel() {
 		var descriptionPanel = new JPanel();
 		descriptionPanel.setOpaque(false);
-		descriptionPanel.add(createJLabel("Choosing a theme will set all color options.", SwingConstants.LEFT));
+		descriptionPanel.add(JLabelFactory.create("Choosing a theme will set all color options."));
 
 		var materialButton = new PrimaryButton("Material", evt -> {
 			optionsService.setSquareColor(Material.MINE_BACKGROUND_COLOR); 
@@ -295,12 +276,7 @@ public class OptionsWindow {
 		buttonPanel.add(materialButton);
 		buttonPanel.add(forestButton);
 
-		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
-		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
-		headerWithColorPanel.add(header("Themes"));
-		headerWithColorPanel.add(descriptionPanel);
-		headerWithColorPanel.add(buttonPanel);
-		return headerWithColorPanel;
+		return new TitledPanel("Themes", descriptionPanel, buttonPanel);
 	}
 
 	private Box minefieldColorsPanel() {
@@ -342,12 +318,7 @@ public class OptionsWindow {
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		}));
 
-		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
-		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
-		headerWithColorPanel.add(header("Minefield Colors"));
-		headerWithColorPanel.add(p1);
-		headerWithColorPanel.add(p2);
-		return headerWithColorPanel;
+		return new TitledPanel("Minefield Colors", p1, p2);
 	}
 
 	private Box mineColorsPanel() {
@@ -411,13 +382,7 @@ public class OptionsWindow {
 			eventSubscriber.notify(new UpdateMinePanelEvent());
 		}));
 
-		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
-		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
-		headerWithColorPanel.add(header("Mine Number Colors"));
-		headerWithColorPanel.add(p1);
-		headerWithColorPanel.add(p2);
-		headerWithColorPanel.add(p3);
-		return headerWithColorPanel;
+		return new TitledPanel("Mine Number Colors", p1, p2, p3);
 	}
 
 	private Box individualColorPanel(Color base, String colorName, JLabel colorSwatch, Consumer<Color> colorHandler) {
@@ -431,7 +396,7 @@ public class OptionsWindow {
 
 		var labelAndButton = new Box(BoxLayout.Y_AXIS);
 		labelAndButton.setOpaque(false);
-		labelAndButton.add(createJLabel(colorName, SwingConstants.LEFT));
+		labelAndButton.add(JLabelFactory.create(colorName));
 		labelAndButton.add(Box.createVerticalStrut(5));
 
 		labelAndButton.add(new PrimaryButton("Select New Color", evt -> {
@@ -453,7 +418,7 @@ public class OptionsWindow {
 
 	private Box mineBorderPanel() {
 		var p1 = new JPanel(new GridLayout(0, 2, 10, 0));
-		p1.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		p1.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
 		p1.setOpaque(false);
 
 		raisedBorder = new DefaultComboBox<BorderType>(new BorderType[] { 
@@ -465,7 +430,7 @@ public class OptionsWindow {
 		raisedBorder.setSelectedItem(optionsService.raisedBorder());
 		var raisePanel = new JPanel(new GridLayout(0, 1));
 		raisePanel.setOpaque(false);
-		raisePanel.add(createJLabel("Default Border", SwingConstants.LEFT));
+		raisePanel.add(JLabelFactory.create("Default Border"));
 		raisePanel.add(raisedBorder);
 
 		loweredBorder = new DefaultComboBox<BorderType>(new BorderType[] {
@@ -477,17 +442,13 @@ public class OptionsWindow {
 		loweredBorder.setSelectedItem(optionsService.loweredBorder());
 		var lowerPanel = new JPanel(new GridLayout(0, 1));
 		lowerPanel.setOpaque(false);
-		lowerPanel.add(createJLabel("Clicked Border", SwingConstants.LEFT));
+		lowerPanel.add(JLabelFactory.create("Clicked Border"));
 		lowerPanel.add(loweredBorder);
 		
 		p1.add(raisePanel);
 		p1.add(lowerPanel);
 
-		var headerWithColorPanel = new Box(BoxLayout.Y_AXIS);
-		headerWithColorPanel.setBorder(BorderFactory.createEmptyBorder(5,5,15,5));
-		headerWithColorPanel.add(header("Mine Border"));
-		headerWithColorPanel.add(p1);
-		return headerWithColorPanel;
+		return new TitledPanel("Mine Border", p1);
 	}
 
 	private void resetOptions() {
