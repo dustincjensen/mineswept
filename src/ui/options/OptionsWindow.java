@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.Color;
 import java.util.function.Consumer;
 import javax.swing.*;
-import models.Difficulty;
 import models.options.BorderType;
 import services.OptionsService;
 import state.GameState;
@@ -30,9 +29,7 @@ public class OptionsWindow {
 	private Window window;
 
 	private OptionsFrame frame;
-	private boolean optionsHaveChanged;
-	private ButtonGroup difficultyRadioButtonGroup;
-	private JRadioButton easy, medium, hard;
+	private DifficultyPanel difficultyPanel;
 	private JLabel jSquareColor, jSquareAltColor, jClickedColor, jClickedAltColor, jClickedFailColor,
 		jMineNumOneColor, jMineNumTwoColor, jMineNumThreeColor, jMineNumFourColor, jMineNumFiveColor,
 		jMineNumSixColor, jMineNumSevenColor, jMineNumEightColor;
@@ -56,7 +53,6 @@ public class OptionsWindow {
 		frame = new OptionsFrame(mainPanel());
 		frame.setIconImage(windowIcon.getImage());
 
-		optionsHaveChanged = false;
 		changeOptionsDialog = new CustomDialog(frame, CustomDialog.Type.YES_NO);
 	}
 
@@ -93,11 +89,10 @@ public class OptionsWindow {
 
 	private JButton saveButton() {
 		var saveButton = new PrimaryButton("Save", event -> {
-			if (optionsHaveChanged) {
+			if (haveOptionsChanged()) {
 				changeOptionsDialog.show("Confirm?", "Would you like to change the options?");
 				if (changeOptionsDialog.getAnswer() == CustomDialog.Answer.YES) {
 					setNewOptions();
-					optionsHaveChanged = false;
 					frame.setVisible(false);
 				}
 			} else {
@@ -116,39 +111,9 @@ public class OptionsWindow {
 	}
 	
 	private Box difficultyPanel() {
-		var difficultyPanel = new JPanel(new GridLayout(0, 3));
-		difficultyPanel.setOpaque(false);
-		
-		easy = radioButtonFactory.create(
-			"<html>Easy<br/><i>10 mines<br/>9x9 grid</i></html>",
-			evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.easy);
-		difficultyPanel.add(easy);
-
-		medium = radioButtonFactory.create(
-			"<html>Medium<br/><i>40 mines<br/>16x16 grid</i></html>",
-			evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.medium);
-		difficultyPanel.add(medium);
-
-		hard = radioButtonFactory.create(
-			"<html>Hard<br/><i>99 mines<br/>16x30 grid</i></html>",
-			evt -> optionsHaveChanged = gameState.getCurrentPuzzleDifficulty() != Difficulty.hard);
-		difficultyPanel.add(hard);
-
-		difficultyRadioButtonGroup = new ButtonGroup();
-		difficultyRadioButtonGroup.add(easy);
-		difficultyRadioButtonGroup.add(medium);
-		difficultyRadioButtonGroup.add(hard);
-
-		chooseSelectedDifficulty();
-
+		var currentPuzzle = gameState.getCurrentPuzzleDifficulty();
+		difficultyPanel = new DifficultyPanel(radioButtonFactory, currentPuzzle);
 		return new TitledPanel("Difficulty", difficultyPanel);
-	}
-
-	private void chooseSelectedDifficulty() {
-		Difficulty currentPuzzle = gameState.getCurrentPuzzleDifficulty();
-		easy.setSelected(currentPuzzle == Difficulty.easy);
-		medium.setSelected(currentPuzzle == Difficulty.medium);
-		hard.setSelected(currentPuzzle == Difficulty.hard);
 	}
 
 	private Box themePanel() {
@@ -426,7 +391,6 @@ public class OptionsWindow {
 			BorderType.CLASSIC_BEVEL_RAISED,
 			BorderType.EMPTY
 		});
-		raisedBorder.addActionListener(evt -> optionsHaveChanged = optionsService.raisedBorder() != raisedBorder.getSelectedItem());
 		raisedBorder.setSelectedItem(optionsService.raisedBorder());
 		var raisePanel = new JPanel(new GridLayout(0, 1));
 		raisePanel.setOpaque(false);
@@ -438,7 +402,6 @@ public class OptionsWindow {
 			BorderType.CLASSIC_BEVEL_LOWERED,
 			BorderType.EMPTY
 		});
-		loweredBorder.addActionListener(evt -> optionsHaveChanged = optionsService.loweredBorder() != loweredBorder.getSelectedItem());
 		loweredBorder.setSelectedItem(optionsService.loweredBorder());
 		var lowerPanel = new JPanel(new GridLayout(0, 1));
 		lowerPanel.setOpaque(false);
@@ -455,17 +418,18 @@ public class OptionsWindow {
 		// System.out.println("Resetting current options...");
 	}
 
+	private boolean haveOptionsChanged() {
+		return 
+		 	optionsService.difficulty() != difficultyPanel.getSelectedDifficulty() ||
+			optionsService.raisedBorder() != raisedBorder.getSelectedItem() ||
+			optionsService.loweredBorder() != loweredBorder.getSelectedItem();
+	}
+
 	// TODO colors shouldn't set on the board immediately.
 	private void setNewOptions() {
 		// Set difficulty
-		ButtonModel diff = difficultyRadioButtonGroup.getSelection();
-		if (diff.equals(easy.getModel())) {
-			optionsService.setDifficulty(Difficulty.easy);
-		} else if (diff.equals(medium.getModel())) {
-			optionsService.setDifficulty(Difficulty.medium);
-		} else if (diff.equals(hard.getModel())) {
-			optionsService.setDifficulty(Difficulty.hard);
-		}
+		var selectedDifficulty = difficultyPanel.getSelectedDifficulty();
+		optionsService.setDifficulty(selectedDifficulty);
 
 		// Set border types
 		var raisedType = (BorderType)raisedBorder.getSelectedItem();
