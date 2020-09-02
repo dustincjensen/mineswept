@@ -8,7 +8,6 @@ public class EventPublisher implements IEventPublisher {
     private List<IEventHandler> eventHandlers;
 
     public EventPublisher(List<IEventHandler> handlers) {
-        System.out.println("Creating Event Publisher");
         eventHandlers = handlers;
     }
 
