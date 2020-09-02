@@ -50,8 +50,29 @@ public class OptionsWindow {
 
 		frame = new OptionsFrame(mainPanel());
 		frame.setIconImage(windowIcon.getImage());
+		frame.addWindowListener(new OptionsWindowHandler(this));
 
 		changeOptionsDialog = new CustomDialog(frame, CustomDialog.Type.YES_NO);
+	}
+
+	/**
+	 * Method that is invoked to display the options window.
+	 */
+	public void show() {
+		if (!frame.isVisible()) {
+			frame.pack();
+			frame.setLocationRelativeTo(window);
+		}
+		frame.setVisible(true);
+	}
+
+	/**
+	 * Method that should be invoked when the window is closed.
+	 */
+	public void closed() {
+		if (haveOptionsChanged()) {
+			resetOptions();
+		}
 	}
 
 	private JPanel mainPanel() {
@@ -67,40 +88,6 @@ public class OptionsWindow {
 		return panel;
 	}
 
-	private JPanel saveCancel() {
-		var panel = new JPanel();
-		panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		panel.setBackground(Color.decode("#333333"));
-		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-		panel.setLayout(new GridLayout(0, 2, 5, 5));
-		panel.add(saveButton());
-		panel.add(cancelButton());
-		return panel;
-	}
-
-	private JButton saveButton() {
-		var saveButton = new PrimaryButton("Save", event -> {
-			if (haveOptionsChanged()) {
-				changeOptionsDialog.show("Confirm?", "Would you like to change the options?");
-				if (changeOptionsDialog.getAnswer() == CustomDialog.Answer.YES) {
-					setNewOptions();
-					frame.setVisible(false);
-				}
-			} else {
-				frame.setVisible(false);
-			}
-		});
-		saveButton.setPreferredSize(new Dimension(0, 40));
-		return saveButton;
-	}
-
-	private JButton cancelButton() {
-		return new LightButton("Cancel", evt -> {
-			frame.setVisible(false);
-			resetOptions();
-		});
-	}
-	
 	private TitledPanel difficultyPanel() {
 		var currentPuzzle = gameState.getCurrentPuzzleDifficulty();
 		difficultyPanel = new DifficultyPanel(radioButtonFactory, currentPuzzle);
@@ -113,12 +100,11 @@ public class OptionsWindow {
 		descriptionPanel.add(JLabelFactory.create("Choosing a theme will set all color options."));
 
 		var materialButton = new PrimaryButton("Material", evt -> setAllColors(new Material()));
-		materialButton.setPreferredSize(new Dimension(100, 40));
-
 		var classicButton = new PrimaryButton("Classic", evt -> setAllColors(new Classic()));
-		classicButton.setPreferredSize(new Dimension(100, 40));
-
 		var forestButton = new PrimaryButton("Forest", evt -> setAllColors(new Forest()));
+		
+		materialButton.setPreferredSize(new Dimension(100, 40));
+		classicButton.setPreferredSize(new Dimension(100, 40));
 		forestButton.setPreferredSize(new Dimension(100, 40));
 
 		var buttonPanel = new JPanel(new FlowLayout());
@@ -204,9 +190,38 @@ public class OptionsWindow {
 		return new TitledPanel("Mine Border", borderPanel);
 	}
 
-	private void resetOptions() {
-		// TODO
-		// System.out.println("Resetting current options...");
+	private JPanel saveCancel() {
+		var panel = new JPanel();
+		panel.setLayout(new GridLayout(0, 2, 5, 5));
+		panel.setOpaque(false);
+		panel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+		panel.add(saveButton());
+		panel.add(cancelButton());
+		return panel;
+	}
+
+	private JButton saveButton() {
+		var saveButton = new PrimaryButton("Save", event -> {
+			if (haveOptionsChanged()) {
+				changeOptionsDialog.show("Confirm?", "Would you like to change the options?");
+				if (changeOptionsDialog.getAnswer() == CustomDialog.Answer.YES) {
+					setNewOptions();
+					frame.setVisible(false);
+				}
+			} else {
+				frame.setVisible(false);
+			}
+		});
+		saveButton.setPreferredSize(new Dimension(0, 40));
+		return saveButton;
+	}
+
+	private JButton cancelButton() {
+		return new LightButton("Cancel", evt -> {
+			frame.setVisible(false);
+			resetOptions();
+		});
 	}
 
 	private boolean haveOptionsChanged() {
@@ -255,11 +270,22 @@ public class OptionsWindow {
 		eventSubscriber.notify(new UpdateMinePanelEvent());
 	}
 
-	public void show() {
-		if (!frame.isVisible()) {
-			frame.pack();
-			frame.setLocationRelativeTo(window);
-		}
-		frame.setVisible(true);
+	private void resetOptions() {
+		difficultyPanel.setSelectedDifficulty(optionsService.difficulty());
+		squareColor.setSelectedColor(Color.decode(optionsService.squareColor()));
+		squareAltColor.setSelectedColor(Color.decode(optionsService.squareAltColor()));
+		clickedColor.setSelectedColor(Color.decode(optionsService.clickedColor()));
+		clickedAltColor.setSelectedColor(Color.decode(optionsService.clickedAltColor()));
+		clickedFailColor.setSelectedColor(Color.decode(optionsService.clickedFailColor()));
+		mineNumbers[0].setSelectedColor(Color.decode(optionsService.mineNumOneColor()));
+		mineNumbers[1].setSelectedColor(Color.decode(optionsService.mineNumTwoColor()));
+		mineNumbers[2].setSelectedColor(Color.decode(optionsService.mineNumThreeColor()));
+		mineNumbers[3].setSelectedColor(Color.decode(optionsService.mineNumFourColor()));
+		mineNumbers[4].setSelectedColor(Color.decode(optionsService.mineNumFiveColor()));
+		mineNumbers[5].setSelectedColor(Color.decode(optionsService.mineNumSixColor()));
+		mineNumbers[6].setSelectedColor(Color.decode(optionsService.mineNumSevenColor()));
+		mineNumbers[7].setSelectedColor(Color.decode(optionsService.mineNumEightColor()));
+		borderPanel.setRaisedBorder(optionsService.raisedBorder());
+		borderPanel.setLoweredBorder(optionsService.loweredBorder());
 	}
 }
