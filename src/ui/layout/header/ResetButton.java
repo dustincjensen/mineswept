@@ -37,7 +37,6 @@ public class ResetButton extends JPanel {
 
 	private void setupPanel() {
 		smileButton = new JButton(resourceLoader.get(Resource.SmileyHappy));
-		smileButton.setToolTipText("Reset the field!");
 		smileButton.setBorderPainted(false);
 		smileButton.setContentAreaFilled(false);
 		smileButton.addActionListener(evt -> {

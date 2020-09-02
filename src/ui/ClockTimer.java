@@ -32,8 +32,6 @@ public class ClockTimer {
 		setupSubscriptions();
 	}
 
-	// TODO can this be put on state?
-	// We have a problem that the tick event won't wait to fire for state to be updated, so the local copy is king...
 	public int getSeconds() {
 		return seconds;
 	}

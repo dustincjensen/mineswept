@@ -68,9 +68,7 @@ public class MineButton extends ResizableLabel implements MouseListener {
 		this.mineWrongIcon = mineWrongIcon;
 		this.flagIcon = flagIcon;
 
-		// TODO allow resizing?
-		// Font size 32 when w,h = 48
-		// Font size 22 when w,h = 32
+		// TODO should figure out a way to not have to call this since resizable label should take care of it. However on initial load without the window size changing the font size is too small without this line.
 		FontChange.setFont(this, 32);
 		int w = 48, h = 48;
 

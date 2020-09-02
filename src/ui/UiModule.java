@@ -23,14 +23,15 @@ public class UiModule extends AbstractModule {
         install(new StatisticsModule());
     }
 
-    // TODO this should be moved into a different module?
     @Singleton
     @Provides
-    public ClockTimer provideClockTimer(IEventPublisher eventPublisher, IEventSubscriber eventSubscriber) {
+    public ClockTimer provideClockTimer(
+        IEventPublisher eventPublisher,
+        IEventSubscriber eventSubscriber
+    ) {
         return new ClockTimer(eventPublisher, eventSubscriber);
     }
 
-    // TODO this should be moved into a different module?
     @Singleton
     @Provides
     public ResourceLoader provideResourceLoader() {

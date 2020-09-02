@@ -10,12 +10,6 @@ TODO
         - if the click ended inside the mine buttons.
 - Refactor MineButton to simplify rendering.
 
-Working on
-==========
-/ Refactor GUI folder
-    / move files around, rename folders
-    / better modules
-    
 Bugs
 ==========
 - fix hint to not find flagged squares

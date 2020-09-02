@@ -1,5 +1,5 @@
 jpackage ^
---app-version 2.1.2 ^
+--app-version 2.1.3 ^
 --icon .\mineswept.ico ^
 --win-dir-chooser ^
 --win-menu ^
