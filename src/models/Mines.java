@@ -2,6 +2,7 @@ package models;
 
 import java.util.Vector;
 
+@SuppressWarnings("serial")
 public class Mines extends Vector<Mine> {
 	public Mines(int size) {
 		super(size);
@@ -15,7 +16,7 @@ public class Mines extends Vector<Mine> {
 	 * @return the index of the mine or -1 if it does not exist.
 	 */
 	public int contains(int x, int y) {
-		for (int i = 0; i < size(); i++) {
+		for (var i = 0; i < size(); i++) {
 			if (x == get(i).x() && y == get(i).y()) {
 				return i;
 			}
@@ -31,7 +32,7 @@ public class Mines extends Vector<Mine> {
 	 * @return the mine or null if it does not exist.
 	 */
 	public Mine get(int x, int y) {
-		for (int i = 0; i < size(); i++) {
+		for (var i = 0; i < size(); i++) {
 			if (x == get(i).x() && y == get(i).y()) {
 				return get(i);
 			}

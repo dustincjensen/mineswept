@@ -1,19 +1,14 @@
 package services;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import state.GameState;
 
 public class ServicesModule extends AbstractModule {
-    @Override
-    public void configure() {
-    }
-
     @Provides
-    public HintService provideHintService(GameState gameState) {
-        return new HintService(gameState);
+    public HintService provideHintService(GameState gameState, MineRevealService mineRevealService) {
+        return new HintService(gameState, mineRevealService);
     }
 
     @Provides
@@ -21,18 +16,29 @@ public class ServicesModule extends AbstractModule {
         return new MineRevealService(octo);
     }
 
-    // TODO reevaluate if these need to be singleton's
+    /**
+     * Provides the options as a singleton. This is because we cache
+     * the options for repeated access. The square color is accessed
+     * hundreds of times.
+     * 
+     * @param fileService utility service for file interactions.
+     * @return a reference to the options service.
+     */
     @Singleton
     @Provides
-    public PreferencesService providePreferences(FileService fileService) {
-        return new PreferencesService(fileService);
+    public OptionsService provideOptions(FileService fileService) {
+        return new OptionsService(fileService);
     }
 
-    @Singleton
+    // No cached state, so no need for a singleton.
     @Provides
     public RecordsService provideRecordsService(FileService fileService) {
         return new RecordsService(fileService);
     }
     
-    // TODO statistics service.
+    // No cached state, so no need for a singleton.
+    @Provides
+    public StatisticsService provideStatisticsService(FileService fileService) {
+        return new StatisticsService(fileService);
+    }
 }

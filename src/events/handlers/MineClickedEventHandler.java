@@ -3,39 +3,45 @@ package events.handlers;
 import events.IEventSubscriber;
 import events.MineClickedEvent;
 import events.SetResetButtonIconEvent;
-import events.ShowRecordsEvent;
+import events.ShowStatisticsEvent;
+import events.StopClockTimerEvent;
+import events.UpdateMineCountEvent;
 import events.UpdateMinePanelEvent;
 import exceptions.GameOverException;
-import gui.ClockTimer;
-import gui.Resource;
+import ui.ClockTimer;
+import models.Resource;
 import services.MineRevealService;
 import services.RecordsService;
+import services.StatisticsService;
 import state.GameState;
 
 public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> {
     private GameState gameState;
     private MineRevealService mineRevealService;
     private RecordsService recordsService;
+    private StatisticsService statisticsService;
     private ClockTimer clockTimer;
     private IEventSubscriber eventSubscriber;
 
     public MineClickedEventHandler(
-        GameState state,
-        MineRevealService service,
-        RecordsService records,
-        ClockTimer timer,
-        IEventSubscriber subscriber
+        GameState gameState,
+        MineRevealService mineRevealService,
+        RecordsService recordsService,
+        StatisticsService statisticsService,
+        ClockTimer clockTimer,
+        IEventSubscriber eventSubscriber
     ) {
-        gameState = state;
-        mineRevealService = service;
-        recordsService = records;
-        clockTimer = timer;
-        eventSubscriber = subscriber;
+        this.gameState = gameState;
+        this.mineRevealService = mineRevealService;
+        this.recordsService = recordsService;
+        this.statisticsService = statisticsService;
+        // TODO this should not require the clock timer component directly.
+        this.clockTimer = clockTimer;
+        this.eventSubscriber = eventSubscriber;
     }
 
     @Override
     public void execute(MineClickedEvent event) {
-        if (!event.isLeftMouseButton) return;
         if (gameState.isGameOver()) return;
 
         // Reset to the smiley icon, since we let go of the mouse...
@@ -53,7 +59,11 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
             y = event.dragY;
         }
 
-        leftClicked(x, y);
+        if (event.isLeftMouseButton) {
+            leftClicked(x, y);
+        } else {
+            rightClicked(x, y);
+        }
 
         eventSubscriber.notify(new UpdateMinePanelEvent());
     }
@@ -72,29 +82,51 @@ public class MineClickedEventHandler implements IEventHandler<MineClickedEvent> 
                 mineRevealService.uncover(index, mines, puzzleWidth);
             }
 
-            // If no exception is throw, we can update the game condition.
+            // If no exception is thrown, we can update the game condition.
             if (gameState.updateGameCondition()) {
-                clockTimer.stop();
+                eventSubscriber.notify(new StopClockTimerEvent());
 
                 // Record a record if need be.
-                var recordSet = recordsService.checkAndSaveNewRecord(
-                    clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
-
-                // Show the records window if a record was set.
-                if (recordSet) {
-                    var showRecords = new ShowRecordsEvent();
-                    showRecords.records = recordsService.getAllRecords();
-                    showRecords.difficulty = gameState.getCurrentPuzzleDifficulty();
-                    eventSubscriber.notify(showRecords);
+                boolean recordSet = false;
+                if (!gameState.wasHintUsed()) {
+                    recordSet = recordsService.checkAndSaveNewRecord(
+                        clockTimer.getSeconds(), gameState.getCurrentPuzzleDifficulty());
                 }
+
+                // Add game played and won.
+                // And update the statistics window, as it may be open.
+                statisticsService.gameWon(gameState.getCurrentPuzzleDifficulty());
+                showStats(recordSet);
 
                 eventSubscriber.notify(new SetResetButtonIconEvent(
                     recordSet ? Resource.SmileyRecord : Resource.SmileyCool));
             };
         } catch (GameOverException ex) {
-            gameState.setGameOver(true);
-			clockTimer.stop();
+            eventSubscriber.notify(new StopClockTimerEvent());
 			eventSubscriber.notify(new SetResetButtonIconEvent(Resource.SmileySad));
+            
+            gameState.setGameOver();
+            statisticsService.gameLost(gameState.getCurrentPuzzleDifficulty());
+            showStats(false);
+        }
+    }
+
+    private void showStats(boolean recordSet) {
+        var showStats = new ShowStatisticsEvent();
+        showStats.stats = statisticsService.getStatistics();
+        showStats.records = recordsService.getAllRecords();
+        showStats.difficulty = gameState.getCurrentPuzzleDifficulty();
+        // Show the records window if a record was set.
+        showStats.showWindow = recordSet;
+        eventSubscriber.notify(showStats);
+    }
+
+    private void rightClicked(int x, int y) {
+        var mine = gameState.getMine(x, y);
+        
+        if (!mine.uncovered()) {
+            mine.updateMineState();
+            eventSubscriber.notify(new UpdateMineCountEvent(gameState.getMineCount()));
         }
     }
 }

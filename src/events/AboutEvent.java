@@ -1,11 +1,17 @@
 package events;
 
 public class AboutEvent {
+    private static final String VERSION = "2.1.3";
+
     public String getTitle() {
-        return "About - MineSwept";
+        return "About";
     }
 
     public String getMessage() {
-        return "By: Dustin Jensen\n" + "The King's University College\n" + "September 1st, 2012";
+        return "<html>" + getVersion() + "<br/>Dustin Jensen<br/>Created 2012-2020</html>";
+    }
+    
+    private String getVersion() {
+        return "MineSwept " + VERSION;        
     }
 }

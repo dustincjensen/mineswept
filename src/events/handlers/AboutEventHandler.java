@@ -1,12 +1,17 @@
 package events.handlers;
 
 import events.AboutEvent;
-import javax.swing.JOptionPane;
+import events.IEventSubscriber;
 
 public class AboutEventHandler implements IEventHandler<AboutEvent> {
+    private IEventSubscriber eventSubscriber;
+
+    public AboutEventHandler(IEventSubscriber eventSubscriber) {
+        this.eventSubscriber = eventSubscriber;
+    }
+
     @Override
     public void execute(AboutEvent event) {
-        // TODO we should not be creating a dialog from the event handlers...
-        JOptionPane.showMessageDialog(null, event.getMessage(), event.getTitle(), JOptionPane.PLAIN_MESSAGE);
+        eventSubscriber.notify(event);
     }
 }

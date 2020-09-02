@@ -1,9 +1,9 @@
 package events;
 
 public class SetTimeCountEvent {
-    public String time;
+    public int time;
     
-    public SetTimeCountEvent(String timeToSet) {
-        time = timeToSet;
+    public SetTimeCountEvent(int time) {
+        this.time = time;
     }
 }
