@@ -18,151 +18,63 @@ public class OptionsService {
 	/**
 	 * Retrieves the color that should be used to decorate the game board squares.
 	 * 
-	 * @return an object with the RGB color for the game board squares.
+	 * @return the hex string of the color.
 	 */
 	public String squareColor() {
 		return options().squareColor;
 	}
 
 	/**
-	 * Sets the color that should be used to decorate the game board squares.
-	 * 
-	 * @param color the new color to use.
-	 */
-	public void setSquareColor(String color) {
-		setOptions(options -> {
-			options.squareColor = color;
-		});
-	}
-
-	/**
 	 * Retrieves the color that should be used to decorate the game board alt squares.
 	 * 
-	 * @return an object with the RGB color for the game board alt squares.
+	 * @return the hex string of the color.
 	 */
 	public String squareAltColor() {
 		return options().squareAltColor;
-	}
-
-	/**
-	 * Sets the color that should be used to decorate the game board alt squares.
-	 * 
-	 * @param color the new color to use.
-	 */
-	public void setSquareAltColor(String color) {
-		setOptions(options -> {
-			options.squareAltColor = color;
-		});
 	}
 
 	public String clickedColor() {
 		return options().clickedColor;
 	}
 
-	public void setClickedColor(String color) {
-		setOptions(options -> {
-			options.clickedColor = color;
-		});
-	}
-
 	public String clickedAltColor() {
 		return options().clickedAltColor;
-	}
-
-	public void setClickedAltColor(String color) {
-		setOptions(options -> {
-			options.clickedAltColor = color;
-		});
 	}
 
 	public String clickedFailColor() {
 		return options().clickedFailColor;
 	}
 
-	public void setClickedFailColor(String color) {
-		setOptions(options -> {
-			options.clickedFailColor = color;
-		});
-	}
-
 	public String mineNumOneColor() {
 		return options().mineNumOneColor;
-	}
-
-	public void setMineNumOneColor(String color) {
-		setOptions(options -> {
-			options.mineNumOneColor = color;
-		});
 	}
 
 	public String mineNumTwoColor() {
 		return options().mineNumTwoColor;
 	}
 
-	public void setMineNumTwoColor(String color) {
-		setOptions(options -> {
-			options.mineNumTwoColor = color;
-		});
-	}
-
 	public String mineNumThreeColor() {
 		return options().mineNumThreeColor;
-	}
-
-	public void setMineNumThreeColor(String color) {
-		setOptions(options -> {
-			options.mineNumThreeColor = color;
-		});
 	}
 
 	public String mineNumFourColor() {
 		return options().mineNumFourColor;
 	}
 
-	public void setMineNumFourColor(String color) {
-		setOptions(options -> {
-			options.mineNumFourColor = color;
-		});
-	}
-
 	public String mineNumFiveColor() {
 		return options().mineNumFiveColor;
-	}
-
-	public void setMineNumFiveColor(String color) {
-		setOptions(options -> {
-			options.mineNumFiveColor = color;
-		});
 	}
 
 	public String mineNumSixColor() {
 		return options().mineNumSixColor;
 	}
 
-	public void setMineNumSixColor(String color) {
-		setOptions(options -> {
-			options.mineNumSixColor = color;
-		});
-	}
-
 	public String mineNumSevenColor() {
 		return options().mineNumSevenColor;
 	}
 
-	public void setMineNumSevenColor(String color) {
-		setOptions(options -> {
-			options.mineNumSevenColor = color;
-		});
-	}
-
 	public String mineNumEightColor() {
 		return options().mineNumEightColor;
-	}
-
-	public void setMineNumEightColor(String color) {
-		setOptions(options -> {
-			options.mineNumEightColor = color;
-		});
 	}
 
 	/**
@@ -176,34 +88,12 @@ public class OptionsService {
 	}
 
 	/**
-	 * Sets the difficulty that the game should be played at.
-	 * 
-	 * @param difficulty the difficulty level.
-	 */
-	public void setDifficulty(Difficulty difficulty) {
-		setOptions(options -> {
-			options.difficulty = difficulty.toString();
-		});
-	}
-
-	/**
 	 * Retrieves the raised border type.
 	 * 
 	 * @return the raised border type.
 	 */
 	public BorderType raisedBorder() {
 		return options().raisedBorder;
-	}
-
-	/**
-	 * Sets the raised border type.
-	 * 
-	 * @param type the raised border type.
-	 */
-	public void setRaisedBorder(BorderType type) {
-		setOptions(options -> {
-			options.raisedBorder = type;
-		});
 	}
 
 	/**
@@ -216,13 +106,28 @@ public class OptionsService {
 	}
 
 	/**
-	 * Sets the lowered border type.
+	 * Update the options.
 	 * 
-	 * @param type the lowered border type.
+	 * @param updatedOptions the updated options.
 	 */
-	public void setLoweredBorder(BorderType type) {
+	public void updateOptions(Options updatedOptions) {
 		setOptions(options -> {
-			options.loweredBorder = type;
+			options.squareColor = updatedOptions.squareColor;
+			options.squareAltColor = updatedOptions.squareAltColor;
+			options.clickedColor = updatedOptions.clickedColor;
+			options.clickedAltColor = updatedOptions.clickedAltColor;
+			options.clickedFailColor = updatedOptions.clickedFailColor;
+			options.mineNumOneColor = updatedOptions.mineNumOneColor;
+			options.mineNumTwoColor = updatedOptions.mineNumTwoColor;
+			options.mineNumThreeColor = updatedOptions.mineNumThreeColor;
+			options.mineNumFourColor = updatedOptions.mineNumFourColor;
+			options.mineNumFiveColor = updatedOptions.mineNumFiveColor;
+			options.mineNumSixColor = updatedOptions.mineNumSixColor;
+			options.mineNumSevenColor = updatedOptions.mineNumSevenColor;
+			options.mineNumEightColor = updatedOptions.mineNumEightColor;
+			options.difficulty = updatedOptions.difficulty;
+			options.raisedBorder = updatedOptions.raisedBorder;
+			options.loweredBorder = updatedOptions.loweredBorder;
 		});
 	}
 

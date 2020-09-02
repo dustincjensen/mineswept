@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.Color;
 import javax.swing.*;
 import models.options.BorderType;
+import models.options.Options;
 import services.OptionsService;
 import state.GameState;
 import ui.components.button.LightButton;
@@ -229,32 +230,26 @@ public class OptionsWindow {
 	}
 
 	private void setNewOptions() {
-		// Set difficulty
-		var selectedDifficulty = difficultyPanel.getSelectedDifficulty();
-		optionsService.setDifficulty(selectedDifficulty);
+		var updatedOptions = new Options();
+		updatedOptions.difficulty = difficultyPanel.getSelectedDifficulty().toString();
+		updatedOptions.squareColor = squareColor.getSaveableColor();
+		updatedOptions.squareAltColor = squareAltColor.getSaveableColor();
+		updatedOptions.clickedColor = clickedColor.getSaveableColor();
+		updatedOptions.clickedAltColor = clickedAltColor.getSaveableColor();
+		updatedOptions.clickedFailColor = clickedFailColor.getSaveableColor();
+		updatedOptions.mineNumOneColor = mineNumbers[0].getSaveableColor();
+		updatedOptions.mineNumTwoColor = mineNumbers[1].getSaveableColor();
+		updatedOptions.mineNumThreeColor = mineNumbers[2].getSaveableColor();
+		updatedOptions.mineNumFourColor = mineNumbers[3].getSaveableColor();
+		updatedOptions.mineNumFiveColor = mineNumbers[4].getSaveableColor();
+		updatedOptions.mineNumSixColor = mineNumbers[5].getSaveableColor();
+		updatedOptions.mineNumSevenColor = mineNumbers[6].getSaveableColor();
+		updatedOptions.mineNumEightColor = mineNumbers[7].getSaveableColor();
+		updatedOptions.raisedBorder = (BorderType)borderPanel.getRaisedBorder();
+		updatedOptions.loweredBorder = (BorderType)borderPanel.getLoweredBorder();
 
-		// Save mine number colors.
-		// TODO since we will be saving mine colors all at once, we should remove the individual color saves.
-		optionsService.setSquareColor(squareColor.getSaveableColor());
-		optionsService.setSquareAltColor(squareAltColor.getSaveableColor());
-		optionsService.setClickedColor(clickedColor.getSaveableColor());
-		optionsService.setClickedAltColor(clickedAltColor.getSaveableColor());
-		optionsService.setClickedFailColor(clickedFailColor.getSaveableColor());
-		optionsService.setMineNumOneColor(mineNumbers[0].getSaveableColor());
-		optionsService.setMineNumTwoColor(mineNumbers[1].getSaveableColor());
-		optionsService.setMineNumThreeColor(mineNumbers[2].getSaveableColor());
-		optionsService.setMineNumFourColor(mineNumbers[3].getSaveableColor());
-		optionsService.setMineNumFiveColor(mineNumbers[4].getSaveableColor());
-		optionsService.setMineNumSixColor(mineNumbers[5].getSaveableColor());
-		optionsService.setMineNumSevenColor(mineNumbers[6].getSaveableColor());
-		optionsService.setMineNumEightColor(mineNumbers[7].getSaveableColor());
-
-		// Set border types
-		var raisedType = (BorderType)borderPanel.getRaisedBorder();
-		optionsService.setRaisedBorder(raisedType);
-
-		var loweredType = (BorderType)borderPanel.getLoweredBorder();
-		optionsService.setLoweredBorder(loweredType);
+		// Update the options.
+		optionsService.updateOptions(updatedOptions);
 
 		// Notify the mine panel so it can update colors immediately.
 		eventSubscriber.notify(new UpdateMinePanelEvent());
