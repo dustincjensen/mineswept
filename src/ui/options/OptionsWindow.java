@@ -14,6 +14,7 @@ import ui.components.dialog.CustomDialog;
 import ui.components.radioButton.RadioButtonFactory;
 import ui.options.styles.Classic;
 import ui.options.styles.Forest;
+import ui.options.styles.IStyle;
 import ui.options.styles.Material;
 import ui.utils.JLabelFactory;
 import ui.window.Window;
@@ -110,59 +111,13 @@ public class OptionsWindow {
 		descriptionPanel.setOpaque(false);
 		descriptionPanel.add(JLabelFactory.create("Choosing a theme will set all color options."));
 
-		// TODO make for now have an interface instead and then this can become 1 method instead of 3.
-		var materialButton = new PrimaryButton("Material", evt -> {
-			squareColor.setSelectedColor(Color.decode(Material.MINE_BACKGROUND_COLOR));
-			squareAltColor.setSelectedColor(Color.decode(Material.MINE_ALT_BACKGROUND_COLOR));
-			clickedColor.setSelectedColor(Color.decode(Material.MINE_CLICKED_BACKGROUND_COLOR));
-			clickedAltColor.setSelectedColor(Color.decode(Material.MINE_CLICKED_ALT_BACKGROUND_COLOR));
-			clickedFailColor.setSelectedColor(Color.decode(Material.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
-			
-			for (var i = 0; i < 8; i++) {
-				mineNumbers[i].setSelectedColor(Color.decode(Material.MINE_NUMBER_COLORS[i]));
-			}
-			
-			optionsService.setRaisedBorder(Material.RAISED_BORDER);
-			optionsService.setLoweredBorder(Material.LOWERED_BORDER);
-			borderPanel.setRaisedBorder(Material.RAISED_BORDER);
-			borderPanel.setLoweredBorder(Material.LOWERED_BORDER);
-		});
+		var materialButton = new PrimaryButton("Material", evt -> setAllColors(new Material()));
 		materialButton.setPreferredSize(new Dimension(100, 40));
 
-		var classicButton = new PrimaryButton("Classic", evt -> {
-			squareColor.setSelectedColor(Color.decode(Classic.MINE_BACKGROUND_COLOR));
-			squareAltColor.setSelectedColor(Color.decode(Classic.MINE_ALT_BACKGROUND_COLOR));
-			clickedColor.setSelectedColor(Color.decode(Classic.MINE_CLICKED_BACKGROUND_COLOR));
-			clickedAltColor.setSelectedColor(Color.decode(Classic.MINE_CLICKED_ALT_BACKGROUND_COLOR));
-			clickedFailColor.setSelectedColor(Color.decode(Classic.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
-			
-			for (var i = 0; i < 8; i++) {
-				mineNumbers[i].setSelectedColor(Color.decode(Classic.MINE_NUMBER_COLORS[i]));
-			}
-
-			optionsService.setRaisedBorder(Classic.RAISED_BORDER);
-			optionsService.setLoweredBorder(Classic.LOWERED_BORDER);
-			borderPanel.setRaisedBorder(Classic.RAISED_BORDER);
-			borderPanel.setLoweredBorder(Classic.LOWERED_BORDER);
-		});
+		var classicButton = new PrimaryButton("Classic", evt -> setAllColors(new Classic()));
 		classicButton.setPreferredSize(new Dimension(100, 40));
 
-		var forestButton = new PrimaryButton("Forest", evt -> {
-			squareColor.setSelectedColor(Color.decode(Forest.MINE_BACKGROUND_COLOR));
-			squareAltColor.setSelectedColor(Color.decode(Forest.MINE_ALT_BACKGROUND_COLOR));
-			clickedColor.setSelectedColor(Color.decode(Forest.MINE_CLICKED_BACKGROUND_COLOR));
-			clickedAltColor.setSelectedColor(Color.decode(Forest.MINE_CLICKED_ALT_BACKGROUND_COLOR));
-			clickedFailColor.setSelectedColor(Color.decode(Forest.FAILED_MINE_CLICKED_BACKGROUND_COLOR));
-			
-			for (var i = 0; i < 8; i++) {
-				mineNumbers[i].setSelectedColor(Color.decode(Forest.MINE_NUMBER_COLORS[i]));	
-			}
-
-			optionsService.setRaisedBorder(Forest.RAISED_BORDER);
-			optionsService.setLoweredBorder(Forest.LOWERED_BORDER);
-			borderPanel.setRaisedBorder(Forest.RAISED_BORDER);
-			borderPanel.setLoweredBorder(Forest.LOWERED_BORDER);
-		});
+		var forestButton = new PrimaryButton("Forest", evt -> setAllColors(new Forest()));
 		forestButton.setPreferredSize(new Dimension(100, 40));
 
 		var buttonPanel = new JPanel(new FlowLayout());
@@ -172,6 +127,22 @@ public class OptionsWindow {
 		buttonPanel.add(forestButton);
 
 		return new TitledPanel("Themes", descriptionPanel, buttonPanel);
+	}
+
+	private void setAllColors(IStyle style) {
+		squareColor.setSelectedColor(Color.decode(style.mineBackgroundColor()));
+		squareAltColor.setSelectedColor(Color.decode(style.mineAltBackgroundColor()));
+		clickedColor.setSelectedColor(Color.decode(style.mineClickedBackgroundColor()));
+		clickedAltColor.setSelectedColor(Color.decode(style.mineClickedAltBackgroundColor()));
+		clickedFailColor.setSelectedColor(Color.decode(style.failedMineClickedBackgroundColor()));
+		
+		var styleNumberColors = style.mineNumberColors();
+		for (var i = 0; i < 8; i++) {
+			mineNumbers[i].setSelectedColor(Color.decode(styleNumberColors[i]));
+		}
+		
+		borderPanel.setRaisedBorder(style.raisedBorder());
+		borderPanel.setLoweredBorder(style.loweredBorder());
 	}
 
 	private TitledPanel minefieldColorsPanel() {
@@ -233,6 +204,7 @@ public class OptionsWindow {
 	}
 
 	private void resetOptions() {
+		// TODO
 		// System.out.println("Resetting current options...");
 	}
 
@@ -256,15 +228,13 @@ public class OptionsWindow {
 			!optionsService.mineNumEightColor().equals(mineNumbers[7].getSaveableColor());
 	}
 
-	// TODO colors shouldn't set on the board immediately.
 	private void setNewOptions() {
 		// Set difficulty
 		var selectedDifficulty = difficultyPanel.getSelectedDifficulty();
 		optionsService.setDifficulty(selectedDifficulty);
 
 		// Save mine number colors.
-		// TODO since we will be saving mine colors all at once, we should remove
-		// the individual color saves.
+		// TODO since we will be saving mine colors all at once, we should remove the individual color saves.
 		optionsService.setSquareColor(squareColor.getSaveableColor());
 		optionsService.setSquareAltColor(squareAltColor.getSaveableColor());
 		optionsService.setClickedColor(clickedColor.getSaveableColor());
