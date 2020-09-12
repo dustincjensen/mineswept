@@ -25,7 +25,7 @@ public class Window extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(windowIcon);
         addWindowListener(mainWindowHandler)
-        setupSubscriptions(eventSubscriber);
+        setupSubscriptions(eventSubscriber)
 
         aboutDialog = new CustomDialog(this, CustomDialog.Type.OK);
     }
