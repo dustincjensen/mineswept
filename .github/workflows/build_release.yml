@@ -1,0 +1,94 @@
+name: Build for Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  create-jar:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 14.0.2
+      uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.2'
+        java-package: jdk
+        architecture: x64
+    
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
+
+    - name: Replace build.xml version number
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "<property name=\"version.num\" value=\"0.1.2\" />"
+        replace: "<property name=\"version.num\" value=\"${{ steps.get_version.outputs.VERSION }}\" />"
+        include: "build.xml"
+
+    - name: Build with Ant
+      run: ant -noinput -buildfile build.xml jar
+      
+    - name: Upload jar
+      uses: actions/upload-artifact@v1
+      with:
+        name: jars
+        path: build/jar/MineSwept.jar
+
+
+  windows:
+    needs: create-jar
+    runs-on: [windows-latest]
+    
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.2'
+        java-package: jdk
+        architecture: x64
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      shell: bash
+
+    - name: Download jar
+      uses: actions/download-artifact@v1
+      with:
+        name: jars
+
+    - name: Package jar as installable exe
+      run: jpackage --app-version ${{ steps.get_version.outputs.VERSION }} --icon .\mineswept.ico --win-dir-chooser --win-menu --win-shortcut -i jars --main-class bootstrap.MineSwept --main-jar MineSwept.jar --dest .\dist
+
+    - name: View artifacts
+      run: dir
+
+    - name: Zip artifacts
+      uses: papeloto/action-zip@v1
+      with:
+        files: dist/
+        recursive: false
+        dest: dist/MineSwept-${{ steps.get_version.outputs.VERSION }}-Installer.zip
+
+    - name: Update Release with zip
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/MineSwept-${{ steps.get_version.outputs.VERSION }}-Installer.zip
+        tag: ${{ steps.get_version.outputs.VERSION }}
+        overwrite: false
+        
+    - name: Update Release with exe
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/MineSwept-${{ steps.get_version.outputs.VERSION }}.exe
+        asset_name: MineSwept-${{ steps.get_version.outputs.VERSION }}-Installer.exe
+        tag: ${{ steps.get_version.outputs.VERSION }}
+        overwrite: false

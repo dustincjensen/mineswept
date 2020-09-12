@@ -2,7 +2,7 @@
 <project name="MineSwept" default="run" basedir=".">
 
 	<!-- target CLEAN -->
-	<!-- gets ride of build directory and manifest file -->
+	<!-- gets rid of build directory and manifest file -->
 	<target name="clean" description="Cleans up project (Removes old build files)">
 		<delete dir="build"/>
 		<delete dir="doc"/>
@@ -52,6 +52,8 @@
 	<target name="jar" depends="compile" description="Bundle classes into a single JAR file (build/jar/)">
 		<mkdir dir="build/jar"/>
 
+		<property name="version.num" value="0.1.2" />
+
 		<jar destfile="build/jar/MineSwept.jar" basedir="build/classes">
 			<fileset dir="src/resources/">
 				<include name="icons/**/*"/>
@@ -61,6 +63,7 @@
 
 			<manifest>
 				<attribute name="Main-Class" value="bootstrap.MineSwept"/>
+				<attribute name="Specification-Version" value="${version.num}" />
 			</manifest>
 		</jar>
 	</target>

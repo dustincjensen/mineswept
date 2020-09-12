@@ -1,8 +1,6 @@
 package events;
 
 public class AboutEvent {
-    private static final String VERSION = "2.1.3";
-
     public String getTitle() {
         return "About";
     }
@@ -12,6 +10,6 @@ public class AboutEvent {
     }
     
     private String getVersion() {
-        return "MineSwept " + VERSION;        
+        return "MineSwept " + getClass().getPackage().getSpecificationVersion();        
     }
 }
