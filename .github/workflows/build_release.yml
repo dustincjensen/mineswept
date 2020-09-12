@@ -72,7 +72,7 @@ jobs:
     - name: Zip artifacts
       uses: papeloto/action-zip@v1
       with:
-        files: dist/
+        files: dist/MineSwept-${{ steps.get_version.outputs.VERSION }}.exe
         recursive: false
         dest: dist/MineSwept-${{ steps.get_version.outputs.VERSION }}-Installer.zip
 
