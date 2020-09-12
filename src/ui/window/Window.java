@@ -24,7 +24,7 @@ public class Window extends JFrame {
 		setJMenuBar(menus);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(windowIcon);
-        addWindowListener(mainWindowHandler);
+        addWindowListener(mainWindowHandler)
         setupSubscriptions(eventSubscriber);
 
         aboutDialog = new CustomDialog(this, CustomDialog.Type.OK);
